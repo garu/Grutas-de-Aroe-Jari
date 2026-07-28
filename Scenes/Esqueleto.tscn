@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://wk48eex385j5"]
+
+[ext_resource type="Script" path="res://scripts/Esqueleto.gd" id="1_esq"]
+
+[node name="Esqueleto" type="Node2D"]
+script = ExtResource("1_esq")
+
+[node name="Marca" type="Polygon2D" parent="."]
+color = Color(0.9, 0.9, 0.85, 1)
+polygon = PackedVector2Array(-6, 6, -6, -2, -2, -6, 2, -6, 6, -2, 6, 6, 2, 2, -2, 2)

@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://tuuhswypfwmi"]
+
+[ext_resource type="Script" path="res://scripts/Telas.gd" id="1_telas"]
+
+[node name="GameOver" type="Control"]
+script = ExtResource("1_telas")
+tipo = 1
+titulo = "Fim de jogo"
+mensagem = "A escuridão tomou Pari. Seus itens ficaram para trás."
+mostrar_logotipo = false

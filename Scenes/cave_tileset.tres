@@ -1,0 +1,22 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://ccavetileset01"]
+
+[ext_resource type="Texture2D" path="res://sprites/Environments/Ground_rocks.png" id="1_gr"]
+
+[sub_resource type="TileSetAtlasSource" id="atlas_gr"]
+texture = ExtResource("1_gr")
+texture_region_size = Vector2i(16, 16)
+1:13/0 = 0
+2:2/0 = 0
+6:4/0 = 0
+6:25/0 = 0
+8:45/0 = 0
+8:54/0 = 0
+8:64/0 = 0
+17:16/0 = 0
+19:9/0 = 0
+22:9/0 = 0
+24:33/0 = 0
+
+[resource]
+tile_size = Vector2i(16, 16)
+sources/0 = SubResource("atlas_gr")

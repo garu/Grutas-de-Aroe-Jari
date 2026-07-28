@@ -1,0 +1,198 @@
+[gd_scene load_steps=10 format=3 uid="uid://cthwb45tn12cl"]
+
+[ext_resource type="Texture2D" path="res://sprites/Environments/cave_scene.png" id="1_cena"]
+[ext_resource type="PackedScene" path="res://Scenes/Player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scripts/Fase.gd" id="3_fase"]
+[ext_resource type="PackedScene" path="res://Scenes/Enemy.tscn" id="4_enemy"]
+[ext_resource type="PackedScene" path="res://Scenes/Item.tscn" id="5_item"]
+
+[sub_resource type="RectangleShape2D" id="b_h"]
+size = Vector2(1280, 32)
+
+[sub_resource type="RectangleShape2D" id="b_v"]
+size = Vector2(32, 896)
+
+[sub_resource type="RectangleShape2D" id="div_l"]
+size = Vector2(576, 32)
+
+[sub_resource type="RectangleShape2D" id="div_r"]
+size = Vector2(560, 32)
+
+[sub_resource type="RectangleShape2D" id="pil"]
+size = Vector2(48, 48)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("3_fase")
+
+[node name="Escuridao" type="CanvasModulate" parent="."]
+color = Color(0.3, 0.28, 0.34, 1)
+
+[node name="Cenario" type="Sprite2D" parent="."]
+position = Vector2(640, 448)
+texture = ExtResource("1_cena")
+
+[node name="Walls" type="StaticBody2D" parent="."]
+
+[node name="Top" type="CollisionShape2D" parent="Walls"]
+position = Vector2(640, 16)
+shape = SubResource("b_h")
+
+[node name="Bottom" type="CollisionShape2D" parent="Walls"]
+position = Vector2(640, 880)
+shape = SubResource("b_h")
+
+[node name="Left" type="CollisionShape2D" parent="Walls"]
+position = Vector2(16, 448)
+shape = SubResource("b_v")
+
+[node name="Right" type="CollisionShape2D" parent="Walls"]
+position = Vector2(1264, 448)
+shape = SubResource("b_v")
+
+[node name="DivLeft" type="CollisionShape2D" parent="Walls"]
+position = Vector2(320, 432)
+shape = SubResource("div_l")
+
+[node name="DivRight" type="CollisionShape2D" parent="Walls"]
+position = Vector2(968, 432)
+shape = SubResource("div_r")
+
+[node name="Pil1" type="CollisionShape2D" parent="Walls"]
+position = Vector2(216, 216)
+shape = SubResource("pil")
+
+[node name="Pil2" type="CollisionShape2D" parent="Walls"]
+position = Vector2(1064, 216)
+shape = SubResource("pil")
+
+[node name="Pil3" type="CollisionShape2D" parent="Walls"]
+position = Vector2(216, 680)
+shape = SubResource("pil")
+
+[node name="Pil4" type="CollisionShape2D" parent="Walls"]
+position = Vector2(1064, 680)
+shape = SubResource("pil")
+
+[node name="Pil5" type="CollisionShape2D" parent="Walls"]
+position = Vector2(648, 232)
+shape = SubResource("pil")
+
+[node name="Pil6" type="CollisionShape2D" parent="Walls"]
+position = Vector2(648, 664)
+shape = SubResource("pil")
+
+[node name="Inimigo1" parent="." instance=ExtResource("4_enemy")]
+position = Vector2(1175, 119)
+tipo = "morcego"
+vida_maxima = 30
+dano_contato = 8
+velocidade = 60.0
+raio_deteccao = 150.0
+
+[node name="Inimigo2" parent="." instance=ExtResource("4_enemy")]
+position = Vector2(1043, 345)
+tipo = "aranha"
+vida_maxima = 40
+dano_contato = 12
+velocidade = 38.0
+raio_deteccao = 120.0
+
+[node name="Inimigo3" parent="." instance=ExtResource("4_enemy")]
+position = Vector2(321, 470)
+tipo = "cobra"
+vida_maxima = 50
+dano_contato = 14
+velocidade = 32.0
+raio_deteccao = 110.0
+
+[node name="Inimigo4" parent="." instance=ExtResource("4_enemy")]
+position = Vector2(869, 646)
+tipo = "morcego"
+vida_maxima = 30
+dano_contato = 8
+velocidade = 60.0
+raio_deteccao = 150.0
+
+[node name="Inimigo5" parent="." instance=ExtResource("4_enemy")]
+position = Vector2(298, 677)
+tipo = "aranha"
+vida_maxima = 40
+dano_contato = 12
+velocidade = 38.0
+raio_deteccao = 120.0
+
+[node name="Inimigo6" parent="." instance=ExtResource("4_enemy")]
+position = Vector2(600, 103)
+tipo = "cobra"
+vida_maxima = 50
+dano_contato = 14
+velocidade = 32.0
+raio_deteccao = 110.0
+
+[node name="Inimigo7" parent="." instance=ExtResource("4_enemy")]
+position = Vector2(533, 507)
+tipo = "morcego"
+vida_maxima = 30
+dano_contato = 8
+velocidade = 60.0
+raio_deteccao = 150.0
+
+[node name="Butoriko" parent="." instance=ExtResource("4_enemy")]
+position = Vector2(1100, 780)
+tipo = "butoriko"
+vida_maxima = 160
+dano_contato = 22
+velocidade = 42.0
+raio_deteccao = 220.0
+e_chefe = true
+
+[node name="Item1" parent="." instance=ExtResource("5_item")]
+position = Vector2(887, 253)
+categoria = "tesouro"
+nome = "ceramica"
+
+[node name="Item2" parent="." instance=ExtResource("5_item")]
+position = Vector2(360, 91)
+categoria = "tesouro"
+nome = "adorno"
+
+[node name="Item3" parent="." instance=ExtResource("5_item")]
+position = Vector2(100, 304)
+categoria = "arma"
+nome = "cacete"
+
+[node name="Item4" parent="." instance=ExtResource("5_item")]
+position = Vector2(531, 259)
+categoria = "arma"
+nome = "faca"
+
+[node name="Item5" parent="." instance=ExtResource("5_item")]
+position = Vector2(430, 386)
+categoria = "utilitario"
+nome = "cipo"
+
+[node name="Item6" parent="." instance=ExtResource("5_item")]
+position = Vector2(732, 293)
+categoria = "utilitario"
+nome = "folha_medicinal"
+
+[node name="Item7" parent="." instance=ExtResource("5_item")]
+position = Vector2(493, 482)
+categoria = "utilitario"
+nome = "tocha"
+recarrega_tocha = 25.0
+
+[node name="Item8" parent="." instance=ExtResource("5_item")]
+position = Vector2(701, 112)
+categoria = "tesouro"
+nome = "pepita"
+
+[node name="Pintura1" parent="." instance=ExtResource("5_item")]
+position = Vector2(200, 780)
+categoria = "pintura"
+nome = "pintura_arma_envenenada"
+receita_nome = "arma_envenenada"
+receita_ingredientes = PackedStringArray("faca", "folha_medicinal")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(640, 448)

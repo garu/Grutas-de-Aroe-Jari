@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://mgn664navvlg"]
+
+[ext_resource type="Script" path="res://scripts/Telas.gd" id="1_telas"]
+
+[node name="Vitoria" type="Control"]
+script = ExtResource("1_telas")
+tipo = 2
+titulo = "Vitória!"
+mensagem = "Butoriko foi derrotado. Pari retorna à aldeia vitorioso."
+mostrar_logotipo = false

@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cdl4jfar2tdc7"]
+
+[ext_resource type="Script" path="res://scripts/Telas.gd" id="1_telas"]
+
+[node name="TelaInicial" type="Control"]
+script = ExtResource("1_telas")
+tipo = 0
+titulo = "Grutas de Aroe-Jari"
+mensagem = ""

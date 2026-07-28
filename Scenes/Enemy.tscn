@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://benemygaj001"]
+
+[ext_resource type="Script" path="res://scripts/Enemy.gd" id="1_enemy"]
+
+[sub_resource type="CircleShape2D" id="col_e"]
+radius = 7.0
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_enemy")
+
+[node name="Corpo" type="Node2D" parent="."]
+
+[node name="Marca" type="Polygon2D" parent="Corpo"]
+color = Color(0.75, 0.25, 0.3, 1)
+polygon = PackedVector2Array(-7, 0, -3, -7, 3, -7, 7, 0, 3, 7, -3, 7)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("col_e")
