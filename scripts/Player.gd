@@ -199,7 +199,7 @@ func _process(delta: float) -> void:
 			morrer()
 	var t: float = _tocha_restante / tocha_segundos
 	tocha.texture_scale = lerpf(tocha_escala_min, tocha_escala_max, t)
-	tocha.energy = lerpf(0.15, 1.5, t)
+	tocha.energia_atual = lerpf(0.15, 1.5, t)
 
 func reabastecer_tocha(segundos: float) -> void:
 	_tocha_restante = minf(tocha_segundos, _tocha_restante + segundos)
