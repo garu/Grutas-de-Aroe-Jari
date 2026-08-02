@@ -102,4 +102,4 @@ func morrer() -> void:
 func _vitoria() -> void:
 	# Derrotar Butoriko abre a tela de vitória (SGDD)
 	await get_tree().create_timer(0.6).timeout
-	get_tree().change_scene_to_file("res://Scenes/Vitoria.tscn")
+	get_tree().change_scene_to_file("res://cenas/Vitoria.tscn")

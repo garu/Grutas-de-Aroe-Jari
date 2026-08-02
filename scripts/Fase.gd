@@ -41,7 +41,7 @@ func _reposicionar_player() -> void:
 func _recriar_esqueletos() -> void:
 	if get_node_or_null("/root/GameState") == null:
 		return
-	var cena := load("res://Scenes/Esqueleto.tscn") as PackedScene
+	var cena := load("res://cenas/Esqueleto.tscn") as PackedScene
 	if cena == null:
 		return
 	for registro in GameState.esqueleto_pendente:
@@ -113,7 +113,7 @@ func _unhandled_input(event: InputEvent) -> void:
 # ------------------------------------------------------------------ morte
 func _on_morreu() -> void:
 	await get_tree().create_timer(1.2).timeout
-	get_tree().change_scene_to_file("res://Scenes/GameOver.tscn")
+	get_tree().change_scene_to_file("res://cenas/GameOver.tscn")
 
 ## Chamado por uma saída da caverna: salva o ponto de recomeço
 func registrar_saida(pos: Vector2) -> void:

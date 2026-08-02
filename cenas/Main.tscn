@@ -1,10 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://cthwb45tn12cl"]
+[gd_scene format=3 uid="uid://cthwb45tn12cl"]
 
-[ext_resource type="Texture2D" path="res://sprites/Environments/cave_scene.png" id="1_cena"]
-[ext_resource type="PackedScene" path="res://Scenes/Player.tscn" id="2_player"]
-[ext_resource type="Script" path="res://scripts/Fase.gd" id="3_fase"]
-[ext_resource type="PackedScene" path="res://Scenes/Enemy.tscn" id="4_enemy"]
-[ext_resource type="PackedScene" path="res://Scenes/Item.tscn" id="5_item"]
+[ext_resource type="Texture2D" uid="uid://cqgljccovqf8x" path="res://sprites/Environments/cave_scene.png" id="1_cena"]
+[ext_resource type="PackedScene" uid="uid://bm1uo28tuq6jl" path="res://cenas/Player.tscn" id="2_player"]
+[ext_resource type="Script" uid="uid://tdehu0dyjl5p" path="res://scripts/Fase.gd" id="3_fase"]
+[ext_resource type="PackedScene" uid="uid://benemygaj001" path="res://cenas/Enemy.tscn" id="4_enemy"]
+[ext_resource type="PackedScene" uid="uid://citemgaj001" path="res://cenas/Item.tscn" id="5_item"]
 
 [sub_resource type="RectangleShape2D" id="b_h"]
 size = Vector2(1280, 32)

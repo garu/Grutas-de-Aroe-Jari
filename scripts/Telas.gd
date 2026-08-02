@@ -8,7 +8,7 @@ enum Tipo { ABERTURA, DERROTA, VITORIA }
 @export var tipo: Tipo = Tipo.ABERTURA
 @export var titulo: String = "Grutas de Aroe-Jari"
 @export var mensagem: String = ""
-@export var cena_jogo: String = "res://Scenes/Main.tscn"
+@export var cena_jogo: String = "res://cenas/Main.tscn"
 @export var mostrar_logotipo: bool = true
 
 func _ready() -> void:
@@ -87,7 +87,7 @@ func _recomecar() -> void:
 	get_tree().change_scene_to_file(cena_jogo)
 
 func _sair() -> void:
-	get_tree().change_scene_to_file("res://Scenes/TelaInicial.tscn")
+	get_tree().change_scene_to_file("res://cenas/TelaInicial.tscn")
 
 func _compartilhar() -> void:
 	DisplayServer.clipboard_set("https://github.com/Grutas-de-Aroe-Jari")

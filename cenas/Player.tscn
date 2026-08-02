@@ -1,8 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bm1uo28tuq6jl"]
+[gd_scene format=3 uid="uid://bm1uo28tuq6jl"]
 
-[ext_resource type="Script" path="res://scripts/Player.gd" id="1_script"]
-[ext_resource type="SpriteFrames" path="res://Scenes/player_frames.tres" id="2_frames"]
-[ext_resource type="Texture2D" path="res://sprites/FX/torch_light.png" id="3_light"]
+[ext_resource type="Script" uid="uid://dh35g3kx5oqrq" path="res://scripts/Player.gd" id="1_script"]
+[ext_resource type="SpriteFrames" uid="uid://cpariframes01" path="res://cenas/player_frames.tres" id="2_frames"]
+[ext_resource type="Texture2D" uid="uid://drmjfexvtqonh" path="res://sprites/FX/torch_light.png" id="3_light"]
 
 [sub_resource type="CircleShape2D" id="col"]
 radius = 8.0
