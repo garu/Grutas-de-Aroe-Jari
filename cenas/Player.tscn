@@ -11,6 +11,8 @@ radius = 8.0
 [node name="Player" type="CharacterBody2D" unique_id=855842498]
 collision_layer = 2
 script = ExtResource("1_script")
+tocha_segundos = 1200.0
+tocha_escala_max = 2.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=497289104]
 sprite_frames = ExtResource("2_frames")
@@ -31,4 +33,10 @@ texture_scale = 2.4
 script = ExtResource("4_53ko3")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1303748838]
+limit_enabled = false
+limit_left = 0
+limit_top = 0
+limit_right = 1280
+limit_bottom = 896
+
 position_smoothing_enabled = true
