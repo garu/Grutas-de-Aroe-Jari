@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dysf5hhfi5rfi"]
+
+[ext_resource type="Texture2D" uid="uid://dx7nmugwhelme" path="res://sprites/Butoriko/butoriko.png" id="1_4ylv5"]
+[ext_resource type="Script" uid="uid://dvpjrbqmxv1j" path="res://scripts/butoriko.gd" id="1_s6uus"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i0qtj"]
+radius = 50.0
+
+[node name="Butoriko" type="CharacterBody2D" unique_id=1706362118]
+motion_mode = 1
+script = ExtResource("1_s6uus")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1707012620]
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("1_4ylv5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=22302018]
+position = Vector2(-1, 13)
+shape = SubResource("CircleShape2D_i0qtj")
+debug_color = Color(0, 0.6, 0.69803923, 0.7176471)
+
+[node name="TemporizadorDeDirecao" type="Timer" parent="." unique_id=129223494]
+
+[node name="TemporizadorDeMarcas" type="Timer" parent="." unique_id=103990970]
