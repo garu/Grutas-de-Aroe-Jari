@@ -31,6 +31,7 @@ texture_scale = 2.4
 script = ExtResource("4_53ko3")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1303748838]
+limit_enabled = false
 limit_left = 0
 limit_top = 0
 limit_right = 1280
