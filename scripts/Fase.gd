@@ -35,7 +35,10 @@ func _ready() -> void:
 		_abrir_dialogo()
 
 func _reposicionar_player() -> void:
-	if player != null and get_node_or_null("/root/GameState") != null:
+	if player == null or get_node_or_null("/root/GameState") == null:
+		return
+	# sem saida registrada, mantem onde o Pari ja esta na cena
+	if GameState.tem_recomeco:
 		player.global_position = GameState.ponto_recomeco
 
 func _recriar_esqueletos() -> void:
@@ -83,16 +86,17 @@ func _on_tocha(restante: float, _total: float) -> void:
 func _atualizar_itens() -> void:
 	if get_node_or_null("/root/GameState") == null:
 		return
-	var partes: Array[String] = []
-	for c in GameState.CATEGORIAS:
-		var n: int = GameState.contar(c)
-		if n > 0:
-			partes.append("%s %d" % [c.substr(0, 3), n])
-	var receitas: int = GameState.receitas.size()
-	var txt := "Itens: " + (", ".join(partes) if partes.size() > 0 else "-")
-	if receitas > 0:
-		txt += "  |  receitas: %d (C mescla)" % receitas
+	var txt := "Carga: %d/%d  (peso %d)" % [
+		GameState.mochila.size(), GameState.CAPACIDADE, GameState.peso_total()
+	]
+	var equipados := GameState.itens_equipados()
+	if equipados.size() > 0:
+		var nomes: Array[String] = []
+		for n in equipados:
+			nomes.append(ItemDB.rotulo(n))
+		txt += "  |  " + ", ".join(nomes)
 	_lbl_itens.text = txt
+
 
 # ------------------------------------------------------------------ diálogo
 func _abrir_dialogo() -> void:
@@ -119,3 +123,4 @@ func _on_morreu() -> void:
 func registrar_saida(pos: Vector2) -> void:
 	if get_node_or_null("/root/GameState") != null:
 		GameState.ponto_recomeco = pos
+		GameState.tem_recomeco = true

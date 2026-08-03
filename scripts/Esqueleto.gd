@@ -18,7 +18,7 @@ func _recuperar() -> void:
 	if get_node_or_null("/root/GameState") != null:
 		for categoria in itens.keys():
 			for nome in itens[categoria]:
-				GameState.adicionar_item(categoria, nome)
+				GameState.adicionar_item(nome)
 	itens.clear()
 	var t := create_tween()
 	t.tween_property(self, "modulate:a", 0.0, 0.3)

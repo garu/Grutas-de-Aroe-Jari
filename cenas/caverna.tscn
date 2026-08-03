@@ -2,9 +2,12 @@
 
 [ext_resource type="Texture2D" uid="uid://b0dxyquuk3ym0" path="res://sprites/Environments/tilemap_caverna.png" id="1_s4408"]
 [ext_resource type="PackedScene" uid="uid://bm1uo28tuq6jl" path="res://cenas/Player.tscn" id="2_6bq1k"]
-[ext_resource type="PackedScene" path="res://cenas/Enemy.tscn" id="3_enemy"]
-[ext_resource type="PackedScene" path="res://cenas/Inventario.tscn" id="4_inv"]
 [ext_resource type="PackedScene" uid="uid://dysf5hhfi5rfi" path="res://cenas/butoriko.tscn" id="3_4vft8"]
+[ext_resource type="PackedScene" uid="uid://benemygaj001" path="res://cenas/Enemy.tscn" id="3_enemy"]
+[ext_resource type="PackedScene" uid="uid://m8tfc275j4b5" path="res://cenas/Inventario.tscn" id="4_inv"]
+[ext_resource type="PackedScene" uid="uid://citemgaj001" path="res://cenas/Item.tscn" id="5_item"]
+[ext_resource type="PackedScene" uid="uid://cc3khkx5fbm3y" path="res://cenas/PinturaRupestre.tscn" id="6_pint"]
+[ext_resource type="Script" path="res://scripts/Fase.gd" id="7_fase"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_7io4p"]
 polygon = PackedVector2Array(-72, -72, 72, -72, 72, 72, 24, 72, 24, -24, -72, -24)
@@ -119,6 +122,7 @@ physics_layer_0/collision_mask = 0
 sources/1 = SubResource("TileSetAtlasSource_s4408")
 
 [node name="Caverna" type="Node2D" unique_id=1256630761]
+script = ExtResource("7_fase")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=381106827]
 tile_map_data = PackedByteArray("AAACAAIAAQABAAAAAAADAAIAAQADAAIAAAACAAEAAQACAAIAAAADAAEAAQADAAIAAAADAAAAAQADAAEAAAABAAEAAQABAAIAAAABAAIAAQAAAAMAAAAEAAIAAQAAAAMAAAAEAAAAAQACAAIAAAAEAAEAAQAAAAIAAAAFAAEAAQABAAIAAAAFAAAAAQACAAAAAAAGAAAAAQADAAAAAAAHAAAAAQABAAEAAAAFAAIAAQAAAAMAAAAGAAIAAQAAAAMAAAACAAAAAQABAAEAAAACAP//AQAAAAEAAAABAAAAAQADAAAAAAAAAAEAAQABAAIAAAD//wEAAQABAAIAAAAAAAAAAQACAAAAAAAAAP7/AQAAAAAAAAAAAP//AQADAAIAAAD///7/AQADAAAAAAD+//7/AQADAAAAAAD9//7/AQACAAAAAAAAAAIAAQAAAAMAAAD//wIAAQAAAAMAAAD+/wIAAQAAAAMAAAD9/wIAAQAAAAMAAAAHAAIAAQAAAAMAAAABAP//AQAAAAIAAAABAP7/AQABAAAAAAD+/wEAAQABAAIAAAD9/wEAAQABAAIAAAD8/wEAAQAAAAIAAAD8//7/AQABAAEAAAD+////AQACAAEAAAD/////AQACAAEAAAD//wAAAQACAAEAAAD+/wAAAQACAAEAAAD9/wAAAQACAAEAAAD9////AQACAAEAAAD8////AQACAAEAAAD8/wAAAQACAAIAAAD7/wAAAQABAAIAAAACAP7/AQADAAIAAAADAP//AQADAAAAAAAEAP//AQABAAEAAAAEAP7/AQABAAAAAAADAP7/AQAAAAMAAAD6/wAAAQAAAAIAAAD7//7/AQADAAAAAAD6//7/AQADAAAAAAD6////AQACAAIAAAD7/wEAAQAAAAMAAAD7////AQACAAEAAAD5//7/AQADAAAAAAD4//7/AQADAAAAAAD3//7/AQADAAAAAAD2//7/AQADAAAAAAD5////AQABAAIAAAD4////AQABAAIAAAD3////AQABAAIAAAD2////AQABAAIAAAD5/wAAAQAAAAAAAAD4/wAAAQADAAAAAAD3/wAAAQADAAAAAAD2/wAAAQADAAAAAAD5/wEAAQACAAAAAAD6/wEAAQAAAAAAAAD6/wIAAQADAAMAAAD7/wIAAQAAAAMAAAD8/wIAAQAAAAMAAAD5/wIAAQABAAIAAAD4/wIAAQAAAAIAAAD4/wEAAQACAAIAAAD3/wEAAQABAAIAAAD2/wEAAQABAAIAAAD3/wIAAQAAAAMAAAD2/wIAAQAAAAMAAAD1/wEAAQABAAIAAAD0/wEAAQABAAIAAADz/wEAAQABAAIAAADy/wEAAQABAAIAAADx/wEAAQABAAIAAAD0/wAAAQACAAAAAAD1/wAAAQADAAAAAAD1////AQABAAIAAAD0////AQADAAEAAADz/wAAAQABAAEAAADz////AQACAAIAAADy////AQABAAIAAADx////AQABAAIAAADy/wAAAQADAAAAAADx/wAAAQADAAAAAADw/wAAAQADAAAAAADv/wAAAQACAAAAAADv////AQADAAIAAADv//7/AQADAAIAAADw/wEAAQABAAIAAADv/wEAAQABAAIAAADu/wEAAQAAAAIAAADu/wAAAQABAAAAAADu////AQABAAAAAADu//7/AQABAAAAAADw//7/AQABAAAAAADw////AQAAAAIAAADv//3/AQADAAIAAADv//z/AQADAAEAAADw//z/AQABAAIAAADx//z/AQABAAIAAADy//z/AQABAAIAAADz//z/AQADAAMAAADz//v/AQADAAIAAADz//r/AQADAAIAAADz//n/AQADAAEAAAD1//n/AQADAAMAAAD0//n/AQABAAIAAAD1//j/AQADAAIAAAD1//f/AQADAAIAAAD1//b/AQADAAEAAAD2//b/AQABAAIAAAD3//b/AQABAAIAAAD4//b/AQABAAIAAADu//3/AQABAAAAAADu//z/AQABAAAAAADu//v/AQABAAAAAADu//r/AQABAAAAAADu//n/AQABAAAAAADu//j/AQABAAAAAADu//f/AQABAAAAAADu//b/AQABAAAAAADu//X/AQABAAAAAADu//T/AQABAAAAAADu//P/AQABAAAAAADu//L/AQABAAAAAADu//H/AQABAAAAAADu//D/AQABAAMAAADu/+//AQAAAAMAAADv//D/AQADAAAAAADw//D/AQAAAAAAAADx//D/AQABAAAAAADx/+//AQABAAMAAADy/+//AQABAAEAAADy/+7/AQABAAAAAADy/+3/AQABAAMAAADz/+3/AQADAAAAAAD0/+3/AQAAAAAAAAD1/+3/AQAAAAMAAAD2/+3/AQAAAAMAAAD3/+3/AQABAAMAAADu/+7/AQAAAAMAAADu/+3/AQAAAAMAAADu/+z/AQAAAAMAAADv/+z/AQAAAAMAAADw/+z/AQAAAAMAAADx/+z/AQAAAAMAAADy/+z/AQAAAAMAAADz/+z/AQAAAAMAAAD0/+z/AQAAAAMAAAD1/+z/AQAAAAMAAAD2/+z/AQAAAAMAAAD3/+z/AQAAAAMAAADx/+3/AQAAAAMAAADw/+3/AQAAAAMAAADw/+7/AQAAAAMAAADv/+7/AQAAAAMAAADv/+//AQAAAAMAAADv/+3/AQAAAAMAAADw/+//AQAAAAMAAADx/+7/AQAAAAMAAADw//3/AQABAAMAAADx//3/AQADAAAAAADy//3/AQADAAAAAADz//3/AQADAAAAAAD0//3/AQABAAEAAAD0//z/AQABAAAAAAD0//v/AQABAAAAAAD0//r/AQABAAMAAAD1//r/AQADAAAAAADx//7/AQACAAEAAADy//7/AQACAAEAAADz//7/AQACAAEAAAD0//7/AQACAAEAAAD1//7/AQACAAAAAADv//v/AQACAAEAAADv//r/AQACAAEAAADv//n/AQACAAEAAADv//j/AQACAAEAAADv//f/AQACAAEAAADv//b/AQACAAEAAADw//b/AQACAAEAAADw//f/AQADAAEAAADw//j/AQACAAAAAADw//n/AQACAAEAAADw//r/AQACAAEAAADw//v/AQACAAEAAADx//v/AQACAAEAAADx//r/AQACAAEAAADx//n/AQACAAEAAADx//j/AQABAAEAAADx//f/AQACAAIAAADx//b/AQACAAEAAADx//X/AQACAAEAAADy//b/AQACAAEAAADy//f/AQACAAEAAADy//j/AQACAAEAAADy//n/AQACAAEAAADy//r/AQACAAEAAADy//v/AQACAAEAAADz//j/AQACAAEAAADz//f/AQACAAEAAADz//b/AQACAAEAAADz//X/AQACAAEAAAD0//X/AQACAAEAAAD0//b/AQACAAEAAAD0//f/AQACAAEAAAD0//j/AQACAAEAAADv//X/AQACAAAAAADv//T/AQADAAIAAADv//P/AQADAAIAAADv//L/AQADAAIAAADv//H/AQADAAEAAADw//H/AQADAAMAAADx//H/AQABAAAAAADx//L/AQABAAAAAADx//P/AQABAAEAAADw//T/AQABAAAAAADw//X/AQABAAEAAADw//P/AQABAAMAAADw//L/AQAAAAMAAADx//T/AQACAAEAAADy//T/AQACAAAAAADy//X/AQACAAEAAADy//P/AQADAAEAAADy//L/AQACAAEAAADy//H/AQACAAAAAADy//D/AQADAAEAAADz//D/AQABAAIAAADz//H/AQADAAAAAADz//L/AQADAAEAAADz//P/AQAAAAEAAADz//T/AQABAAEAAAD0//T/AQACAAEAAAD0//P/AQADAAAAAAD0//L/AQABAAIAAAD0//H/AQADAAAAAAD0//D/AQABAAIAAAD0/+//AQACAAEAAAD1//P/AQADAAAAAAD1//T/AQACAAEAAAD1//X/AQACAAEAAADz/+//AQACAAEAAAD0/+7/AQACAAAAAADz/+7/AQACAAEAAAD1/+7/AQADAAAAAAD2/+7/AQADAAAAAAD3/+7/AQABAAEAAAD3/+//AQACAAIAAAD2/+//AQABAAIAAAD1/+//AQADAAEAAAD1//D/AQADAAMAAAD1//H/AQADAAAAAAD1//L/AQABAAIAAAD2//H/AQADAAAAAAD2//D/AQAAAAMAAAD3//D/AQABAAAAAAD3//H/AQABAAEAAAD3//L/AQACAAEAAAD2//L/AQACAAIAAAD2//P/AQABAAEAAAD2//T/AQACAAEAAAD3//P/AQADAAEAAAD3//T/AQADAAIAAAD3//X/AQACAAAAAAD2//X/AQACAAEAAAD8//3/AQABAAAAAAD9//3/AQADAAIAAAACAP3/AQADAAIAAAACAPz/AQADAAEAAAAJAAEAAQADAAIAAAAJAAIAAQADAAMAAAAIAAIAAQAAAAIAAAAIAAEAAQACAAIAAAAGAAEAAQABAAIAAAAHAAEAAQABAAIAAAAJAAAAAQADAAIAAAAJAP//AQADAAIAAAAJAP7/AQADAAIAAAAJAP3/AQADAAIAAAAIAAAAAQACAAEAAAAIAP//AQABAAEAAAAIAP7/AQABAAAAAAAIAP3/AQABAAAAAAD4//X/AQADAAAAAAD4//T/AQAAAAIAAAD4//P/AQACAAIAAAD4//L/AQACAAEAAAD4//H/AQACAAAAAAD4//D/AQADAAIAAAD4/+//AQADAAEAAAD4/+3/AQADAAAAAAD5/+3/AQADAAAAAAD5/+//AQABAAIAAAD6/+//AQABAAIAAAD7/+//AQABAAIAAAD5//b/AQABAAIAAAD6//b/AQACAAIAAAD6//f/AQAAAAIAAAD2//f/AQABAAMAAAD2//n/AQAAAAIAAAD2//j/AQABAAAAAAD2//r/AQADAAAAAAD3//r/AQADAAAAAAD4//r/AQADAAAAAAD5//r/AQADAAAAAAD6//r/AQADAAAAAAD7//r/AQADAAAAAAD8//n/AQACAAIAAAD8//r/AQABAAEAAAD3//f/AQADAAAAAAD4//f/AQADAAAAAAD5//f/AQAAAAAAAAD5//j/AQACAAAAAAD3//n/AQABAAIAAAD4//n/AQABAAIAAAD5//n/AQABAAIAAAD6//n/AQABAAIAAAD7//n/AQABAAIAAAD3//j/AQACAAEAAAD4//j/AQACAAEAAAD6//j/AQADAAAAAAD7//f/AQACAAIAAAD7//j/AQABAAEAAAD8//z/AQACAAIAAAD7//z/AQABAAIAAAD6//z/AQABAAIAAAD5//z/AQABAAIAAAD4//z/AQABAAIAAAD3//z/AQABAAIAAAD2//z/AQABAAIAAAD1//z/AQADAAEAAAD1//3/AQADAAIAAAD1//v/AQACAAEAAAD2//v/AQACAAEAAAD3//v/AQACAAEAAAD4//v/AQACAAEAAAD5//v/AQACAAEAAAD6//v/AQACAAEAAAD7//v/AQACAAEAAAD8//v/AQACAAEAAAD2//3/AQAAAAMAAAD3//3/AQAAAAMAAAD4//3/AQAAAAMAAAD5//3/AQAAAAMAAAD6//3/AQAAAAMAAAD7//3/AQAAAAMAAAAAAP3/AQAAAAMAAAABAP3/AQABAAAAAAABAPz/AQABAAAAAAAFAP//AQADAAIAAAAFAP7/AQADAAEAAAAEAP3/AQABAAMAAAAFAP3/AQADAAAAAAAGAP7/AQABAAIAAAAHAP7/AQADAAMAAAAHAP3/AQADAAIAAAAGAP3/AQABAAEAAAAHAPz/AQADAAIAAAAGAPz/AQACAAIAAAAFAPz/AQABAAIAAAAGAPv/AQADAAAAAAAFAPv/AQACAAAAAAAHAPv/AQAAAAAAAAAEAPv/AQABAAEAAAADAPv/AQACAAAAAAAHAP//AQABAAMAAAAIAPz/AQABAAAAAAAIAPv/AQABAAAAAAAGAP//AQAAAAMAAAADAP3/AQAAAAMAAAAEAPz/AQABAAIAAAADAPz/AQABAAIAAAAFAPr/AQADAAEAAAAFAPn/AQADAAAAAAAEAPn/AQADAAAAAAAGAPn/AQADAAAAAAAGAPr/AQABAAIAAAAHAPr/AQABAAIAAAAIAPr/AQACAAIAAAAJAPz/AQADAAIAAAAJAPv/AQADAAIAAAAJAPr/AQADAAIAAAAJAPn/AQAAAAAAAAAJAPj/AQAAAAMAAAAJAPf/AQAAAAMAAAAJAPb/AQADAAMAAAAJAPX/AQADAAIAAAAJAPT/AQADAAIAAAAJAPP/AQADAAIAAAAJAPL/AQADAAIAAAAJAPH/AQADAAIAAAAJAPD/AQADAAIAAAAJAO//AQADAAIAAAAJAO7/AQADAAIAAAAJAO3/AQADAAIAAAAJAOz/AQAAAAAAAAAIAOz/AQADAAAAAAAHAOz/AQADAAAAAAAGAOz/AQADAAAAAAAFAOz/AQADAAAAAAAEAOz/AQADAAAAAAADAOz/AQADAAAAAAACAOz/AQADAAAAAAABAOz/AQADAAAAAAAAAOz/AQADAAAAAAD//+z/AQADAAAAAAD+/+z/AQABAAMAAAD9/+z/AQAAAAAAAAD4/+z/AQAAAAMAAAD5/+z/AQAAAAMAAAD6/+z/AQAAAAMAAAD7/+z/AQAAAAMAAAD8/+z/AQABAAMAAAD8/+3/AQABAAEAAAD6/+3/AQADAAAAAAD7/+3/AQADAAAAAAD9//z/AQADAAIAAAD9//v/AQADAAIAAAD9//r/AQADAAIAAAD9//n/AQADAAIAAAD8//b/AQADAAAAAAD9//b/AQADAAAAAAD+//b/AQADAAAAAAD///b/AQAAAAAAAAD9//j/AQADAAEAAAD8//f/AQACAAEAAAD8//j/AQACAAEAAAD9//f/AQACAAEAAAD+//f/AQACAAEAAAD///f/AQADAAIAAAD7//b/AQACAAAAAAD7//X/AQADAAIAAAD7//T/AQADAAEAAAD5//X/AQADAAAAAAD6//X/AQABAAEAAAD6//T/AQABAAAAAAD+//j/AQACAAIAAAD+//n/AQABAAAAAAD+//r/AQABAAAAAAD+//v/AQABAAAAAAD+//z/AQABAAAAAAD+//3/AQAAAAIAAAD///3/AQADAAMAAAD///z/AQADAAIAAAD///v/AQADAAIAAAD///r/AQADAAIAAAD///n/AQADAAEAAAABAPv/AQACAAIAAAAAAPv/AQAAAAIAAAAAAPz/AQAAAAMAAAACAPn/AQACAAIAAAACAPr/AQABAAEAAAABAPr/AQADAAAAAAAAAPr/AQABAAMAAAAAAPn/AQABAAIAAAABAPn/AQABAAIAAAACAPv/AQACAAEAAAADAPr/AQADAAEAAAAEAPr/AQACAAIAAAAIAPn/AQACAAAAAAAIAPj/AQADAAIAAAAIAPf/AQAAAAAAAAAHAPj/AQACAAIAAAAHAPn/AQABAAEAAAAIAPb/AQABAAIAAAAHAPb/AQABAAIAAAAGAPb/AQADAAEAAAAGAPf/AQACAAAAAAAHAPf/AQADAAAAAAAEAPf/AQADAAAAAAAFAPb/AQACAAIAAAAFAPf/AQABAAEAAAAEAPb/AQAAAAIAAAAEAPX/AQABAAAAAAAEAPT/AQABAAAAAAAEAPP/AQABAAAAAAAEAPL/AQABAAAAAAAFAPX/AQACAAAAAAAFAPT/AQADAAEAAAAGAPP/AQADAAEAAAAHAPP/AQABAAIAAAAIAPP/AQACAAIAAAAIAPT/AQABAAEAAAAIAPX/AQACAAEAAAAHAPX/AQACAAEAAAAGAPX/AQABAAEAAAAGAPT/AQAAAAEAAAAHAPT/AQADAAAAAAAFAPP/AQACAAEAAAAFAPL/AQACAAAAAAAGAPL/AQADAAAAAAAHAPL/AQADAAAAAAAIAPL/AQABAAEAAAAIAPH/AQABAAAAAAAIAPD/AQABAAAAAAAIAO//AQACAAIAAAAIAO7/AQABAAEAAAAIAO3/AQACAAIAAAAHAO3/AQABAAIAAAAGAO3/AQABAAIAAAAFAO3/AQABAAIAAAAEAO3/AQADAAEAAAAEAO7/AQADAAIAAAAEAO//AQACAAAAAAAFAPH/AQADAAIAAAAGAO7/AQADAAAAAAAFAO7/AQABAAMAAAAHAO7/AQADAAAAAAAGAPH/AQAAAAIAAAAHAPH/AQABAAIAAAAFAO//AQABAAEAAAAFAPD/AQADAAEAAAAGAPD/AQACAAIAAAAGAO//AQACAAEAAAAHAO//AQADAAEAAAAHAPD/AQACAAAAAAABAPf/AQACAAAAAAACAPf/AQABAAEAAAACAPb/AQABAAAAAAACAPX/AQABAAAAAAACAPT/AQABAAAAAAABAPb/AQADAAIAAAABAPX/AQADAAIAAAABAPT/AQADAAIAAAABAPP/AQADAAEAAAACAPP/AQACAAIAAAAGAPj/AQABAAIAAAAFAPj/AQABAAIAAAAEAPj/AQABAAIAAAADAPj/AQADAAEAAAADAPn/AQACAAAAAAADAPf/AQACAAAAAAADAPb/AQADAAIAAAADAPX/AQADAAIAAAADAPT/AQADAAIAAAADAPP/AQADAAIAAAADAPL/AQAAAAAAAAADAPD/AQABAAEAAAADAO//AQACAAIAAAACAPD/AQACAAAAAAACAO//AQADAAEAAAACAPj/AQACAAEAAAABAPj/AQACAAEAAAAAAPj/AQABAAEAAAD///j/AQACAAAAAAAAAPf/AQABAAAAAAAAAPb/AQABAAAAAAAAAPX/AQACAAIAAAAAAPT/AQACAAEAAAAAAPP/AQACAAEAAAAEAPD/AQACAAEAAAAEAPH/AQACAAIAAAACAPH/AQABAAIAAAADAPH/AQABAAIAAAACAPL/AQADAAAAAAABAPH/AQAAAAIAAAABAPL/AQADAAAAAAAAAPL/AQADAAAAAAD///L/AQACAAAAAAAAAPH/AQADAAMAAAD///H/AQADAAEAAAABAPD/AQABAAAAAAABAO//AQABAAAAAAABAO7/AQABAAAAAAABAO3/AQACAAIAAAAAAPD/AQADAAIAAAAAAO//AQADAAIAAAAAAO7/AQADAAIAAAAAAO3/AQADAAEAAAACAO3/AQACAAEAAAADAO3/AQACAAEAAAACAO7/AQACAAEAAAADAO7/AQACAAEAAAD9/+3/AQADAAIAAAD+/+3/AQABAAAAAAD+/+7/AQABAAAAAAD9/+7/AQADAAIAAAD9/+//AQADAAIAAAD+/+//AQABAAAAAAD+//D/AQABAAAAAAD+//H/AQABAAAAAAD+//L/AQABAAAAAAD+//P/AQABAAAAAAD9//T/AQACAAAAAAD+//T/AQABAAEAAAD9//P/AQADAAIAAAD9//L/AQADAAIAAAD9//H/AQADAAIAAAD9//D/AQADAAIAAAD///D/AQACAAEAAAD//+//AQACAAEAAAD//+7/AQACAAEAAAD//+3/AQACAAEAAAD///P/AQACAAEAAAD///T/AQACAAEAAAD///X/AQABAAIAAAD+//X/AQABAAIAAAD9//X/AQABAAIAAAD8//X/AQAAAAIAAAD8//T/AQACAAIAAAD6//P/AQABAAAAAAD6//L/AQACAAIAAAD8//L/AQABAAAAAAD8//H/AQACAAIAAAD7//H/AQADAAEAAAD7//L/AQADAAIAAAD7//P/AQACAAAAAAD8//P/AQABAAEAAAD4/+7/AQACAAEAAAD5/+7/AQACAAEAAAD6/+7/AQACAAEAAAD7/+7/AQACAAEAAAD8/+7/AQACAAEAAAD8/+//AQACAAIAAAD8//D/AQABAAEAAAD7//D/AQADAAAAAAD6//D/AQADAAAAAAD5//D/AQABAAMAAAD5//H/AQABAAEAAAD6//H/AQACAAEAAAD5//L/AQADAAEAAAD5//P/AQADAAIAAAD5//T/AQADAAMAAAA=")
@@ -131,29 +135,25 @@ scale = Vector2(2, 2)
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=389298138]
 color = Color(0.042860627, 0.03248966, 0.018704366, 1)
 
-[node name="Inimigo1" parent="." instance=ExtResource("3_enemy")]
+[node name="Inimigo1" parent="." unique_id=392186406 instance=ExtResource("3_enemy")]
 position = Vector2(1224, 72)
-scale = Vector2(5.0, 5.0)
-tipo = "morcego"
-vida_maxima = 30
-dano_contato = 10
+scale = Vector2(5, 5)
 velocidade = 70.0
 raio_deteccao = 420.0
 distancia_contato = 60.0
 
-[node name="Inimigo2" parent="." instance=ExtResource("3_enemy")]
+[node name="Inimigo2" parent="." unique_id=1040924788 instance=ExtResource("3_enemy")]
 position = Vector2(936, -2376)
-scale = Vector2(5.0, 5.0)
+scale = Vector2(5, 5)
 tipo = "aranha"
 vida_maxima = 45
 dano_contato = 14
-velocidade = 45.0
 raio_deteccao = 380.0
 distancia_contato = 60.0
 
-[node name="Inimigo3" parent="." instance=ExtResource("3_enemy")]
+[node name="Inimigo3" parent="." unique_id=107115401 instance=ExtResource("3_enemy")]
 position = Vector2(-2088, -216)
-scale = Vector2(5.0, 5.0)
+scale = Vector2(5, 5)
 tipo = "cobra"
 vida_maxima = 60
 dano_contato = 16
@@ -161,29 +161,25 @@ velocidade = 38.0
 raio_deteccao = 340.0
 distancia_contato = 60.0
 
-[node name="Inimigo4" parent="." instance=ExtResource("3_enemy")]
+[node name="Inimigo4" parent="." unique_id=16984840 instance=ExtResource("3_enemy")]
 position = Vector2(-504, -1224)
-scale = Vector2(5.0, 5.0)
-tipo = "morcego"
-vida_maxima = 30
-dano_contato = 10
+scale = Vector2(5, 5)
 velocidade = 70.0
 raio_deteccao = 420.0
 distancia_contato = 60.0
 
-[node name="Inimigo5" parent="." instance=ExtResource("3_enemy")]
+[node name="Inimigo5" parent="." unique_id=1428879124 instance=ExtResource("3_enemy")]
 position = Vector2(-216, 72)
-scale = Vector2(5.0, 5.0)
+scale = Vector2(5, 5)
 tipo = "aranha"
 vida_maxima = 45
 dano_contato = 14
-velocidade = 45.0
 raio_deteccao = 380.0
 distancia_contato = 60.0
 
-[node name="Inimigo6" parent="." instance=ExtResource("3_enemy")]
+[node name="Inimigo6" parent="." unique_id=76532367 instance=ExtResource("3_enemy")]
 position = Vector2(-504, -2520)
-scale = Vector2(5.0, 5.0)
+scale = Vector2(5, 5)
 tipo = "cobra"
 vida_maxima = 60
 dano_contato = 16
@@ -191,36 +187,194 @@ velocidade = 38.0
 raio_deteccao = 340.0
 distancia_contato = 60.0
 
-[node name="Inimigo7" parent="." instance=ExtResource("3_enemy")]
+[node name="Inimigo7" parent="." unique_id=1063212393 instance=ExtResource("3_enemy")]
 position = Vector2(-2376, -1368)
-scale = Vector2(5.0, 5.0)
-tipo = "morcego"
-vida_maxima = 30
-dano_contato = 10
+scale = Vector2(5, 5)
 velocidade = 70.0
 raio_deteccao = 420.0
 distancia_contato = 60.0
 
-[node name="Inimigo8" parent="." instance=ExtResource("3_enemy")]
+[node name="Inimigo8" parent="." unique_id=1082317259 instance=ExtResource("3_enemy")]
 position = Vector2(-1368, -1656)
-scale = Vector2(5.0, 5.0)
+scale = Vector2(5, 5)
 tipo = "aranha"
 vida_maxima = 45
 dano_contato = 14
-velocidade = 45.0
 raio_deteccao = 380.0
 distancia_contato = 60.0
 
-[node name="Butoriko" parent="." instance=ExtResource("3_4vft8")]
+[node name="Butoriko" parent="." unique_id=1541078003 instance=ExtResource("3_4vft8")]
 position = Vector2(-1800, -2520)
 scale = Vector2(8, 8)
-tipo = "butoriko"
-vida_maxima = 200
-dano_contato = 25
 velocidade = 50.0
-raio_deteccao = 600.0
-distancia_contato = 90.0
-e_chefe = true
 caminho_do_jogador = NodePath("../Player")
 
-[node name="Inventario" parent="." instance=ExtResource("4_inv")]
+[node name="Inventario" parent="." unique_id=878552224 instance=ExtResource("4_inv")]
+
+[node name="Item1" parent="." unique_id=283201234 instance=ExtResource("5_item")]
+position = Vector2(-1224, -1080)
+scale = Vector2(3, 3)
+categoria = "utilitario"
+nome = "cipo"
+
+[node name="Item2" parent="." unique_id=48631566 instance=ExtResource("5_item")]
+position = Vector2(1224, -1512)
+scale = Vector2(3, 3)
+categoria = "utilitario"
+nome = "cipo"
+
+[node name="Item3" parent="." unique_id=793986527 instance=ExtResource("5_item")]
+position = Vector2(-72, -2664)
+scale = Vector2(3, 3)
+categoria = "utilitario"
+nome = "cipo"
+
+[node name="Item4" parent="." unique_id=751524791 instance=ExtResource("5_item")]
+position = Vector2(-1800, -2520)
+scale = Vector2(3, 3)
+categoria = "utilitario"
+nome = "graveto"
+
+[node name="Item5" parent="." unique_id=1943799164 instance=ExtResource("5_item")]
+position = Vector2(-72, -72)
+scale = Vector2(3, 3)
+categoria = "utilitario"
+nome = "graveto"
+
+[node name="Item6" parent="." unique_id=561593571 instance=ExtResource("5_item")]
+position = Vector2(-2376, -648)
+scale = Vector2(3, 3)
+categoria = "utilitario"
+nome = "graveto"
+
+[node name="Item7" parent="." unique_id=217165177 instance=ExtResource("5_item")]
+position = Vector2(216, -1080)
+scale = Vector2(3, 3)
+categoria = "utilitario"
+nome = "folhas_secas"
+
+[node name="Item8" parent="." unique_id=802159404 instance=ExtResource("5_item")]
+position = Vector2(-792, -2088)
+scale = Vector2(3, 3)
+categoria = "utilitario"
+nome = "folhas_secas"
+
+[node name="Item9" parent="." unique_id=1177455471 instance=ExtResource("5_item")]
+position = Vector2(-2088, -1512)
+scale = Vector2(3, 3)
+categoria = "arma"
+nome = "pedras"
+
+[node name="Item10" parent="." unique_id=1500603258 instance=ExtResource("5_item")]
+position = Vector2(648, -2232)
+scale = Vector2(3, 3)
+categoria = "arma"
+nome = "pedras"
+
+[node name="Item11" parent="." unique_id=461824772 instance=ExtResource("5_item")]
+position = Vector2(-1656, -216)
+scale = Vector2(3, 3)
+categoria = "arma"
+nome = "pedras"
+
+[node name="Item12" parent="." unique_id=1077159755 instance=ExtResource("5_item")]
+position = Vector2(-72, -1800)
+scale = Vector2(3, 3)
+categoria = "utilitario"
+nome = "raiz_unha_de_gato"
+
+[node name="Item13" parent="." unique_id=1635599329 instance=ExtResource("5_item")]
+position = Vector2(-648, -648)
+scale = Vector2(3, 3)
+categoria = "utilitario"
+nome = "raiz_unha_de_gato"
+
+[node name="Item14" parent="." unique_id=1101457993 instance=ExtResource("5_item")]
+position = Vector2(-648, -72)
+scale = Vector2(3, 3)
+categoria = "utilitario"
+nome = "flor_craua"
+
+[node name="Item15" parent="." unique_id=129415478 instance=ExtResource("5_item")]
+position = Vector2(-1512, -1512)
+scale = Vector2(3, 3)
+categoria = "utilitario"
+nome = "flor_craua"
+
+[node name="Item16" parent="." unique_id=1272244664 instance=ExtResource("5_item")]
+position = Vector2(-1944, -936)
+scale = Vector2(3, 3)
+categoria = "arma"
+nome = "tronco_sucupira"
+
+[node name="Item17" parent="." unique_id=507867000 instance=ExtResource("5_item")]
+position = Vector2(-1080, -2520)
+scale = Vector2(3, 3)
+categoria = "arma"
+nome = "tronco_sucupira"
+
+[node name="Item18" parent="." unique_id=1525339212 instance=ExtResource("5_item")]
+position = Vector2(360, -648)
+scale = Vector2(3, 3)
+categoria = "utilitario"
+nome = "pote_vazio"
+
+[node name="Item19" parent="." unique_id=242441351 instance=ExtResource("5_item")]
+position = Vector2(-1368, -648)
+scale = Vector2(3, 3)
+categoria = "utilitario"
+nome = "pote_vazio"
+
+[node name="Pintura2" parent="." unique_id=579212718 instance=ExtResource("5_item")]
+position = Vector2(504, -2664)
+scale = Vector2(3, 3)
+categoria = "pintura"
+nome = "pintura_pa"
+receita_nome = "pa"
+
+[node name="Pintura4" parent="." unique_id=2056286830 instance=ExtResource("5_item")]
+position = Vector2(792, -1800)
+scale = Vector2(3, 3)
+categoria = "pintura"
+nome = "pintura_pote_agua"
+receita_nome = "pote_agua"
+
+[node name="Tutorial" parent="." unique_id=251882512 instance=ExtResource("6_pint")]
+position = Vector2(-72, 72)
+scale = Vector2(3, 3)
+texto = "Setas ou A S D W para caminhar
+ESPAÇO ou X para golpear
+I abre a mochila
+C junta o que você aprendeu
+Encoste para recolher
+A chama diminui: alimente-a com graveto"
+titulo = "Os antigos deixaram este recado"
+raio_leitura = 220.0
+
+[node name="Pintura1" parent="." unique_id=31400086 instance=ExtResource("6_pint")]
+position = Vector2(-216, -1224)
+scale = Vector2(3, 3)
+texto = "Aqui os antigos gravaram como fazer: armadilha tronco"
+titulo = "Pintura rupestre"
+receita_nome = "armadilha_tronco"
+
+[node name="Pintura3" parent="." unique_id=360470428 instance=ExtResource("6_pint")]
+position = Vector2(504, -2664)
+scale = Vector2(3, 3)
+texto = "Aqui os antigos gravaram como fazer: pa"
+titulo = "Pintura rupestre"
+receita_nome = "pa"
+
+[node name="Pintura5" parent="." unique_id=1019436295 instance=ExtResource("6_pint")]
+position = Vector2(-1224, -1944)
+scale = Vector2(3, 3)
+texto = "Aqui os antigos gravaram como fazer: pote veneno"
+titulo = "Pintura rupestre"
+receita_nome = "pote_veneno"
+
+[node name="Pintura6" parent="." unique_id=1084635258 instance=ExtResource("6_pint")]
+position = Vector2(792, -1800)
+scale = Vector2(3, 3)
+texto = "Aqui os antigos gravaram como fazer: pote agua"
+titulo = "Pintura rupestre"
+receita_nome = "pote_agua"

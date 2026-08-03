@@ -140,8 +140,6 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("ui_accept") or Input.is_physical_key_pressed(KEY_X):
 		atacar()
-	if Input.is_physical_key_pressed(KEY_C):
-		_mesclar()
 
 	_coletar_proximos()
 
@@ -196,6 +194,15 @@ func receber_dano(quantidade: int) -> void:
 	if vida <= 0:
 		morrer()
 
+## Recupera vida (raiz de unha-de-gato, cuia com água...)
+func curar(quantidade: int) -> void:
+	if not vivo or quantidade <= 0:
+		return
+	vida = mini(vida_maxima, vida + quantidade)
+	vida_alterada.emit(vida, vida_maxima)
+	modulate = Color(0.6, 1, 0.6)
+	create_tween().tween_property(self, "modulate", Color.WHITE, 0.3)
+
 func morrer() -> void:
 	if not vivo:
 		return
@@ -224,20 +231,29 @@ func _coletar_proximos() -> void:
 				_coleta_cooldown = 0.15
 			return
 
-func _mesclar() -> void:
-	if _coleta_cooldown > 0.0 or get_node_or_null("/root/GameState") == null:
-		return
-	var criado: String = GameState.tentar_mesclar()
-	if criado != "":
-		_coleta_cooldown = 0.4
-
 # ------------------------------------------------------------------ tocha
+## Quando a chama fica baixa, queima sozinha o combustível equipado
+## no espaço "Chama" (graveto, folhas secas).
+func _consumir_combustivel() -> void:
+	if get_node_or_null("/root/GameState") == null:
+		return
+	var combustivel: String = GameState.item_equipado(ItemDB.SLOT_TOCHA)
+	if combustivel == "":
+		return
+	var ganho := ItemDB.recarrega_tocha(combustivel)
+	if ganho <= 0.0:
+		return
+	GameState.desequipar(ItemDB.SLOT_TOCHA)
+	reabastecer_tocha(ganho)
+
 func _process(delta: float) -> void:
 	if not vivo:
 		return
 	if _tocha_restante > 0.0:
 		_tocha_restante = maxf(0.0, _tocha_restante - delta)
 		tocha_alterada.emit(_tocha_restante, tocha_segundos)
+		if _tocha_restante < tocha_segundos * 0.15:
+			_consumir_combustivel()
 		if _tocha_restante <= 0.0:
 			# tocha apagou: mesma penalidade da morte (SGDD)
 			morrer()

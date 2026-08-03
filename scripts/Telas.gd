@@ -8,23 +8,30 @@ enum Tipo { ABERTURA, DERROTA, VITORIA }
 @export var tipo: Tipo = Tipo.ABERTURA
 @export var titulo: String = "Grutas de Aroe-Jari"
 @export var mensagem: String = ""
-@export var cena_jogo: String = "res://cenas/Main.tscn"
+@export var cena_jogo: String = "res://cenas/caverna.tscn"
 @export var mostrar_logotipo: bool = true
 
 func _ready() -> void:
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	# a tela precisa responder mesmo se o jogo ficou pausado antes de morrer
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	get_tree().paused = false
+
+	# ocupa a viewport inteira (anchors E offsets, senão fica com tamanho zero)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	mouse_filter = Control.MOUSE_FILTER_STOP
 
 	# fundo negro cobrindo a tela inteira
 	var fundo := ColorRect.new()
 	fundo.color = Color.BLACK
-	fundo.set_anchors_preset(Control.PRESET_FULL_RECT)
 	fundo.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(fundo)
+	fundo.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 	# centraliza o conteúdo em qualquer resolução
 	var centro := CenterContainer.new()
-	centro.set_anchors_preset(Control.PRESET_FULL_RECT)
+	centro.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(centro)
+	centro.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 	var caixa := VBoxContainer.new()
 	caixa.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -59,35 +66,50 @@ func _ready() -> void:
 		sub.add_theme_color_override("font_color", Color(0.8, 0.78, 0.72))
 		caixa.add_child(sub)
 
+	var primeiro: Button = null
 	match tipo:
 		Tipo.ABERTURA:
-			caixa.add_child(_botao("Jogar", _jogar))
+			primeiro = _botao("Jogar", _jogar)
+			caixa.add_child(primeiro)
 		Tipo.DERROTA:
-			caixa.add_child(_botao("Recomeçar", _recomecar))
+			primeiro = _botao("Recomeçar", _recomecar)
+			caixa.add_child(primeiro)
 			caixa.add_child(_botao("Sair", _sair))
 		Tipo.VITORIA:
-			caixa.add_child(_botao("Compartilhar", _compartilhar))
+			primeiro = _botao("Compartilhar", _compartilhar)
+			caixa.add_child(primeiro)
 			caixa.add_child(_botao("Menu principal", _sair))
+
+	# deixa o teclado funcionar também (Enter/Espaço no botão em foco)
+	if primeiro != null:
+		primeiro.call_deferred("grab_focus")
 
 func _botao(texto: String, alvo: Callable) -> Button:
 	var b := Button.new()
 	b.text = texto
 	b.custom_minimum_size = Vector2(160, 28)
+	b.mouse_filter = Control.MOUSE_FILTER_STOP
+	b.focus_mode = Control.FOCUS_ALL
+	b.process_mode = Node.PROCESS_MODE_ALWAYS
 	b.pressed.connect(alvo)
 	return b
 
 # ------------------------------------------------------------------ ações
+func _trocar_cena(caminho: String) -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file(caminho)
+
 func _jogar() -> void:
 	if get_node_or_null("/root/GameState") != null:
 		GameState.reset_completo()
-	get_tree().change_scene_to_file(cena_jogo)
+	_trocar_cena(cena_jogo)
 
 func _recomecar() -> void:
 	# volta ao último ponto de saída, com os itens que sobraram
-	get_tree().change_scene_to_file(cena_jogo)
+	_trocar_cena(cena_jogo)
 
 func _sair() -> void:
-	get_tree().change_scene_to_file("res://cenas/TelaInicial.tscn")
+	_trocar_cena("res://cenas/TelaInicial.tscn")
 
 func _compartilhar() -> void:
 	DisplayServer.clipboard_set("https://github.com/Grutas-de-Aroe-Jari")

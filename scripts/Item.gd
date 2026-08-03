@@ -40,9 +40,12 @@ func coletar() -> void:
 	if get_node_or_null("/root/GameState") != null:
 		if categoria == "pintura" and receita_nome != "":
 			# pinturas ensinam crafting em vez de ocupar peso
-			GameState.aprender_receita(receita_nome, Array(receita_ingredientes))
+			var ingredientes: Array = Array(receita_ingredientes)
+			if ingredientes.is_empty() and ItemDB.RECEITAS.has(receita_nome):
+				ingredientes = ItemDB.RECEITAS[receita_nome]
+			GameState.aprender_receita(receita_nome, ingredientes)
 		else:
-			GameState.adicionar_item(categoria, nome)
+			GameState.adicionar_item(nome)
 
 	if recarrega_tocha > 0.0:
 		for p in get_tree().get_nodes_in_group("player"):

@@ -1,120 +1,145 @@
 class_name ItemDB
 extends RefCounted
 
-## Catálogo de itens da caverna.
+## Catálogo de itens das Grutas de Aroe-Jari.
 ##
-## PARA A ARTE: basta salvar o PNG do ícone em
+## PARA A ARTE: salve cada ícone como
 ##     res://sprites/itens/<nome_do_item>.png
-## que ele é carregado automaticamente (ex.: "ceramica" -> ceramica.png).
-## Ícones recomendados: 32x32 (ou 16x16), fundo transparente.
-## Se o arquivo não existir, o inventário desenha um losango colorido no lugar.
+## que ele aparece sozinho no inventário. Sem o arquivo, entra um
+## losango colorido no lugar.
+##
+## Nomes de arquivo esperados:
+##   cipo · raiz_unha_de_gato · tronco_sucupira · flor_craua · graveto
+##   pedras · pote_vazio · pote_agua · pote_veneno
+##   armadilha_tronco · pa · folhas_secas
 
 const PASTA_ICONES := "res://sprites/itens/"
 
-## nome -> dados do item
+## Slots de equipamento
+const SLOT_ARMA := "arma"
+const SLOT_TOCHA := "tocha"
+const SLOT_UTILITARIO := "utilitario"
+const SLOT_ARMADILHA := "armadilha"
+
+const SLOTS := [SLOT_ARMA, SLOT_TOCHA, SLOT_UTILITARIO, SLOT_ARMADILHA]
+
+const ROTULO_SLOT := {
+	SLOT_ARMA: "Mão",
+	SLOT_TOCHA: "Chama",
+	SLOT_UTILITARIO: "Cintura",
+	SLOT_ARMADILHA: "Armadilha"
+}
+
+## nome -> dados. Campos opcionais: ataque, defesa, cura, recarrega_tocha
 const ITENS := {
-	# ---------------------------------------------------------- tesouros
-	"ceramica": {
-		"rotulo": "Cerâmica",
-		"categoria": "tesouro",
-		"peso": 2,
-		"desc": "Vaso ritual bororo. Pesado, mas vale muito na aldeia."
-	},
-	"adorno": {
-		"rotulo": "Adorno de penas",
-		"categoria": "tesouro",
-		"peso": 1,
-		"desc": "Ornamento cerimonial roubado por Butoriko."
-	},
-	"pepita": {
-		"rotulo": "Pepita",
-		"categoria": "tesouro",
-		"peso": 2,
-		"desc": "Ouro bruto encontrado nas grutas."
-	},
-
-	# ---------------------------------------------------------- armas
-	"cacete": {
-		"rotulo": "Cacete",
-		"categoria": "arma",
-		"peso": 3,
-		"ataque": 8,
-		"desc": "Madeira dura. Golpe lento, porém forte."
-	},
-	"faca": {
-		"rotulo": "Faca de pedra",
-		"categoria": "arma",
-		"peso": 1,
-		"ataque": 5,
-		"desc": "Leve e afiada. Boa para combinar com venenos."
-	},
-	"pedra": {
-		"rotulo": "Pedra",
-		"categoria": "arma",
-		"peso": 1,
-		"ataque": 3,
-		"desc": "Simples, mas serve."
-	},
-	"arco": {
-		"rotulo": "Arco",
-		"categoria": "arma",
-		"peso": 2,
-		"ataque": 6,
-		"desc": "Precisa de flechas para valer a pena."
-	},
-	"flecha": {
-		"rotulo": "Flecha",
-		"categoria": "arma",
-		"peso": 1,
-		"ataque": 2,
-		"desc": "Ponta de osso. Use com o arco."
-	},
-
-	# ---------------------------------------------------------- utilitários
+	# ------------------------------------------------------- utilitários / matéria-prima
 	"cipo": {
 		"rotulo": "Cipó",
-		"categoria": "utilitario",
-		"peso": 1,
-		"defesa": 2,
-		"desc": "Amarra coisas. Base de armadilhas."
-	},
-	"folha_medicinal": {
-		"rotulo": "Folha medicinal",
-		"categoria": "utilitario",
-		"peso": 1,
-		"defesa": 2,
-		"desc": "Cura pequenos ferimentos. Também envenena lâminas."
-	},
-	"tocha": {
-		"rotulo": "Tocha",
+		"slot": "utilitario",
 		"categoria": "utilitario",
 		"peso": 1,
 		"defesa": 1,
-		"recarrega_tocha": 25.0,
-		"desc": "Devolve fôlego à chama que te mantém vivo."
+		"desc": "Amarra tudo o que a caverna oferece. Base de armadilhas e cabos."
+	},
+	"raiz_unha_de_gato": {
+		"rotulo": "Raiz de unha-de-gato",
+		"slot": "utilitario",
+		"categoria": "utilitario",
+		"peso": 1,
+		"cura": 25,
+		"desc": "Raiz medicinal. Mastigada, fecha feridas e devolve fôlego."
+	},
+	"flor_craua": {
+		"rotulo": "Flor de crauá",
+		"slot": "utilitario",
+		"categoria": "utilitario",
+		"peso": 1,
+		"desc": "Dá fibra resistente e seiva forte o bastante para envenenar."
+	},
+	"graveto": {
+		"rotulo": "Graveto de fogo",
+		"slot": "tocha",
+		"categoria": "utilitario",
+		"peso": 1,
+		"recarrega_tocha": 20.0,
+		"desc": "Madeira seca de girar. Alimenta a chama que te mantém vivo."
+	},
+	"folhas_secas": {
+		"rotulo": "Folhas secas",
+		"slot": "tocha",
+		"categoria": "utilitario",
+		"peso": 1,
+		"recarrega_tocha": 10.0,
+		"desc": "Acendalha leve. Pega fogo rápido, dura pouco."
+	},
+	"pote_vazio": {
+		"rotulo": "Cuia",
+		"slot": "utilitario",
+		"categoria": "utilitario",
+		"peso": 2,
+		"desc": "Cuia de barro. Serve para carregar água ou preparar misturas."
+	},
+	"pote_agua": {
+		"rotulo": "Cuia com água",
+		"slot": "utilitario",
+		"categoria": "utilitario",
+		"peso": 3,
+		"cura": 15,
+		"desc": "Água das galerias fundas. Mata a sede e limpa ferimentos."
 	},
 
-	# ---------------------------------------------------------- compostos
-	"arma_envenenada": {
-		"rotulo": "Arma envenenada",
-		"categoria": "composto",
-		"peso": 2,
-		"ataque": 15,
-		"desc": "Faca banhada em seiva. Derruba criaturas rápido."
+	# ------------------------------------------------------- matéria pesada
+	"tronco_sucupira": {
+		"rotulo": "Tronco de sucupira",
+		"slot": "arma",
+		"categoria": "arma",
+		"peso": 5,
+		"ataque": 10,
+		"desc": "Madeira densa e teimosa. Golpe forte, mas pesa como pedra."
 	},
-	"armadilha": {
-		"rotulo": "Armadilha",
+	"pedras": {
+		"rotulo": "Pedrinhas",
+		"slot": "arma",
+		"categoria": "arma",
+		"peso": 1,
+		"ataque": 3,
+		"desc": "Servem para atirar de longe ou virar ponta de ferramenta."
+	},
+
+	# ------------------------------------------------------- compostos
+	"pote_veneno": {
+		"rotulo": "Cuia com veneno",
+		"slot": "arma",
 		"categoria": "composto",
-		"peso": 2,
-		"defesa": 5,
-		"desc": "Cipó e pedra armados no chão."
+		"peso": 3,
+		"ataque": 12,
+		"desc": "Seiva de crauá fermentada. Derruba criaturas depressa."
+	},
+	"armadilha_tronco": {
+		"rotulo": "Armadilha de tronco",
+		"slot": "armadilha",
+		"categoria": "composto",
+		"peso": 4,
+		"defesa": 6,
+		"desc": "Tronco preso por cipós, armado para o que vier atrás de você."
+	},
+	"pa": {
+		"rotulo": "Pá",
+		"slot": "arma",
+		"categoria": "composto",
+		"peso": 3,
+		"ataque": 8,
+		"defesa": 2,
+		"desc": "Pedra amarrada a um cabo. Cava, apoia e quebra crânios."
 	}
 }
 
-## Receitas conhecidas do jogo: composto -> ingredientes
+## Receitas aprendidas nas pinturas rupestres: composto -> ingredientes
 const RECEITAS := {
-	"arma_envenenada": ["faca", "folha_medicinal"],
-	"armadilha": ["cipo", "pedra"]
+	"armadilha_tronco": ["tronco_sucupira", "cipo"],
+	"pa": ["pedras", "graveto", "cipo"],
+	"pote_veneno": ["pote_vazio", "flor_craua"],
+	"pote_agua": ["pote_vazio", "folhas_secas"]
 }
 
 # ------------------------------------------------------------------ consultas
@@ -122,7 +147,7 @@ const RECEITAS := {
 static func dados(nome: String) -> Dictionary:
 	return ITENS.get(nome, {
 		"rotulo": nome.capitalize(),
-		"categoria": "tesouro",
+		"categoria": "utilitario",
 		"peso": 1,
 		"desc": ""
 	})
@@ -131,7 +156,7 @@ static func rotulo(nome: String) -> String:
 	return dados(nome).get("rotulo", nome)
 
 static func categoria(nome: String) -> String:
-	return dados(nome).get("categoria", "tesouro")
+	return dados(nome).get("categoria", "utilitario")
 
 static func peso(nome: String) -> int:
 	return int(dados(nome).get("peso", 1))
@@ -145,14 +170,28 @@ static func ataque(nome: String) -> int:
 static func defesa(nome: String) -> int:
 	return int(dados(nome).get("defesa", 0))
 
-## Carrega o ícone do item, se a arte já existir.
+## Em que slot este item pode ser equipado ("" = não equipável)
+static func slot_de(nome: String) -> String:
+	return dados(nome).get("slot", "")
+
+static func cura(nome: String) -> int:
+	return int(dados(nome).get("cura", 0))
+
+static func recarrega_tocha(nome: String) -> float:
+	return float(dados(nome).get("recarrega_tocha", 0.0))
+
+## Item que faz algo ao ser usado (Enter no inventário)
+static func e_usavel(nome: String) -> bool:
+	return cura(nome) > 0 or recarrega_tocha(nome) > 0.0
+
+## Carrega o ícone, se a arte já existir.
 static func icone(nome: String) -> Texture2D:
 	var caminho: String = PASTA_ICONES + nome + ".png"
 	if ResourceLoader.exists(caminho):
 		return load(caminho) as Texture2D
 	return null
 
-## Cor de apoio usada quando ainda não há ícone desenhado.
+## Cor de apoio usada enquanto não há ícone.
 static func cor(nome: String) -> Color:
 	match categoria(nome):
 		"tesouro": return Color(0.95, 0.8, 0.25)
