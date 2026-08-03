@@ -92,6 +92,7 @@ const ITENS := {
 	"tronco_sucupira": {
 		"rotulo": "Tronco de sucupira",
 		"slot": "arma",
+		"visual": "sword",
 		"categoria": "arma",
 		"peso": 5,
 		"ataque": 10,
@@ -100,6 +101,7 @@ const ITENS := {
 	"pedras": {
 		"rotulo": "Pedrinhas",
 		"slot": "arma",
+		"arremesso": true,
 		"categoria": "arma",
 		"peso": 1,
 		"ataque": 3,
@@ -110,6 +112,7 @@ const ITENS := {
 	"pote_veneno": {
 		"rotulo": "Cuia com veneno",
 		"slot": "arma",
+		"visual": "sword",
 		"categoria": "composto",
 		"peso": 3,
 		"ataque": 12,
@@ -126,6 +129,7 @@ const ITENS := {
 	"pa": {
 		"rotulo": "Pá",
 		"slot": "arma",
+		"visual": "sword",
 		"categoria": "composto",
 		"peso": 3,
 		"ataque": 8,
@@ -169,6 +173,14 @@ static func ataque(nome: String) -> int:
 
 static func defesa(nome: String) -> int:
 	return int(dados(nome).get("defesa", 0))
+
+## Esta arma é arremessada em vez de golpear?
+static func e_arremesso(nome: String) -> bool:
+	return bool(dados(nome).get("arremesso", false))
+
+## Conjunto de sprites que o Pari usa com este item ("sword" ou "")
+static func visual(nome: String) -> String:
+	return dados(nome).get("visual", "")
 
 ## Em que slot este item pode ser equipado ("" = não equipável)
 static func slot_de(nome: String) -> String:

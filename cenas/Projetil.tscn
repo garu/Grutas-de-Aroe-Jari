@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cl380m7bk053y"]
+
+[ext_resource type="Script" path="res://scripts/Projetil.gd" id="1_proj"]
+
+[node name="Projetil" type="Area2D"]
+script = ExtResource("1_proj")

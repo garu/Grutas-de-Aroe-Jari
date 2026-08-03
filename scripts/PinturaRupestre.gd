@@ -20,6 +20,7 @@ extends Node2D
 @export var receita_nome: String = ""
 
 var _lendo: bool = false
+var _aviso: Node2D
 var _ja_ensinou: bool = false
 var _camada: CanvasLayer
 var _painel: PanelContainer
@@ -28,8 +29,23 @@ var _lbl_texto: Label
 
 func _ready() -> void:
 	add_to_group("pinturas")
+	add_to_group("interagivel")
 	_montar_visual()
 	_montar_painel()
+	_montar_aviso()
+
+func _montar_aviso() -> void:
+	_aviso = Node2D.new()
+	add_child(_aviso)
+	var l := Label.new()
+	l.text = "E"
+	l.add_theme_font_size_override("font_size", 12)
+	l.add_theme_color_override("font_color", Color(1, 0.93, 0.7))
+	l.add_theme_color_override("font_outline_color", Color(0, 0, 0))
+	l.add_theme_constant_override("outline_size", 4)
+	l.position = Vector2(-4, -30)
+	_aviso.add_child(l)
+	_aviso.visible = false
 
 func _montar_visual() -> void:
 	if textura != null:
@@ -97,19 +113,28 @@ func _montar_painel() -> void:
 	_camada.visible = false
 
 func _process(_delta: float) -> void:
-	var perto := false
-	for p in get_tree().get_nodes_in_group("player"):
-		if is_instance_valid(p) and global_position.distance_to(p.global_position) <= raio_leitura:
-			perto = true
-			break
-
-	if perto and not _lendo:
-		_lendo = true
-		_camada.visible = true
-		_ensinar()
-	elif not perto and _lendo:
+	var perto := _perto_do_jogador()
+	if _aviso != null:
+		_aviso.visible = perto and not _lendo
+	# afastou-se: fecha o texto sozinho
+	if _lendo and not perto:
 		_lendo = false
 		_camada.visible = false
+
+func _perto_do_jogador() -> bool:
+	for p in get_tree().get_nodes_in_group("player"):
+		if is_instance_valid(p) and global_position.distance_to(p.global_position) <= raio_leitura:
+			return true
+	return false
+
+## Chamado pelo jogador ao apertar E
+func interagir() -> void:
+	if not _perto_do_jogador():
+		return
+	_lendo = not _lendo
+	_camada.visible = _lendo
+	if _lendo:
+		_ensinar()
 
 func _ensinar() -> void:
 	if _ja_ensinou or receita_nome == "":

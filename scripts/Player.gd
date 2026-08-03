@@ -2,7 +2,8 @@ extends CharacterBody2D
 
 ## Pari - movimento 8 direções, ataque, dano, morte,
 ## tocha com duração e peso do inventário afetando a velocidade.
-## Setas/WASD para andar, ESPAÇO (ou X) para atacar, C para mesclar itens.
+## Setas/WASD para andar, ESPAÇO (ou X) para atacar, E para interagir
+## (pegar itens do chão e ler pinturas), I para a mochila.
 
 signal vida_alterada(atual: int, maximo: int)
 signal morreu
@@ -22,6 +23,13 @@ signal tocha_alterada(restante: float, total: float)
 @export var alcance_ataque: float = 34.0
 @export var duracao_ataque: float = 0.35
 @export var invulnerabilidade: float = 0.8
+
+## Arremesso (pedrinhas)
+@export var escala_projetil: float = 3.0
+@export var distancia_saida_projetil: float = 40.0
+
+## Alcance da tecla E (pegar item, ler pintura)
+@export var alcance_interacao: float = 70.0
 
 # ------------------------------------------------------------------ tocha
 @export var tocha_segundos: float = 60.0
@@ -45,7 +53,7 @@ func _ready() -> void:
 	_tocha_restante = tocha_segundos
 	add_to_group("player")
 	vida_alterada.emit(vida, vida_maxima)
-	if anim.sprite_frames != null and anim.sprite_frames.has_animation("hurt_down"):
+	if anim.sprite_frames != null and anim.sprite_frames.has_animation("unarmed_hurt_down"):
 		anim.animation_finished.connect(_on_anim_finished)
 	_ajustar_limites_camera()
 
@@ -90,6 +98,34 @@ func _achar_tilemap(no: Node) -> TileMapLayer:
 		if achado != null:
 			return achado
 	return null
+
+# ------------------------------------------------------------------ aparência
+## Conjunto de sprites conforme o que está na mão: "sword" ou "unarmed"
+func conjunto() -> String:
+	if get_node_or_null("/root/GameState") == null:
+		return "unarmed"
+	var arma: String = GameState.item_equipado(ItemDB.SLOT_ARMA)
+	if arma != "" and ItemDB.visual(arma) == "sword":
+		return "sword"
+	return "unarmed"
+
+## Monta o nome da animação, com quedas seguras quando a folha não existe.
+## (hoje só há folha de ataque para o conjunto armado)
+func _anim(acao: String) -> String:
+	if anim.sprite_frames == null:
+		return ""
+	var nome: String = "%s_%s_%s" % [conjunto(), acao, direcao]
+	if anim.sprite_frames.has_animation(nome):
+		return nome
+	var alternativa: String = "unarmed_%s_%s" % [acao, direcao]
+	if anim.sprite_frames.has_animation(alternativa):
+		return alternativa
+	# sem folha de soco desarmado: usa o "hurt" como esboço do golpe
+	if acao == "attack":
+		var esboco: String = "unarmed_hurt_" + direcao
+		if anim.sprite_frames.has_animation(esboco):
+			return esboco
+	return "unarmed_idle_" + direcao
 
 # ------------------------------------------------------------------ velocidade
 func velocidade_atual() -> float:
@@ -141,7 +177,8 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_accept") or Input.is_physical_key_pressed(KEY_X):
 		atacar()
 
-	_coletar_proximos()
+	if Input.is_physical_key_pressed(KEY_E):
+		_interagir()
 
 func _atualizar_animacao(dir: Vector2) -> void:
 	if dir != Vector2.ZERO:
@@ -149,19 +186,31 @@ func _atualizar_animacao(dir: Vector2) -> void:
 			direcao = "right" if dir.x > 0.0 else "left"
 		else:
 			direcao = "down" if dir.y > 0.0 else "up"
-		anim.play("walk_" + direcao)
+		anim.play(_anim("walk"))
 	else:
-		anim.play("idle_" + direcao)
+		anim.play(_anim("idle"))
 
 # ------------------------------------------------------------------ ataque
 func atacar() -> void:
 	if _atacando or not vivo:
 		return
 	_atacando = true
-	# usa a animação de "hurt" como esboço de ataque até existir a folha própria
-	if anim.sprite_frames.has_animation("hurt_" + direcao):
-		anim.play("hurt_" + direcao)
+	var arma := ""
+	if get_node_or_null("/root/GameState") != null:
+		arma = GameState.item_equipado(ItemDB.SLOT_ARMA)
 
+	if arma != "" and ItemDB.e_arremesso(arma):
+		anim.play(_anim("idle"))
+		_arremessar(arma)
+	else:
+		anim.play(_anim("attack"))
+		_golpear()
+
+	await get_tree().create_timer(duracao_ataque).timeout
+	_atacando = false
+
+## Golpe corpo a corpo no cone à frente
+func _golpear() -> void:
 	var alvo_dir := _vetor_direcao()
 	for inimigo in get_tree().get_nodes_in_group("inimigos"):
 		if not is_instance_valid(inimigo):
@@ -171,8 +220,19 @@ func atacar() -> void:
 			if inimigo.has_method("receber_dano"):
 				inimigo.receber_dano(dano_total())
 
-	await get_tree().create_timer(duracao_ataque).timeout
-	_atacando = false
+## Lança uma pedrinha na direção em que Pari olha
+func _arremessar(arma: String) -> void:
+	var cena := load("res://cenas/Projetil.tscn") as PackedScene
+	if cena == null:
+		return
+	var p := cena.instantiate()
+	# definido antes de entrar na árvore: o _ready do projétil usa estes valores
+	p.direcao = _vetor_direcao()
+	p.dano = dano_total()
+	p.nome_item = arma
+	p.scale = Vector2.ONE * escala_projetil
+	get_parent().add_child(p)
+	p.global_position = global_position + _vetor_direcao() * distancia_saida_projetil
 
 func _vetor_direcao() -> Vector2:
 	match direcao:
@@ -208,28 +268,33 @@ func morrer() -> void:
 		return
 	vivo = false
 	velocity = Vector2.ZERO
-	anim.play("death_" + direcao)
+	anim.play(_anim("death"))
 	if get_node_or_null("/root/GameState") != null:
 		var perdidos: Dictionary = GameState.aplicar_morte()
 		GameState.registrar_esqueleto(global_position, perdidos)
 	morreu.emit()
 
 func _on_anim_finished() -> void:
-	if _atacando and anim.animation.begins_with("hurt_"):
-		anim.play("idle_" + direcao)
+	if _atacando and anim.animation.contains("_attack_"):
+		anim.play(_anim("idle"))
 
-# ------------------------------------------------------------------ itens
-func _coletar_proximos() -> void:
+# ------------------------------------------------------------------ interação (E)
+## Pega itens do chão e lê pinturas rupestres: sempre o alvo mais próximo.
+func _interagir() -> void:
 	if _coleta_cooldown > 0.0:
 		return
-	for item in get_tree().get_nodes_in_group("itens"):
-		if not is_instance_valid(item):
+	var alvo: Node = null
+	var menor: float = alcance_interacao
+	for obj in get_tree().get_nodes_in_group("interagivel"):
+		if not is_instance_valid(obj) or not obj.has_method("interagir"):
 			continue
-		if global_position.distance_to(item.global_position) < 20.0:
-			if item.has_method("coletar"):
-				item.coletar()
-				_coleta_cooldown = 0.15
-			return
+		var d: float = global_position.distance_to(obj.global_position)
+		if d <= menor:
+			menor = d
+			alvo = obj
+	if alvo != null:
+		alvo.interagir()
+		_coleta_cooldown = 0.35
 
 # ------------------------------------------------------------------ tocha
 ## Quando a chama fica baixa, queima sozinha o combustível equipado

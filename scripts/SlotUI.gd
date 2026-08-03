@@ -4,10 +4,12 @@ extends Panel
 ## Um espaço do inventário: mochila, equipamento, bancada de mistura
 ## ou resultado. Sabe arrastar e receber itens.
 
-enum Tipo { MOCHILA, EQUIP, CRAFT, RESULTADO, CRIATIVO }
+enum Tipo { MOCHILA, EQUIP, CRAFT, RESULTADO, CRIATIVO, LIXEIRA }
 
 signal item_solto(origem: SlotUI, destino: SlotUI)
 signal item_clicado(slot: SlotUI)
+signal item_clicado_direito(slot: SlotUI)
+signal arraste_iniciado(slot: SlotUI)
 
 var tipo: int = Tipo.MOCHILA
 var indice: int = 0            ## posição na mochila ou na bancada
@@ -41,6 +43,9 @@ func _aplicar_estilo() -> void:
 	if tipo == Tipo.CRIATIVO:
 		e.bg_color = Color(0.1, 0.14, 0.18, 0.95)
 		e.border_color = Color(0.95, 0.78, 0.4) if _selecionado else Color(0.3, 0.45, 0.55)
+	elif tipo == Tipo.LIXEIRA:
+		e.bg_color = Color(0.2, 0.09, 0.08, 0.95)
+		e.border_color = Color(0.85, 0.4, 0.35)
 	else:
 		e.bg_color = Color(0.13, 0.11, 0.09, 0.95)
 		e.border_color = Color(0.95, 0.78, 0.4) if _selecionado else Color(0.42, 0.33, 0.22)
@@ -91,15 +96,16 @@ func aceita(nome: String) -> bool:
 			return ItemDB.slot_de(nome) == slot_equip
 		Tipo.RESULTADO:
 			return false
-		Tipo.CRIATIVO:
-			return true   # também serve de lixeira: solte aqui para descartar
+		Tipo.CRIATIVO, Tipo.LIXEIRA:
+			return true   # solte aqui para descartar
 		_:
 			return true
 
 # ------------------------------------------------------------------ arrastar
 func _get_drag_data(_pos: Vector2) -> Variant:
-	if item == "":
+	if item == "" or tipo == Tipo.LIXEIRA:
 		return null
+	arraste_iniciado.emit(self)
 	var previa := Control.new()
 	previa.custom_minimum_size = Vector2(LADO, LADO)
 	previa.size = Vector2(LADO, LADO)
@@ -130,3 +136,6 @@ func _gui_input(evento: InputEvent) -> void:
 	if evento is InputEventMouseButton and evento.pressed:
 		if evento.button_index == MOUSE_BUTTON_LEFT:
 			item_clicado.emit(self)
+		elif evento.button_index == MOUSE_BUTTON_RIGHT:
+			item_clicado_direito.emit(self)
+			accept_event()

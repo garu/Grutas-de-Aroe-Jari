@@ -1,36 +1,73 @@
 extends Node2D
 
-## Item coletável da caverna: tesouros, armas, utilitários,
-## pinturas rupestres (ensinam receitas) e compostos.
+## Item caído no chão da caverna.
+## Só entra na mochila quando o jogador aperta E por perto.
 
 signal coletado(item)
 
-@export var categoria: String = "tesouro"
-@export var nome: String = "ceramica"
+@export var categoria: String = "utilitario"
+@export var nome: String = "cipo"
 
-## Só para pinturas rupestres: receita ensinada ao ser lida
+## Só para pinturas antigas: receita ensinada ao ler
 @export var receita_nome: String = ""
 @export var receita_ingredientes: PackedStringArray = []
 
-## Só para tochas: quanto de chama devolve ao jogador
+## Quanto de chama devolve (tochas/gravetos deixados no chão)
 @export var recarrega_tocha: float = 0.0
 
+## Distância em que aparece o aviso de "E"
+@export var raio_interacao: float = 60.0
+
 var _coletado: bool = false
+var _aviso: Node2D
 
 func _ready() -> void:
 	add_to_group("itens")
+	add_to_group("interagivel")
 	_pintar()
+	_montar_aviso()
 
 func _pintar() -> void:
 	var marca := get_node_or_null("Marca") as Polygon2D
-	if marca == null:
+	var tex := ItemDB.icone(nome)
+	if tex != null:
+		# usa o ícone desenhado, se já existir
+		if marca != null:
+			marca.visible = false
+		var sp := Sprite2D.new()
+		sp.texture = tex
+		add_child(sp)
 		return
-	match categoria:
-		"tesouro": marca.color = Color(0.95, 0.8, 0.25)
-		"arma": marca.color = Color(0.8, 0.85, 0.9)
-		"utilitario": marca.color = Color(0.45, 0.8, 0.45)
-		"pintura": marca.color = Color(0.85, 0.5, 0.8)
-		_: marca.color = Color(0.9, 0.6, 0.3)
+	if marca != null:
+		marca.color = ItemDB.cor(nome)
+
+func _montar_aviso() -> void:
+	_aviso = Node2D.new()
+	add_child(_aviso)
+	var l := Label.new()
+	l.text = "E"
+	l.add_theme_font_size_override("font_size", 12)
+	l.add_theme_color_override("font_color", Color(1, 0.93, 0.7))
+	l.add_theme_color_override("font_outline_color", Color(0, 0, 0))
+	l.add_theme_constant_override("outline_size", 4)
+	l.position = Vector2(-4, -26)
+	_aviso.add_child(l)
+	_aviso.visible = false
+
+func _process(_delta: float) -> void:
+	if _coletado:
+		return
+	_aviso.visible = _perto_do_jogador()
+
+func _perto_do_jogador() -> bool:
+	for p in get_tree().get_nodes_in_group("player"):
+		if is_instance_valid(p) and global_position.distance_to(p.global_position) <= raio_interacao:
+			return true
+	return false
+
+## Chamado pelo jogador ao apertar E
+func interagir() -> void:
+	coletar()
 
 func coletar() -> void:
 	if _coletado:
@@ -39,13 +76,15 @@ func coletar() -> void:
 
 	if get_node_or_null("/root/GameState") != null:
 		if categoria == "pintura" and receita_nome != "":
-			# pinturas ensinam crafting em vez de ocupar peso
 			var ingredientes: Array = Array(receita_ingredientes)
 			if ingredientes.is_empty() and ItemDB.RECEITAS.has(receita_nome):
 				ingredientes = ItemDB.RECEITAS[receita_nome]
 			GameState.aprender_receita(receita_nome, ingredientes)
 		else:
-			GameState.adicionar_item(nome)
+			if not GameState.adicionar_item(nome):
+				# mochila cheia: o item continua no chão
+				_coletado = false
+				return
 
 	if recarrega_tocha > 0.0:
 		for p in get_tree().get_nodes_in_group("player"):
@@ -54,7 +93,8 @@ func coletar() -> void:
 
 	coletado.emit(self)
 	remove_from_group("itens")
+	remove_from_group("interagivel")
 	var t := create_tween()
-	t.tween_property(self, "scale", Vector2(1.4, 1.4), 0.12)
+	t.tween_property(self, "scale", scale * 1.4, 0.12)
 	t.parallel().tween_property(self, "modulate:a", 0.0, 0.18)
 	t.tween_callback(queue_free)
