@@ -4,7 +4,7 @@ extends Panel
 ## Um espaço do inventário: mochila, equipamento, bancada de mistura
 ## ou resultado. Sabe arrastar e receber itens.
 
-enum Tipo { MOCHILA, EQUIP, CRAFT, RESULTADO }
+enum Tipo { MOCHILA, EQUIP, CRAFT, RESULTADO, CRIATIVO }
 
 signal item_solto(origem: SlotUI, destino: SlotUI)
 signal item_clicado(slot: SlotUI)
@@ -38,8 +38,12 @@ func marcar(ativo: bool) -> void:
 # ------------------------------------------------------------------ visual
 func _aplicar_estilo() -> void:
 	var e := StyleBoxFlat.new()
-	e.bg_color = Color(0.13, 0.11, 0.09, 0.95)
-	e.border_color = Color(0.95, 0.78, 0.4) if _selecionado else Color(0.42, 0.33, 0.22)
+	if tipo == Tipo.CRIATIVO:
+		e.bg_color = Color(0.1, 0.14, 0.18, 0.95)
+		e.border_color = Color(0.95, 0.78, 0.4) if _selecionado else Color(0.3, 0.45, 0.55)
+	else:
+		e.bg_color = Color(0.13, 0.11, 0.09, 0.95)
+		e.border_color = Color(0.95, 0.78, 0.4) if _selecionado else Color(0.42, 0.33, 0.22)
 	e.set_border_width_all(2 if _selecionado else 1)
 	e.set_corner_radius_all(2)
 	add_theme_stylebox_override("panel", e)
@@ -87,6 +91,8 @@ func aceita(nome: String) -> bool:
 			return ItemDB.slot_de(nome) == slot_equip
 		Tipo.RESULTADO:
 			return false
+		Tipo.CRIATIVO:
+			return true   # também serve de lixeira: solte aqui para descartar
 		_:
 			return true
 

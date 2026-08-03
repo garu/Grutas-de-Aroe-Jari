@@ -134,14 +134,23 @@ func bonus_defesa() -> int:
 
 # ---------------------------------------------------------------- morte
 
-## Perde tudo, menos um item de cada categoria (e o que está equipado).
-## Devolve o que ficou para trás.
+## Ao morrer, Pari larga tudo: o que estava na mão cai junto com a carga.
+## Sobra apenas um item de cada categoria, e nada fica equipado.
+## Devolve o que ficou para trás (vira a pilha do esqueleto).
 func aplicar_morte() -> Dictionary:
 	var perdidos: Dictionary = {}
 	var guardados: Array[String] = []
 	var vistas: Array[String] = []
 
-	for nome in mochila:
+	# o que estava equipado entra na mesma conta e sai dos slots
+	var tudo: Array[String] = []
+	tudo.append_array(mochila)
+	for slot in equipado.keys():
+		if equipado[slot] != "":
+			tudo.append(equipado[slot])
+			equipado[slot] = ""
+
+	for nome in tudo:
 		var cat: String = ItemDB.categoria(nome)
 		if not vistas.has(cat):
 			vistas.append(cat)
@@ -153,6 +162,7 @@ func aplicar_morte() -> Dictionary:
 
 	mochila = guardados
 	inventory_changed.emit()
+	equip_changed.emit()
 	return perdidos
 
 func registrar_esqueleto(pos: Vector2, itens: Dictionary) -> void:

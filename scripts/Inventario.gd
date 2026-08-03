@@ -35,6 +35,11 @@ var _slot_resultado: SlotUI
 var _bancada: Array[String] = []      # itens postos na bancada
 var _btn_criar: Button
 
+## Painel de testes (F10): fonte infinita de todos os itens
+var modo_criativo: bool = false
+var _caixa_criativa: Control
+var _slots_criativos: Array[SlotUI] = []
+
 func _ready() -> void:
 	layer = 10
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -89,6 +94,11 @@ func _construir() -> void:
 	linha.add_child(_montar_equipamento())
 	linha.add_child(_montar_mochila())
 	linha.add_child(_montar_bancada())
+
+	# ------------------------------- painel de testes (F10)
+	_caixa_criativa = _montar_criativo()
+	col.add_child(_caixa_criativa)
+	_caixa_criativa.visible = false
 
 	# ------------------------------- rodapé
 	_lbl_info = _label("", 10, Color(1, 0.95, 0.85))
@@ -188,6 +198,34 @@ func _montar_bancada() -> Control:
 	linha2.add_child(_btn_criar)
 	return caixa
 
+func _montar_criativo() -> Control:
+	var caixa := VBoxContainer.new()
+	caixa.add_theme_constant_override("separation", 2)
+
+	var sep := HSeparator.new()
+	caixa.add_child(sep)
+
+	caixa.add_child(_label(
+		"TESTES (F10) — arraste daqui: estoque infinito · solte aqui para descartar",
+		8, Color(0.55, 0.78, 0.95)
+	))
+
+	var grade := GridContainer.new()
+	grade.columns = 12
+	grade.add_theme_constant_override("h_separation", 3)
+	grade.add_theme_constant_override("v_separation", 3)
+	caixa.add_child(grade)
+
+	for nome in ItemDB.ITENS.keys():
+		var s := SlotUI.new()
+		s.tipo = SlotUI.Tipo.CRIATIVO
+		s.item_solto.connect(_on_item_solto)
+		s.item_clicado.connect(_on_slot_clicado)
+		grade.add_child(s)
+		s.definir_item(nome)
+		_slots_criativos.append(s)
+	return caixa
+
 func _criar_painel() -> Control:
 	if textura_painel != null:
 		var np := NinePatchRect.new()
@@ -230,6 +268,16 @@ func abrir() -> void:
 	_raiz.visible = true
 	if abrir_pausa_o_jogo:
 		get_tree().paused = true
+
+## F10: painel de testes com todos os itens em quantidade infinita
+func alternar_criativo() -> void:
+	modo_criativo = not modo_criativo
+	_caixa_criativa.visible = modo_criativo
+	if modo_criativo and not aberto:
+		abrir()
+	if modo_criativo:
+		_lbl_info.text = "Modo de testes ligado"
+	_atualizar_rodape()
 
 func fechar() -> void:
 	if not aberto:
@@ -290,7 +338,10 @@ func _atualizar_rodape() -> void:
 	if jogador != null and jogador.has_method("velocidade_atual"):
 		partes.append("vel %d" % int(jogador.velocidade_atual()))
 	partes.append("%d receitas" % GameState.receitas.size())
-	_lbl_rodape.text = "   ".join(partes) + "     [arraste os itens · direito usa · I fecha]"
+	var ajuda := "     [arraste · direito usa · Q larga · I fecha · F10 testes]"
+	if modo_criativo:
+		ajuda = "     [MODO TESTES: clique ou arraste do painel azul · F10 desliga]"
+	_lbl_rodape.text = "   ".join(partes) + ajuda
 
 func _mostrar_item(nome: String) -> void:
 	if nome == "":
@@ -334,6 +385,8 @@ func _retirar(slot: SlotUI) -> void:
 			GameState.desequipar(slot.slot_equip)
 		SlotUI.Tipo.CRAFT:
 			_bancada[slot.indice] = ""
+		SlotUI.Tipo.CRIATIVO:
+			pass   # estoque infinito: nada sai daqui
 
 ## Põe o item no lugar de destino
 func _colocar(slot: SlotUI, nome: String) -> void:
@@ -341,6 +394,9 @@ func _colocar(slot: SlotUI, nome: String) -> void:
 		return
 	match slot.tipo:
 		SlotUI.Tipo.MOCHILA:
+			if GameState.mochila.size() >= GameState.CAPACIDADE:
+				_lbl_info.text = "Mochila cheia"
+				return
 			var pos: int = mini(slot.indice, GameState.mochila.size())
 			GameState.mochila.insert(pos, nome)
 			GameState.inventory_changed.emit()
@@ -348,6 +404,8 @@ func _colocar(slot: SlotUI, nome: String) -> void:
 			GameState.equipar(slot.slot_equip, nome)
 		SlotUI.Tipo.CRAFT:
 			_bancada[slot.indice] = nome
+		SlotUI.Tipo.CRIATIVO:
+			pass   # soltar aqui descarta o item
 
 # ------------------------------------------------------------------ cliques
 func _on_slot_clicado(slot: SlotUI) -> void:
@@ -357,7 +415,18 @@ func _on_slot_clicado(slot: SlotUI) -> void:
 		_slots_equip[k].marcar(_slots_equip[k] == slot)
 	for s in _slots_craft:
 		s.marcar(s == slot)
+	for s in _slots_criativos:
+		s.marcar(s == slot)
 	_mostrar_item(slot.item)
+
+	# no painel de testes, um clique já manda o item para a mochila
+	if slot.tipo == SlotUI.Tipo.CRIATIVO and slot.item != "":
+		if GameState.adicionar_item(slot.item):
+			_lbl_info.text = "+ %s" % ItemDB.rotulo(slot.item)
+		else:
+			_lbl_info.text = "Mochila cheia"
+		_atualizar_tudo()
+		return
 
 	if slot.tipo == SlotUI.Tipo.RESULTADO and not _btn_criar.disabled:
 		_criar()
@@ -438,6 +507,10 @@ func _input(evento: InputEvent) -> void:
 		return
 
 	var tecla: int = evento.physical_keycode
+	if tecla == KEY_F10:
+		alternar_criativo()
+		get_viewport().set_input_as_handled()
+		return
 	if tecla == KEY_I or tecla == KEY_TAB:
 		alternar()
 		get_viewport().set_input_as_handled()
