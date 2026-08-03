@@ -56,13 +56,29 @@ func total_itens() -> int:
 func contar(categoria: String) -> int:
 	return inventario.get(categoria, []).size()
 
-## Poder de ataque extra vindo das armas/compostos carregados
-func bonus_ataque() -> int:
-	return contar(ARMA) * 5 + contar(COMPOSTO) * 8
+## Soma o peso real de cada item (é o que deixa Pari mais lento)
+func peso_total() -> int:
+	var t := 0
+	for c in inventario.keys():
+		for nome in inventario[c]:
+			t += ItemDB.peso(nome)
+	return t
 
-## Defesa extra vinda de utilitários/compostos
+## Poder de ataque extra vindo dos itens carregados
+func bonus_ataque() -> int:
+	var t := 0
+	for c in inventario.keys():
+		for nome in inventario[c]:
+			t += ItemDB.ataque(nome)
+	return t
+
+## Defesa extra vinda dos itens carregados
 func bonus_defesa() -> int:
-	return contar(UTILITARIO) * 2 + contar(COMPOSTO) * 3
+	var t := 0
+	for c in inventario.keys():
+		for nome in inventario[c]:
+			t += ItemDB.defesa(nome)
+	return t
 
 # ---------------------------------------------------------------- morte
 

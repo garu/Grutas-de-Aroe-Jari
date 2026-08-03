@@ -38,6 +38,7 @@ var _coleta_cooldown: float = 0.0
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var tocha: PointLight2D = $TorchLight
+@onready var camera: Camera2D = $Camera2D
 
 func _ready() -> void:
 	vida = vida_maxima
@@ -46,12 +47,55 @@ func _ready() -> void:
 	vida_alterada.emit(vida, vida_maxima)
 	if anim.sprite_frames != null and anim.sprite_frames.has_animation("hurt_down"):
 		anim.animation_finished.connect(_on_anim_finished)
+	_ajustar_limites_camera()
+
+# ------------------------------------------------------------------ câmera
+## Ajusta os limites ao tamanho real do mapa desenhado, para a câmera
+## seguir o Pari pela caverna inteira. Não altera zoom nem enquadramento.
+func _ajustar_limites_camera() -> void:
+	if camera == null:
+		return
+	var mapa := _achar_tilemap(get_tree().current_scene)
+	if mapa == null or mapa.tile_set == null:
+		_camera_sem_limites()
+		return
+
+	var usado: Rect2i = mapa.get_used_rect()
+	if usado.size.x <= 0 or usado.size.y <= 0:
+		_camera_sem_limites()
+		return
+
+	var ts := Vector2(mapa.tile_set.tile_size)
+	var canto_a: Vector2 = mapa.to_global(Vector2(usado.position) * ts)
+	var canto_b: Vector2 = mapa.to_global(Vector2(usado.end) * ts)
+
+	camera.limit_left = int(floor(minf(canto_a.x, canto_b.x)))
+	camera.limit_top = int(floor(minf(canto_a.y, canto_b.y)))
+	camera.limit_right = int(ceil(maxf(canto_a.x, canto_b.x)))
+	camera.limit_bottom = int(ceil(maxf(canto_a.y, canto_b.y)))
+
+func _camera_sem_limites() -> void:
+	camera.limit_left = -10000000
+	camera.limit_top = -10000000
+	camera.limit_right = 10000000
+	camera.limit_bottom = 10000000
+
+func _achar_tilemap(no: Node) -> TileMapLayer:
+	if no == null:
+		return null
+	if no is TileMapLayer:
+		return no
+	for filho in no.get_children():
+		var achado := _achar_tilemap(filho)
+		if achado != null:
+			return achado
+	return null
 
 # ------------------------------------------------------------------ velocidade
 func velocidade_atual() -> float:
 	var peso := 0
-	if Engine.has_singleton("GameState") or get_node_or_null("/root/GameState") != null:
-		peso = GameState.total_itens()
+	if get_node_or_null("/root/GameState") != null:
+		peso = GameState.peso_total()
 	return maxf(velocidade_minima, velocidade_base - peso * lentidao_por_item)
 
 func dano_total() -> int:

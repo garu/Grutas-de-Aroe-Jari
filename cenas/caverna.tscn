@@ -2,6 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://b0dxyquuk3ym0" path="res://sprites/Environments/tilemap_caverna.png" id="1_s4408"]
 [ext_resource type="PackedScene" uid="uid://bm1uo28tuq6jl" path="res://cenas/Player.tscn" id="2_6bq1k"]
+[ext_resource type="PackedScene" path="res://cenas/Enemy.tscn" id="3_enemy"]
+[ext_resource type="PackedScene" path="res://cenas/Inventario.tscn" id="4_inv"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_7io4p"]
 polygon = PackedVector2Array(-72, -72, 72, -72, 72, 72, 24, 72, 24, -24, -72, -24)
@@ -127,3 +129,96 @@ scale = Vector2(2, 2)
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=389298138]
 color = Color(0.03559685, 0.029328672, 0.014201279, 1)
+
+[node name="Inimigo1" parent="." instance=ExtResource("3_enemy")]
+position = Vector2(1224, 72)
+scale = Vector2(5.0, 5.0)
+tipo = "morcego"
+vida_maxima = 30
+dano_contato = 10
+velocidade = 70.0
+raio_deteccao = 420.0
+distancia_contato = 60.0
+
+[node name="Inimigo2" parent="." instance=ExtResource("3_enemy")]
+position = Vector2(936, -2376)
+scale = Vector2(5.0, 5.0)
+tipo = "aranha"
+vida_maxima = 45
+dano_contato = 14
+velocidade = 45.0
+raio_deteccao = 380.0
+distancia_contato = 60.0
+
+[node name="Inimigo3" parent="." instance=ExtResource("3_enemy")]
+position = Vector2(-2088, -216)
+scale = Vector2(5.0, 5.0)
+tipo = "cobra"
+vida_maxima = 60
+dano_contato = 16
+velocidade = 38.0
+raio_deteccao = 340.0
+distancia_contato = 60.0
+
+[node name="Inimigo4" parent="." instance=ExtResource("3_enemy")]
+position = Vector2(-504, -1224)
+scale = Vector2(5.0, 5.0)
+tipo = "morcego"
+vida_maxima = 30
+dano_contato = 10
+velocidade = 70.0
+raio_deteccao = 420.0
+distancia_contato = 60.0
+
+[node name="Inimigo5" parent="." instance=ExtResource("3_enemy")]
+position = Vector2(-216, 72)
+scale = Vector2(5.0, 5.0)
+tipo = "aranha"
+vida_maxima = 45
+dano_contato = 14
+velocidade = 45.0
+raio_deteccao = 380.0
+distancia_contato = 60.0
+
+[node name="Inimigo6" parent="." instance=ExtResource("3_enemy")]
+position = Vector2(-504, -2520)
+scale = Vector2(5.0, 5.0)
+tipo = "cobra"
+vida_maxima = 60
+dano_contato = 16
+velocidade = 38.0
+raio_deteccao = 340.0
+distancia_contato = 60.0
+
+[node name="Inimigo7" parent="." instance=ExtResource("3_enemy")]
+position = Vector2(-2376, -1368)
+scale = Vector2(5.0, 5.0)
+tipo = "morcego"
+vida_maxima = 30
+dano_contato = 10
+velocidade = 70.0
+raio_deteccao = 420.0
+distancia_contato = 60.0
+
+[node name="Inimigo8" parent="." instance=ExtResource("3_enemy")]
+position = Vector2(-1368, -1656)
+scale = Vector2(5.0, 5.0)
+tipo = "aranha"
+vida_maxima = 45
+dano_contato = 14
+velocidade = 45.0
+raio_deteccao = 380.0
+distancia_contato = 60.0
+
+[node name="Butoriko" parent="." instance=ExtResource("3_enemy")]
+position = Vector2(-1800, -2520)
+scale = Vector2(8, 8)
+tipo = "butoriko"
+vida_maxima = 200
+dano_contato = 25
+velocidade = 50.0
+raio_deteccao = 600.0
+distancia_contato = 90.0
+e_chefe = true
+
+[node name="Inventario" parent="." instance=ExtResource("4_inv")]
