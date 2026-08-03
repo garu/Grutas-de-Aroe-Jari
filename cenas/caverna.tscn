@@ -205,8 +205,10 @@ distancia_contato = 60.0
 
 [node name="Butoriko" parent="." unique_id=1541078003 instance=ExtResource("3_4vft8")]
 position = Vector2(-1800, -2520)
-scale = Vector2(8, 8)
-velocidade = 50.0
+scale = Vector2(1.5, 1.5)
+velocidade = 70.0
+raio_de_deteccao = 520.0
+distancia_de_sondagem_de_colisao = 28.0
 caminho_do_jogador = NodePath("../Player")
 
 [node name="Inventario" parent="." unique_id=878552224 instance=ExtResource("4_inv")]

@@ -38,6 +38,7 @@ var _bancada: Array[String] = []      # itens postos na bancada
 var _btn_criar: Button
 var _lbl_craft: Label
 var _slot_lixeira: SlotUI
+var _btn_god: Button
 
 ## controle do arraste para fora do quadro
 var _arrastando: SlotUI = null
@@ -108,6 +109,7 @@ func _construir() -> void:
 	_caixa_criativa = _montar_criativo()
 	col.add_child(_caixa_criativa)
 	_caixa_criativa.visible = false
+	_atualizar_god()
 
 	# ------------------------------- rodapé
 	_lbl_info = _label("", 10, Color(1, 0.95, 0.85))
@@ -248,6 +250,48 @@ func _montar_lixeira() -> Control:
 	caixa.add_child(aviso)
 	return caixa
 
+func _botao_teste(texto: String, alvo: Callable) -> Button:
+	var b := Button.new()
+	b.text = texto
+	b.custom_minimum_size = Vector2(0, 22)
+	b.add_theme_font_size_override("font_size", 8)
+	b.process_mode = Node.PROCESS_MODE_ALWAYS
+	b.focus_mode = Control.FOCUS_NONE
+	b.pressed.connect(alvo)
+	return b
+
+# ------------------------------------------------------------------ modo God
+func _alternar_god() -> void:
+	if get_node_or_null("/root/GameState") == null:
+		return
+	GameState.alternar_god()
+	_atualizar_god()
+	_atualizar_rodape()
+
+func _atualizar_god() -> void:
+	if _btn_god == null or get_node_or_null("/root/GameState") == null:
+		return
+	var ligado: bool = GameState.modo_god
+	_btn_god.text = "MODO GOD: LIGADO" if ligado else "MODO GOD: desligado"
+	var e := StyleBoxFlat.new()
+	e.set_border_width_all(1)
+	e.set_corner_radius_all(2)
+	e.set_content_margin_all(3)
+	if ligado:
+		e.bg_color = Color(0.42, 0.34, 0.06)
+		e.border_color = Color(1, 0.85, 0.3)
+		_btn_god.add_theme_color_override("font_color", Color(1, 0.95, 0.6))
+		if _lbl_info != null:
+			_lbl_info.text = "God: sem dano, veloz e atravessa rocha"
+	else:
+		e.bg_color = Color(0.16, 0.15, 0.14)
+		e.border_color = Color(0.4, 0.38, 0.34)
+		_btn_god.add_theme_color_override("font_color", Color(0.7, 0.68, 0.64))
+	_btn_god.add_theme_stylebox_override("normal", e)
+	var h := e.duplicate()
+	h.bg_color = e.bg_color.lightened(0.12)
+	_btn_god.add_theme_stylebox_override("hover", h)
+
 func _limpar_bancada() -> void:
 	_devolver_bancada()
 	_atualizar_tudo()
@@ -303,6 +347,41 @@ func _montar_criativo() -> Control:
 		"TESTES (F10) — arraste daqui: estoque infinito · solte aqui para descartar",
 		8, Color(0.55, 0.78, 0.95)
 	))
+
+	# ------------------- atalhos de teste
+	var barra := HBoxContainer.new()
+	barra.add_theme_constant_override("separation", 6)
+	caixa.add_child(barra)
+
+	_btn_god = Button.new()
+	_btn_god.custom_minimum_size = Vector2(150, 22)
+	_btn_god.process_mode = Node.PROCESS_MODE_ALWAYS
+	_btn_god.focus_mode = Control.FOCUS_NONE
+	_btn_god.pressed.connect(_alternar_god)
+	barra.add_child(_btn_god)
+
+	barra.add_child(_botao_teste("Curar", func() -> void:
+		var j := _achar_player()
+		if j != null and j.has_method("curar"):
+			j.curar(999)
+			_lbl_info.text = "Vida cheia"))
+
+	barra.add_child(_botao_teste("Encher tocha", func() -> void:
+		var j := _achar_player()
+		if j != null and j.has_method("reabastecer_tocha"):
+			j.reabastecer_tocha(999.0)
+			_lbl_info.text = "Tocha cheia"))
+
+	barra.add_child(_botao_teste("Aprender receitas", func() -> void:
+		for composto in ItemDB.RECEITAS.keys():
+			GameState.aprender_receita(composto, ItemDB.RECEITAS[composto])
+		_lbl_info.text = "Todas as receitas aprendidas"
+		_atualizar_tudo()))
+
+	barra.add_child(_botao_teste("Esvaziar mochila", func() -> void:
+		GameState.mochila.clear()
+		GameState.inventory_changed.emit()
+		_atualizar_tudo()))
 
 	var grade := GridContainer.new()
 	grade.columns = 12
@@ -481,6 +560,8 @@ func _atualizar_rodape() -> void:
 		partes.append("vel %d" % int(jogador.velocidade_atual()))
 	partes.append("%d receitas" % GameState.receitas.size())
 	var ajuda := "     [arraste · direito equipa/usa · fora do quadro = largar · I fecha · F10 testes]"
+	if GameState.modo_god:
+		partes.push_front("★ GOD")
 	if modo_criativo:
 		ajuda = "     [MODO TESTES: clique ou arraste do painel azul · F10 desliga]"
 	_lbl_rodape.text = "   ".join(partes) + ajuda
@@ -699,6 +780,10 @@ func _input(evento: InputEvent) -> void:
 		return
 
 	var tecla: int = evento.physical_keycode
+	if tecla == KEY_F11:
+		_alternar_god()
+		get_viewport().set_input_as_handled()
+		return
 	if tecla == KEY_F10:
 		alternar_criativo()
 		get_viewport().set_input_as_handled()

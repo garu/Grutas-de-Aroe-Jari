@@ -31,6 +31,9 @@ signal tocha_alterada(restante: float, total: float)
 ## Alcance da tecla E (pegar item, ler pintura)
 @export var alcance_interacao: float = 70.0
 
+## Modo de teste (God): velocidade fixa, sem dano, atravessa rocha
+@export var velocidade_god: float = 420.0
+
 # ------------------------------------------------------------------ tocha
 @export var tocha_segundos: float = 60.0
 @export var tocha_escala_max: float = 2.4
@@ -43,6 +46,8 @@ var _atacando: bool = false
 var _invulneravel: float = 0.0
 var _tocha_restante: float
 var _coleta_cooldown: float = 0.0
+var _god_aplicado: bool = false
+var _mascara_original: int = 1
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var tocha: PointLight2D = $TorchLight
@@ -52,7 +57,11 @@ func _ready() -> void:
 	vida = vida_maxima
 	_tocha_restante = tocha_segundos
 	add_to_group("player")
+	_mascara_original = collision_mask
 	vida_alterada.emit(vida, vida_maxima)
+	if god():
+		_god_aplicado = true
+		_aplicar_god(true)
 	if anim.sprite_frames != null and anim.sprite_frames.has_animation("unarmed_hurt_down"):
 		anim.animation_finished.connect(_on_anim_finished)
 	_ajustar_limites_camera()
@@ -127,8 +136,27 @@ func _anim(acao: String) -> String:
 			return esboco
 	return "unarmed_idle_" + direcao
 
+# ------------------------------------------------------------------ modo God
+func god() -> bool:
+	if get_node_or_null("/root/GameState") == null:
+		return false
+	return GameState.modo_god
+
+## Liga/desliga a travessia de rocha e devolve a vida cheia ao ligar
+func _aplicar_god(ligado: bool) -> void:
+	if ligado:
+		collision_mask = 0          # atravessa paredes
+		vida = vida_maxima
+		vida_alterada.emit(vida, vida_maxima)
+		modulate = Color(1, 1, 0.6)
+	else:
+		collision_mask = _mascara_original
+		modulate = Color.WHITE
+
 # ------------------------------------------------------------------ velocidade
 func velocidade_atual() -> float:
+	if god():
+		return velocidade_god      # rápido e sem peso
 	var peso := 0
 	if get_node_or_null("/root/GameState") != null:
 		peso = GameState.peso_total()
@@ -152,6 +180,12 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		move_and_slide()
 		return
+
+	# liga/desliga o modo de teste quando ele muda
+	var g := god()
+	if g != _god_aplicado:
+		_god_aplicado = g
+		_aplicar_god(g)
 
 	if _invulneravel > 0.0:
 		_invulneravel -= delta
@@ -243,7 +277,7 @@ func _vetor_direcao() -> Vector2:
 
 # ------------------------------------------------------------------ dano/morte
 func receber_dano(quantidade: int) -> void:
-	if not vivo or _invulneravel > 0.0:
+	if not vivo or _invulneravel > 0.0 or god():
 		return
 	var final: int = maxi(1, quantidade - defesa_total())
 	vida = maxi(0, vida - final)
@@ -314,7 +348,9 @@ func _consumir_combustivel() -> void:
 func _process(delta: float) -> void:
 	if not vivo:
 		return
-	if _tocha_restante > 0.0:
+	if god():
+		_tocha_restante = tocha_segundos
+	if _tocha_restante > 0.0 and not god():
 		_tocha_restante = maxf(0.0, _tocha_restante - delta)
 		tocha_alterada.emit(_tocha_restante, tocha_segundos)
 		if _tocha_restante < tocha_segundos * 0.15:

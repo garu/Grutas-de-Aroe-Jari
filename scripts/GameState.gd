@@ -6,6 +6,14 @@ extends Node
 signal inventory_changed
 signal recipes_changed
 signal equip_changed
+signal god_changed(ligado: bool)
+
+## Modo de teste: sem dano, veloz e atravessa rocha
+var modo_god: bool = false
+
+func alternar_god() -> void:
+	modo_god = not modo_god
+	god_changed.emit(modo_god)
 
 const CAPACIDADE := 20
 
