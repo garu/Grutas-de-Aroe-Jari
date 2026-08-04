@@ -16,8 +16,8 @@ tocha_escala_max = 2.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=497289104]
 sprite_frames = ExtResource("2_frames")
-animation = &"idle_down"
-autoplay = "idle_down"
+animation = &"unarmed_idle_up"
+autoplay = "unarmed_idle_up"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1564856231]
 position = Vector2(0, 16)
@@ -38,5 +38,4 @@ limit_left = 0
 limit_top = 0
 limit_right = 1280
 limit_bottom = 896
-
 position_smoothing_enabled = true
