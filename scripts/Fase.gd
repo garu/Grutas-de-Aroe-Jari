@@ -104,7 +104,7 @@ func _abrir_dialogo() -> void:
 	get_tree().paused = true
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_lbl_dialogo.visible = true
-	_lbl_dialogo.text = "\"%s\"\n\n[qualquer tecla para continuar]" % texto_abertura
+	_lbl_dialogo.text = "\"%s\"" % texto_abertura
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not _dialogo_ativo:
