@@ -263,20 +263,6 @@ position = Vector2(-1368, -648)
 scale = Vector2(3, 3)
 nome = "cuia"
 
-[node name="Pintura2" parent="." unique_id=579212718 instance=ExtResource("5_item")]
-position = Vector2(504, -2664)
-scale = Vector2(3, 3)
-categoria = "pintura"
-nome = "pintura_pa"
-receita_nome = "pa"
-
-[node name="Pintura4" parent="." unique_id=2056286830 instance=ExtResource("5_item")]
-position = Vector2(792, -1800)
-scale = Vector2(3, 3)
-categoria = "pintura"
-nome = "pintura_pote_agua"
-receita_nome = "pote_agua"
-
 [node name="Tutorial" parent="." unique_id=251882512 instance=ExtResource("6_pint")]
 position = Vector2(432, 290)
 scale = Vector2(2, 2)
@@ -289,7 +275,7 @@ textura = ExtResource("10_rup3")
 [node name="Pintura1" parent="." unique_id=31400086 instance=ExtResource("6_pint")]
 position = Vector2(-216, -1224)
 scale = Vector2(2, 2)
-texto = "Aqui os antigos gravaram como fazer: armadilha tronco"
+texto = "Aqui os antigos gravaram como fazer:"
 titulo = "Pintura rupestre"
 textura = ExtResource("9_rup2")
 receita_nome = "armadilha_tronco"
@@ -297,7 +283,7 @@ receita_nome = "armadilha_tronco"
 [node name="Pintura3" parent="." unique_id=360470428 instance=ExtResource("6_pint")]
 position = Vector2(504, -2664)
 scale = Vector2(2, 2)
-texto = "Aqui os antigos gravaram como fazer: pa"
+texto = "Aqui os antigos gravaram como fazer:"
 titulo = "Pintura rupestre"
 textura = ExtResource("8_rup1")
 receita_nome = "pa"
@@ -305,15 +291,15 @@ receita_nome = "pa"
 [node name="Pintura5" parent="." unique_id=1019436295 instance=ExtResource("6_pint")]
 position = Vector2(-1224, -1944)
 scale = Vector2(2, 2)
-texto = "Aqui os antigos gravaram como fazer: pote veneno"
+texto = "Aqui os antigos gravaram como fazer:"
 titulo = "Pintura rupestre"
 textura = ExtResource("9_rup2")
-receita_nome = "pote_veneno"
+receita_nome = "cuia_veneno"
 
 [node name="Pintura6" parent="." unique_id=1084635258 instance=ExtResource("6_pint")]
 position = Vector2(792, -1800)
 scale = Vector2(2, 2)
-texto = "Aqui os antigos gravaram como fazer: pote agua"
+texto = "Aqui os antigos gravaram como fazer:"
 titulo = "Pintura rupestre"
 textura = ExtResource("8_rup1")
-receita_nome = "pote_agua"
+receita_nome = "cuia_agua"

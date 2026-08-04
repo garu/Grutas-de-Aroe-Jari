@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://carmadilha001"]
+
+[ext_resource type="Script" path="res://scripts/Armadilha.gd" id="1_armadilha"]
+
+[node name="Armadilha" type="Node2D"]
+script = ExtResource("1_armadilha")
+
+[node name="Marca" type="Polygon2D" parent="."]
+color = Color(0.72, 0.55, 0.3, 1)
+polygon = PackedVector2Array(-10, -4, 0, -9, 10, -4, 10, 4, 0, 9, -10, 4)
+
+[node name="Icone" type="Sprite2D" parent="."]
+scale = Vector2(0.35, 0.35)

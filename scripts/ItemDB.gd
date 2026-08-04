@@ -124,6 +124,7 @@ const ITENS := {
 		"categoria": "composto",
 		"peso": 4,
 		"defesa": 6,
+		"dano_armadilha": 70,
 		"desc": "Tronco preso por cipós, armado para o que vier atrás de você."
 	},
 	"armadilha_espinho": {
@@ -132,6 +133,7 @@ const ITENS := {
 		"categoria": "composto",
 		"peso": 3,
 		"defesa": 4,
+		"dano_armadilha": 45,
 		"desc": "cave com a pá, coloque os espinhos e cubra com folhas"
 	},
 	"pa": {
@@ -197,6 +199,14 @@ static func slot_de(nome: String) -> String:
 
 static func cura(nome: String) -> int:
 	return int(dados(nome).get("cura", 0))
+
+## Dano que esta armadilha causa a cada vez que a Butoriko passa por cima
+static func dano_armadilha(nome: String) -> int:
+	return int(dados(nome).get("dano_armadilha", 0))
+
+## Este item pode ser armado no chão com Q?
+static func e_armadilha(nome: String) -> bool:
+	return slot_de(nome) == SLOT_ARMADILHA
 
 static func recarrega_tocha(nome: String) -> float:
 	return float(dados(nome).get("recarrega_tocha", 0.0))

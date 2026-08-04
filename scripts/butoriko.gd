@@ -1,6 +1,27 @@
 class_name Butoriko
 extends CharacterBody2D
 
+## A fera das Grutas de Aroe-Jari.
+## Vagueia pela caverna, fareja o Pari e o persegue. Aguenta golpe, pedrada
+## e armadilha; quando a vida acaba, o jogo é vencido.
+
+signal morreu(criatura)
+signal vida_alterada(atual: int, maximo: int)
+
+@export_group("Vida")
+
+## Quanto castigo a Butoriko aguenta antes de cair.
+@export var vida_maxima: int = 200
+
+## Se verdadeiro, derrubá-la leva direto para a tela de vitória.
+@export var e_chefe: bool = true
+
+## Espera, em segundos, entre a queda e a tela de vitória.
+@export var tempo_ate_vitoria: float = 0.8
+
+## Cena aberta quando o chefe cai.
+@export_file("*.tscn") var cena_de_vitoria: String = "res://cenas/Vitoria.tscn"
+
 @export_group("Sons")
 
 @export var som_rosnado: AudioStream
@@ -116,6 +137,9 @@ const DIRECOES := [
 var direcao_atual := Vector2.RIGHT
 var jogador: Node2D
 
+var vida: int
+var viva := true
+
 var recipiente_de_marcas: Node2D
 var marcas: Array[Node] = []
 var temporizador_de_direcao: Timer
@@ -129,6 +153,18 @@ var temporizador_de_rosnado: Timer
 
 func _ready() -> void:
 	randomize()
+
+	vida = maxi(1, vida_maxima)
+	viva = true
+
+	# Os grupos são o que deixa o golpe do Pari, a pedrada e a armadilha
+	# alcançarem a Butoriko.
+	add_to_group("inimigos")
+	add_to_group("butoriko")
+	if e_chefe:
+		add_to_group("chefe")
+
+	vida_alterada.emit(vida, vida_maxima)
 
 	# Importante para movimento top-down.
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
@@ -160,7 +196,79 @@ func _atacar_jogador() -> void:
 	if jogador.has_method("receber_dano"):
 		jogador.receber_dano(10)
 
+# ------------------------------------------------------------------ dano e morte
+
+## Chamado pelo golpe do Pari, pela pedrada e pela armadilha do chão.
+func receber_dano(quantidade: int) -> void:
+	if not viva:
+		return
+
+	vida = maxi(0, vida - maxi(1, quantidade))
+	vida_alterada.emit(vida, vida_maxima)
+	_piscar_de_dor()
+	_tocar_rosnado()
+
+	if vida <= 0:
+		morrer()
+
+
+func _piscar_de_dor() -> void:
+	var corpo := get_node_or_null("Sprite2D") as CanvasItem
+	if corpo == null:
+		return
+	corpo.modulate = Color(1, 0.35, 0.35)
+	create_tween().tween_property(corpo, "modulate", Color.WHITE, 0.25)
+
+
+func morrer() -> void:
+	if not viva:
+		return
+
+	viva = false
+	velocity = Vector2.ZERO
+
+	remove_from_group("inimigos")
+	remove_from_group("butoriko")
+	remove_from_group("chefe")
+
+	for temporizador in [
+		temporizador_de_direcao,
+		temporizador_de_marcas,
+		temporizador_de_rosnado
+	]:
+		if temporizador != null and is_instance_valid(temporizador):
+			temporizador.stop()
+
+	# O corpo para de barrar o caminho.
+	var forma := get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if forma != null:
+		forma.set_deferred("disabled", true)
+
+	morreu.emit(self)
+
+	var t := create_tween()
+	t.tween_property(self, "modulate:a", 0.0, 0.6)
+
+	if e_chefe:
+		# A troca de cena leva tudo embora; sumir da vista já basta, e assim
+		# a espera pela tela de vitória não acontece num nó já apagado.
+		t.tween_callback(hide)
+		_abrir_vitoria()
+	else:
+		t.tween_callback(queue_free)
+
+
+func _abrir_vitoria() -> void:
+	await get_tree().create_timer(maxf(0.0, tempo_ate_vitoria)).timeout
+	if cena_de_vitoria != "" and ResourceLoader.exists(cena_de_vitoria):
+		get_tree().change_scene_to_file(cena_de_vitoria)
+
+
 func _physics_process(_delta_tempo: float) -> void:
+	if not viva:
+		velocity = Vector2.ZERO
+		return
+
 	# Verifica se encostou no jogador (distância em pixels, ex: 25 pixels)
 	if jogador != null and is_instance_valid(jogador):
 		if global_position.distance_to(jogador.global_position) <= 25.0:

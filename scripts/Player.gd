@@ -8,6 +8,7 @@ extends CharacterBody2D
 signal vida_alterada(atual: int, maximo: int)
 signal morreu
 signal tocha_alterada(restante: float, total: float)
+signal armadilha_armada(nome: String)
 
 # ------------------------------------------------------------------ atributos
 @export var velocidade_base: float = 90.0
@@ -31,13 +32,18 @@ signal tocha_alterada(restante: float, total: float)
 ## Alcance da tecla E (pegar item, ler pintura)
 @export var alcance_interacao: float = 70.0
 
+# ------------------------------------------------------------------ armadilhas
+## Armadilha armada com Q, no chão, à frente do Pari
+@export var cena_armadilha: PackedScene
+@export var distancia_armadilha: float = 34.0
+
 ## Modo de teste (God): velocidade fixa, sem dano, atravessa rocha
 @export var velocidade_god: float = 420.0
 
 # ------------------------------------------------------------------ tocha
 @export var tocha_segundos: float = 60.0
-@export var tocha_escala_max: float = 2.4
-@export var tocha_escala_min: float = 0.6
+@export var tocha_escala_max: float = 1.45
+@export var tocha_escala_min: float = 0.4
 
 var vida: int
 var direcao: String = "down"
@@ -46,17 +52,24 @@ var _atacando: bool = false
 var _invulneravel: float = 0.0
 var _tocha_restante: float
 var _coleta_cooldown: float = 0.0
+var _armadilha_cooldown: float = 0.0
 var _god_aplicado: bool = false
 var _mascara_original: int = 1
+var _x_pressionado_antes: bool = false
+var _q_pressionado_antes: bool = false
+var _e_pressionado_antes: bool = false
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
-@onready var tocha: PointLight2D = $TorchLight
+@onready var tocha: Tocha = $TorchLight
 @onready var camera: Camera2D = $Camera2D
-@onready var som_passos: AudioStreamPlayer2D = $passos
+## Só existe nas fases que trouxeram o nó "passos" junto do Pari.
+@onready var som_passos: AudioStreamPlayer2D = get_node_or_null("passos") as AudioStreamPlayer2D
 
 func _ready() -> void:
 	vida = vida_maxima
 	_tocha_restante = tocha_segundos
+	if cena_armadilha == null and ResourceLoader.exists("res://cenas/Armadilha.tscn"):
+		cena_armadilha = load("res://cenas/Armadilha.tscn") as PackedScene
 	add_to_group("player")
 	_mascara_original = collision_mask
 	vida_alterada.emit(vida, vida_maxima)
@@ -192,6 +205,8 @@ func _physics_process(delta: float) -> void:
 		_invulneravel -= delta
 	if _coleta_cooldown > 0.0:
 		_coleta_cooldown -= delta
+	if _armadilha_cooldown > 0.0:
+		_armadilha_cooldown -= delta
 
 	var dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	if dir == Vector2.ZERO:
@@ -210,13 +225,28 @@ func _physics_process(delta: float) -> void:
 	if not _atacando:
 		_atualizar_animacao(dir)
 
-	if Input.is_action_just_pressed("ui_accept") or Input.is_physical_key_pressed(KEY_X):
+	# X só vale no instante em que a tecla desce, senão o golpe se repete sozinho
+	var x_agora := Input.is_physical_key_pressed(KEY_X)
+	if Input.is_action_just_pressed("ui_accept") or (x_agora and not _x_pressionado_antes):
 		atacar()
+	_x_pressionado_antes = x_agora
 
-	if Input.is_physical_key_pressed(KEY_E):
+	# E também só no instante da descida: segurando a tecla, a pintura abria
+	# e fechava o painel sem parar.
+	var e_agora := Input.is_physical_key_pressed(KEY_E)
+	if e_agora and not _e_pressionado_antes:
 		_interagir()
+	_e_pressionado_antes = e_agora
+
+	# Q arma a armadilha no chão, à frente do Pari
+	var q_agora := Input.is_physical_key_pressed(KEY_Q)
+	if q_agora and not _q_pressionado_antes:
+		armar_armadilha()
+	_q_pressionado_antes = q_agora
 
 func _atualizar_som_passos() -> void:
+	if som_passos == null:
+		return
 	# Verifica se o personagem está se movendo (velocidade maior que zero)
 	if velocity.length() > 0.0:
 		# Se estiver andando e o som AINDA não estiver tocando, inicia o som
@@ -332,18 +362,77 @@ func _on_anim_finished() -> void:
 func _interagir() -> void:
 	if _coleta_cooldown > 0.0:
 		return
+
+	# O que está no chão vem primeiro. A pintura fica na parede e nunca sai
+	# dali, então ela não pode ficar com o E de um item largado ao lado —
+	# senão a peça nunca entra na mochila.
+	var alvo: Node = _interagivel_mais_perto(false)
+	if alvo == null:
+		alvo = _interagivel_mais_perto(true)
+
+	if alvo != null:
+		alvo.interagir()
+		_coleta_cooldown = 0.35
+
+## Alvo mais próximo dentro do alcance. `pintura_de_parede` separa as pinturas
+## fixas (que só se leem) de tudo o que se pega do chão.
+func _interagivel_mais_perto(pintura_de_parede: bool) -> Node:
 	var alvo: Node = null
 	var menor: float = alcance_interacao
 	for obj in get_tree().get_nodes_in_group("interagivel"):
 		if not is_instance_valid(obj) or not obj.has_method("interagir"):
 			continue
+		if obj.is_in_group("pinturas") != pintura_de_parede:
+			continue
 		var d: float = global_position.distance_to(obj.global_position)
 		if d <= menor:
 			menor = d
 			alvo = obj
-	if alvo != null:
-		alvo.interagir()
-		_coleta_cooldown = 0.35
+	return alvo
+
+# ------------------------------------------------------------------ armadilhas (Q)
+## Deixa a armadilha armada no chão, à frente do Pari, na direção em que ele
+## está olhando. Ela fica parada ali: quem passar por cima é a Butoriko.
+## Usa primeiro a que está no espaço "Armadilha"; se ele não equipou nenhuma,
+## pega a primeira que encontrar na mochila.
+func armar_armadilha() -> bool:
+	if not vivo or _armadilha_cooldown > 0.0:
+		return false
+	if get_node_or_null("/root/GameState") == null:
+		return false
+	if cena_armadilha == null:
+		push_warning("Player: cena_armadilha vazia. Aponte para res://cenas/Armadilha.tscn.")
+		return false
+
+	var nome := _tirar_armadilha_do_bolso()
+	if nome == "":
+		return false
+
+	var armadilha := cena_armadilha.instantiate()
+	armadilha.nome_item = nome
+	armadilha.dano = ItemDB.dano_armadilha(nome)
+
+	var dono: Node = get_parent()
+	if dono == null:
+		dono = get_tree().current_scene
+	dono.add_child(armadilha)
+	armadilha.global_position = global_position + _vetor_direcao() * distancia_armadilha
+
+	_armadilha_cooldown = 0.35
+	armadilha_armada.emit(nome)
+	return true
+
+## Tira uma armadilha do equipamento ou da mochila. Devolve "" se não há nenhuma.
+func _tirar_armadilha_do_bolso() -> String:
+	var equipada: String = GameState.item_equipado(ItemDB.SLOT_ARMADILHA)
+	if equipada != "":
+		GameState.desequipar(ItemDB.SLOT_ARMADILHA)
+		return equipada
+	for nome in GameState.mochila:
+		if ItemDB.slot_de(nome) == ItemDB.SLOT_ARMADILHA:
+			GameState.remover_item(nome)
+			return nome
+	return ""
 
 # ------------------------------------------------------------------ tocha
 ## Quando a chama fica baixa, queima sozinha o combustível equipado

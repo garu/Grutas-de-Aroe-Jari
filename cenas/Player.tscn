@@ -8,22 +8,22 @@
 radius = 8.0
 
 [sub_resource type="Gradient" id="Gradient_7v0vg"]
-offsets = PackedFloat32Array(0.045454547, 0.84659094)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+offsets = PackedFloat32Array(0, 0.35, 0.62, 0.82, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.85, 0.85, 0.85, 1, 0.5, 0.5, 0.5, 1, 0.18, 0.18, 0.18, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_llt0e"]
 gradient = SubResource("Gradient_7v0vg")
-width = 128
-height = 128
+width = 256
+height = 256
 fill = 1
 fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(1, 1)
+fill_to = Vector2(1, 0.5)
 
 [node name="Player" type="CharacterBody2D" unique_id=855842498]
 collision_layer = 2
 script = ExtResource("1_script")
 tocha_segundos = 1200.0
-tocha_escala_max = 2.0
+tocha_escala_max = 1.45
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=497289104]
 sprite_frames = ExtResource("2_frames")
@@ -35,12 +35,15 @@ position = Vector2(0, 16)
 shape = SubResource("col")
 
 [node name="TorchLight" type="PointLight2D" parent="." unique_id=1223135240]
+texture_filter = 2
 position = Vector2(0, 8)
 color = Color(1, 0.82, 0.5, 1)
 energy = 0.5
 shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 3.0
 texture = SubResource("GradientTexture2D_llt0e")
-texture_scale = 2.4
+texture_scale = 1.45
 script = ExtResource("4_53ko3")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1303748838]
