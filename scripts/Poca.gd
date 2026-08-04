@@ -22,8 +22,11 @@ signal secou
 ## Distância em que aparece o aviso de "E".
 @export var raio_interacao: float = 60.0
 
-## Arte da poça. Sem textura, o script desenha uma mancha d'água.
+## Arte da poça. Deixando vazio, usa a de CAMINHO_PADRAO; sem o arquivo,
+## o script desenha uma mancha d'água no lugar.
 @export var textura: Texture2D
+
+const CAMINHO_PADRAO := "res://sprites/itens/coletaveis/agua.png"
 
 ## Tamanho da mancha desenhada, em pixels (antes da escala do nó).
 @export var raio_x: float = 46.0
@@ -53,17 +56,27 @@ func _ready() -> void:
 
 
 func _montar_visual() -> void:
+	if textura == null and ResourceLoader.exists(CAMINHO_PADRAO):
+		textura = load(CAMINHO_PADRAO) as Texture2D
+
 	if textura != null:
 		var sp := Sprite2D.new()
 		sp.texture = textura
 		add_child(sp)
 		return
 
-	# Sem arte ainda: uma mancha escura com um reflexo por cima.
-	add_child(_oval(26.0, 13.0, cor_agua))
-	var brilho := _oval(11.0, 5.0, cor_brilho)
-	brilho.position = Vector2(-6, -3)
+	# Sem arte ainda: borda de pedra molhada, água e dois reflexos por cima.
+	var borda := _oval(raio_x + 5.0, raio_y + 4.0, Color(0.16, 0.18, 0.2, 0.8))
+	add_child(borda)
+	add_child(_oval(raio_x, raio_y, cor_agua))
+
+	var brilho := _oval(raio_x * 0.42, raio_y * 0.32, cor_brilho)
+	brilho.position = Vector2(-raio_x * 0.26, -raio_y * 0.3)
 	add_child(brilho)
+
+	var faisca := _oval(raio_x * 0.16, raio_y * 0.14, cor_brilho)
+	faisca.position = Vector2(raio_x * 0.34, raio_y * 0.28)
+	add_child(faisca)
 
 
 func _oval(rx: float, ry: float, cor: Color) -> Polygon2D:
@@ -87,7 +100,7 @@ func _montar_aviso() -> void:
 	l.add_theme_color_override("font_color", Color(1, 0.93, 0.7))
 	l.add_theme_color_override("font_outline_color", Color(0, 0, 0))
 	l.add_theme_constant_override("outline_size", 4)
-	l.position = Vector2(-4, -30)
+	l.position = Vector2(-4, -46)
 	_aviso.add_child(l)
 	_aviso.visible = false
 
@@ -97,7 +110,7 @@ func _montar_aviso() -> void:
 	_recado.add_theme_color_override("font_color", Color(0.95, 0.92, 0.82))
 	_recado.add_theme_color_override("font_outline_color", Color(0, 0, 0))
 	_recado.add_theme_constant_override("outline_size", 4)
-	_recado.position = Vector2(-52, -46)
+	_recado.position = Vector2(-52, -64)
 	_recado.size = Vector2(104, 0)
 	_recado.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_recado.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -164,6 +177,14 @@ func _tirar_cuia_vazia() -> bool:
 			GameState.desequipar(slot)
 			return true
 	return GameState.remover_item(item_vazio)
+
+
+## A água respira devagar. Num corredor escuro, o que se mexe chama o olho —
+## é o que faz a poça ser achada em vez de passar batida.
+func _reluzir() -> void:
+	var t := create_tween().set_loops()
+	t.tween_property(self, "modulate", Color(1.25, 1.25, 1.3), 1.4)
+	t.tween_property(self, "modulate", Color(0.82, 0.86, 0.92), 1.4)
 
 
 ## Um tremor na superfície quando a cuia entra na água.

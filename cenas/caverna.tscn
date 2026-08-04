@@ -167,103 +167,6 @@ raio_de_deteccao = 520.0
 
 [node name="Inventario" parent="." unique_id=878552224 instance=ExtResource("4_inv")]
 
-[node name="cipo1" parent="." unique_id=283201234 instance=ExtResource("5_item")]
-position = Vector2(-1224, -1080)
-scale = Vector2(3, 3)
-
-[node name="cipo2" parent="." unique_id=48631566 instance=ExtResource("5_item")]
-position = Vector2(1224, -1512)
-scale = Vector2(3, 3)
-
-[node name="cipo3" parent="." unique_id=793986527 instance=ExtResource("5_item")]
-position = Vector2(-72, -2664)
-scale = Vector2(3, 3)
-
-[node name="graveto1" parent="." unique_id=751524791 instance=ExtResource("5_item")]
-position = Vector2(-1800, -2520)
-scale = Vector2(3, 3)
-nome = "graveto"
-
-[node name="graveto2" parent="." unique_id=1943799164 instance=ExtResource("5_item")]
-position = Vector2(-72, -72)
-scale = Vector2(3, 3)
-nome = "graveto"
-
-[node name="graveto3" parent="." unique_id=561593571 instance=ExtResource("5_item")]
-position = Vector2(-2376, -648)
-scale = Vector2(3, 3)
-nome = "graveto"
-
-[node name="folhas1" parent="." unique_id=217165177 instance=ExtResource("5_item")]
-position = Vector2(216, -1080)
-scale = Vector2(3, 3)
-nome = "folhas_secas"
-
-[node name="folhas2" parent="." unique_id=802159404 instance=ExtResource("5_item")]
-position = Vector2(-792, -2088)
-scale = Vector2(3, 3)
-nome = "folhas_secas"
-
-[node name="pedras1" parent="." unique_id=1177455471 instance=ExtResource("5_item")]
-position = Vector2(-2088, -1512)
-scale = Vector2(3, 3)
-categoria = "arma"
-nome = "pedras"
-
-[node name="pedras2" parent="." unique_id=1500603258 instance=ExtResource("5_item")]
-position = Vector2(648, -2232)
-scale = Vector2(3, 3)
-categoria = "arma"
-nome = "pedras"
-
-[node name="pedras3" parent="." unique_id=461824772 instance=ExtResource("5_item")]
-position = Vector2(-1656, -216)
-scale = Vector2(3, 3)
-categoria = "arma"
-nome = "pedras"
-
-[node name="raiz1" parent="." unique_id=1077159755 instance=ExtResource("5_item")]
-position = Vector2(-72, -1800)
-scale = Vector2(3, 3)
-nome = "raiz_unha_de_gato"
-
-[node name="raiz2" parent="." unique_id=1635599329 instance=ExtResource("5_item")]
-position = Vector2(-648, -648)
-scale = Vector2(3, 3)
-nome = "raiz_unha_de_gato"
-
-[node name="flor_espinhenta1" parent="." unique_id=1101457993 instance=ExtResource("5_item")]
-position = Vector2(-648, -72)
-scale = Vector2(3, 3)
-nome = "flor_craua"
-
-[node name="flor_espinhenta2" parent="." unique_id=129415478 instance=ExtResource("5_item")]
-position = Vector2(-1512, -1512)
-scale = Vector2(3, 3)
-nome = "flor_craua"
-
-[node name="tronco1" parent="." unique_id=1272244664 instance=ExtResource("5_item")]
-position = Vector2(-1944, -936)
-scale = Vector2(3, 3)
-categoria = "arma"
-nome = "tronco_sucupira"
-
-[node name="tronco2" parent="." unique_id=507867000 instance=ExtResource("5_item")]
-position = Vector2(-1080, -2520)
-scale = Vector2(3, 3)
-categoria = "arma"
-nome = "tronco_sucupira"
-
-[node name="pote1" parent="." unique_id=1525339212 instance=ExtResource("5_item")]
-position = Vector2(360, -648)
-scale = Vector2(3, 3)
-nome = "cuia"
-
-[node name="pote2" parent="." unique_id=242441351 instance=ExtResource("5_item")]
-position = Vector2(-1368, -648)
-scale = Vector2(3, 3)
-nome = "cuia"
-
 [node name="Tutorial" parent="." unique_id=251882512 instance=ExtResource("6_pint")]
 position = Vector2(432, 290)
 scale = Vector2(2, 2)
@@ -320,139 +223,286 @@ titulo = "Pintura rupestre"
 textura = ExtResource("9_rup2")
 receita_nome = "armadilha_espinho"
 
-[node name="chao_graveto_1" parent="." instance=ExtResource("5_item")]
-position = Vector2(-1944, -1944)
-scale = Vector2(3, 3)
-nome = "graveto"
-
-[node name="chao_graveto_2" parent="." instance=ExtResource("5_item")]
-position = Vector2(-2376, -1080)
-scale = Vector2(3, 3)
-nome = "graveto"
-
-[node name="chao_graveto_3" parent="." instance=ExtResource("5_item")]
-position = Vector2(-2088, -216)
-scale = Vector2(3, 3)
-nome = "graveto"
-
-[node name="chao_graveto_4" parent="." instance=ExtResource("5_item")]
-position = Vector2(-72, -2232)
-scale = Vector2(3, 3)
-nome = "graveto"
-
-[node name="chao_graveto_5" parent="." instance=ExtResource("5_item")]
-position = Vector2(-1800, -1368)
-scale = Vector2(3, 3)
-nome = "graveto"
-
-[node name="chao_graveto_6" parent="." instance=ExtResource("5_item")]
-position = Vector2(-504, -1080)
-scale = Vector2(3, 3)
-nome = "graveto"
-
-[node name="chao_folhas_secas_7" parent="." instance=ExtResource("5_item")]
-position = Vector2(-360, 72)
-scale = Vector2(3, 3)
-nome = "folhas_secas"
-
-[node name="chao_folhas_secas_8" parent="." instance=ExtResource("5_item")]
-position = Vector2(936, -2376)
-scale = Vector2(3, 3)
-nome = "folhas_secas"
-
-[node name="chao_folhas_secas_9" parent="." instance=ExtResource("5_item")]
-position = Vector2(-2376, -1368)
-scale = Vector2(3, 3)
-nome = "folhas_secas"
-
-[node name="chao_folhas_secas_10" parent="." instance=ExtResource("5_item")]
-position = Vector2(-2088, -648)
-scale = Vector2(3, 3)
-nome = "folhas_secas"
-
-[node name="chao_folhas_secas_11" parent="." instance=ExtResource("5_item")]
-position = Vector2(-1080, -648)
-scale = Vector2(3, 3)
-nome = "folhas_secas"
-
-[node name="chao_raiz_unha_de_gato_12" parent="." instance=ExtResource("5_item")]
-position = Vector2(-1944, -1224)
-scale = Vector2(3, 3)
-nome = "raiz_unha_de_gato"
-
-[node name="chao_raiz_unha_de_gato_13" parent="." instance=ExtResource("5_item")]
-position = Vector2(-1656, -2376)
-scale = Vector2(3, 3)
-nome = "raiz_unha_de_gato"
-
-[node name="chao_raiz_unha_de_gato_14" parent="." instance=ExtResource("5_item")]
-position = Vector2(-1656, -1656)
-scale = Vector2(3, 3)
-nome = "raiz_unha_de_gato"
-
-[node name="chao_pedras_15" parent="." instance=ExtResource("5_item")]
-position = Vector2(-1368, -1656)
-scale = Vector2(3, 3)
-nome = "pedras"
-
-[node name="chao_pedras_16" parent="." instance=ExtResource("5_item")]
-position = Vector2(72, -1656)
-scale = Vector2(3, 3)
-nome = "pedras"
-
-[node name="chao_pedras_17" parent="." instance=ExtResource("5_item")]
-position = Vector2(360, -2520)
-scale = Vector2(3, 3)
-nome = "pedras"
-
-[node name="chao_cipo_18" parent="." instance=ExtResource("5_item")]
-position = Vector2(-2376, -1224)
-scale = Vector2(3, 3)
-nome = "cipo"
-
-[node name="chao_cipo_19" parent="." instance=ExtResource("5_item")]
-position = Vector2(-2376, -936)
-scale = Vector2(3, 3)
-nome = "cipo"
-
-[node name="chao_cipo_20" parent="." instance=ExtResource("5_item")]
+[node name="Pintura1_gemea" parent="." instance=ExtResource("6_pint")]
 position = Vector2(-2376, -792)
+scale = Vector2(2, 2)
+texto = "Aqui os antigos gravaram como fazer:"
+titulo = "Pintura rupestre"
+textura = ExtResource("9_rup2")
+receita_nome = "armadilha_tronco"
+
+[node name="Pintura3_gemea" parent="." instance=ExtResource("6_pint")]
+position = Vector2(-1944, -216)
+scale = Vector2(2, 2)
+texto = "Aqui os antigos gravaram como fazer:"
+titulo = "Pintura rupestre"
+textura = ExtResource("8_rup1")
+receita_nome = "pa"
+
+[node name="Pintura5_gemea" parent="." instance=ExtResource("6_pint")]
+position = Vector2(-360, -72)
+scale = Vector2(2, 2)
+texto = "Aqui os antigos gravaram como fazer:"
+titulo = "Pintura rupestre"
+textura = ExtResource("9_rup2")
+receita_nome = "cuia_veneno"
+
+[node name="Pintura6_gemea" parent="." instance=ExtResource("6_pint")]
+position = Vector2(-2376, -1080)
+scale = Vector2(2, 2)
+texto = "Aqui os antigos gravaram como fazer:"
+titulo = "Pintura rupestre"
+textura = ExtResource("8_rup1")
+receita_nome = "cuia_agua"
+
+[node name="Pintura7_gemea" parent="." instance=ExtResource("6_pint")]
+position = Vector2(-1656, -216)
+scale = Vector2(2, 2)
+texto = "Aqui os antigos gravaram como fazer:"
+titulo = "Pintura rupestre"
+textura = ExtResource("9_rup2")
+receita_nome = "armadilha_espinho"
+
+[node name="it1_cipo" parent="." instance=ExtResource("5_item")]
+position = Vector2(1224, 72)
 scale = Vector2(3, 3)
 nome = "cipo"
 
-[node name="chao_flor_craua_21" parent="." instance=ExtResource("5_item")]
-position = Vector2(-2232, -1368)
-scale = Vector2(3, 3)
-nome = "flor_craua"
-
-[node name="chao_flor_craua_22" parent="." instance=ExtResource("5_item")]
-position = Vector2(-2232, -792)
-scale = Vector2(3, 3)
-nome = "flor_craua"
-
-[node name="chao_cuia_23" parent="." instance=ExtResource("5_item")]
-position = Vector2(-2232, -648)
-scale = Vector2(3, 3)
-nome = "cuia"
-
-[node name="chao_cuia_24" parent="." instance=ExtResource("5_item")]
+[node name="it2_cuia" parent="." instance=ExtResource("5_item")]
 position = Vector2(-2088, -1656)
 scale = Vector2(3, 3)
 nome = "cuia"
 
-[node name="chao_tronco_sucupira_25" parent="." instance=ExtResource("5_item")]
-position = Vector2(-2088, -1368)
+[node name="it3_flor_craua" parent="." instance=ExtResource("5_item")]
+position = Vector2(72, -1800)
+scale = Vector2(3, 3)
+nome = "flor_craua"
+
+[node name="it4_folhas_secas" parent="." instance=ExtResource("5_item")]
+position = Vector2(-72, -2376)
+scale = Vector2(3, 3)
+nome = "folhas_secas"
+
+[node name="it5_graveto" parent="." instance=ExtResource("5_item")]
+position = Vector2(-648, -648)
+scale = Vector2(3, 3)
+nome = "graveto"
+
+[node name="it6_pedras" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2376, -1224)
+scale = Vector2(3, 3)
+nome = "pedras"
+
+[node name="it7_raiz_unha_de_gato" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1656, -1368)
+scale = Vector2(3, 3)
+nome = "raiz_unha_de_gato"
+
+[node name="it8_tronco_sucupira" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1368, -648)
 scale = Vector2(3, 3)
 nome = "tronco_sucupira"
 
+[node name="it9_cipo" parent="." instance=ExtResource("5_item")]
+position = Vector2(1224, -1512)
+scale = Vector2(3, 3)
+nome = "cipo"
+
+[node name="it10_cuia" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2376, -648)
+scale = Vector2(3, 3)
+nome = "cuia"
+
+[node name="it11_flor_craua" parent="." instance=ExtResource("5_item")]
+position = Vector2(-792, -2088)
+scale = Vector2(3, 3)
+nome = "flor_craua"
+
+[node name="it12_folhas_secas" parent="." instance=ExtResource("5_item")]
+position = Vector2(216, -1080)
+scale = Vector2(3, 3)
+nome = "folhas_secas"
+
+[node name="it13_graveto" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1080, -2520)
+scale = Vector2(3, 3)
+nome = "graveto"
+
+[node name="it14_pedras" parent="." instance=ExtResource("5_item")]
+position = Vector2(-504, -1080)
+scale = Vector2(3, 3)
+nome = "pedras"
+
+[node name="it15_raiz_unha_de_gato" parent="." instance=ExtResource("5_item")]
+position = Vector2(648, -2232)
+scale = Vector2(3, 3)
+nome = "raiz_unha_de_gato"
+
+[node name="it16_tronco_sucupira" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1512, -1656)
+scale = Vector2(3, 3)
+nome = "tronco_sucupira"
+
+[node name="it17_cipo" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1944, -1224)
+scale = Vector2(3, 3)
+nome = "cipo"
+
+[node name="it18_cuia" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2232, -936)
+scale = Vector2(3, 3)
+nome = "cuia"
+
+[node name="it19_flor_craua" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1944, -1944)
+scale = Vector2(3, 3)
+nome = "flor_craua"
+
+[node name="it20_folhas_secas" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1656, -1080)
+scale = Vector2(3, 3)
+nome = "folhas_secas"
+
+[node name="it21_graveto" parent="." instance=ExtResource("5_item")]
+position = Vector2(-72, -2664)
+scale = Vector2(3, 3)
+nome = "graveto"
+
+[node name="it22_pedras" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1080, -648)
+scale = Vector2(3, 3)
+nome = "pedras"
+
+[node name="it23_raiz_unha_de_gato" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2088, -648)
+scale = Vector2(3, 3)
+nome = "raiz_unha_de_gato"
+
+[node name="it24_tronco_sucupira" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1800, -1512)
+scale = Vector2(3, 3)
+nome = "tronco_sucupira"
+
+[node name="it25_cipo" parent="." instance=ExtResource("5_item")]
+position = Vector2(-216, -72)
+scale = Vector2(3, 3)
+nome = "cipo"
+
+[node name="it26_cuia" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2088, -1368)
+scale = Vector2(3, 3)
+nome = "cuia"
+
+[node name="it27_flor_craua" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1368, -1512)
+scale = Vector2(3, 3)
+nome = "flor_craua"
+
+[node name="it28_folhas_secas" parent="." instance=ExtResource("5_item")]
+position = Vector2(-72, -1656)
+scale = Vector2(3, 3)
+nome = "folhas_secas"
+
+[node name="it29_graveto" parent="." instance=ExtResource("5_item")]
+position = Vector2(-360, 72)
+scale = Vector2(3, 3)
+nome = "graveto"
+
+[node name="it30_pedras" parent="." instance=ExtResource("5_item")]
+position = Vector2(360, -2520)
+scale = Vector2(3, 3)
+nome = "pedras"
+
+[node name="it31_raiz_unha_de_gato" parent="." instance=ExtResource("5_item")]
+position = Vector2(-72, -72)
+scale = Vector2(3, 3)
+nome = "raiz_unha_de_gato"
+
+[node name="it32_cipo" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1800, -216)
+scale = Vector2(3, 3)
+nome = "cipo"
+
+[node name="it33_folhas_secas" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1512, -648)
+scale = Vector2(3, 3)
+nome = "folhas_secas"
+
+[node name="it34_graveto" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1224, -648)
+scale = Vector2(3, 3)
+nome = "graveto"
+
+[node name="it35_pedras" parent="." instance=ExtResource("5_item")]
+position = Vector2(-72, -2520)
+scale = Vector2(3, 3)
+nome = "pedras"
+
+[node name="it36_raiz_unha_de_gato" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1800, -1224)
+scale = Vector2(3, 3)
+nome = "raiz_unha_de_gato"
+
+[node name="it37_cipo" parent="." instance=ExtResource("5_item")]
+position = Vector2(-216, 72)
+scale = Vector2(3, 3)
+nome = "cipo"
+
+[node name="it38_folhas_secas" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1944, -1080)
+scale = Vector2(3, 3)
+nome = "folhas_secas"
+
+[node name="it39_graveto" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2376, -936)
+scale = Vector2(3, 3)
+nome = "graveto"
+
+[node name="it40_pedras" parent="." instance=ExtResource("5_item")]
+position = Vector2(-72, -2232)
+scale = Vector2(3, 3)
+nome = "pedras"
+
+[node name="it41_folhas_secas" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2232, -792)
+scale = Vector2(3, 3)
+nome = "folhas_secas"
+
+[node name="it42_graveto" parent="." instance=ExtResource("5_item")]
+position = Vector2(360, -2664)
+scale = Vector2(3, 3)
+nome = "graveto"
+
+[node name="it43_graveto" parent="." instance=ExtResource("5_item")]
+position = Vector2(1080, -1512)
+scale = Vector2(3, 3)
+nome = "graveto"
+
+[node name="it44_graveto" parent="." instance=ExtResource("5_item")]
+position = Vector2(-792, -2520)
+scale = Vector2(3, 3)
+nome = "graveto"
+
 [node name="poca1" parent="." instance=ExtResource("12_poca")]
-position = Vector2(1224, 72)
-scale = Vector2(2, 2)
+position = Vector2(-72, 72)
+scale = Vector2(1.5, 1.5)
 
 [node name="poca2" parent="." instance=ExtResource("12_poca")]
-position = Vector2(-1656, -1080)
-scale = Vector2(2, 2)
+position = Vector2(-1800, -2376)
+scale = Vector2(1.5, 1.5)
 
 [node name="poca3" parent="." instance=ExtResource("12_poca")]
-position = Vector2(-2232, -936)
-scale = Vector2(2, 2)
+position = Vector2(936, -2376)
+scale = Vector2(1.5, 1.5)
+
+[node name="poca4" parent="." instance=ExtResource("12_poca")]
+position = Vector2(-2088, -216)
+scale = Vector2(1.5, 1.5)
+
+[node name="poca5" parent="." instance=ExtResource("12_poca")]
+position = Vector2(-1080, -1080)
+scale = Vector2(1.5, 1.5)
+
+[node name="poca6" parent="." instance=ExtResource("12_poca")]
+position = Vector2(72, -1656)
+scale = Vector2(1.5, 1.5)

@@ -269,20 +269,37 @@ func _atualizar_animacao(dir: Vector2) -> void:
 		anim.play(_anim("idle"))
 
 # ------------------------------------------------------------------ ataque
+## Única arma que golpeia. De mão vazia — ou segurando qualquer outra coisa —
+## não há golpe: Pari não sabe brigar sem o cacete.
+@export var arma_de_golpe: String = "tronco_sucupira"
+
+## O que está na mão agora ("" se nada).
+func arma_na_mao() -> String:
+	if get_node_or_null("/root/GameState") == null:
+		return ""
+	return GameState.item_equipado(ItemDB.SLOT_ARMA)
+
+func pode_golpear() -> bool:
+	return arma_na_mao() == arma_de_golpe
+
 func atacar() -> void:
 	if _atacando or not vivo:
 		return
-	_atacando = true
-	var arma := ""
-	if get_node_or_null("/root/GameState") != null:
-		arma = GameState.item_equipado(ItemDB.SLOT_ARMA)
 
+	var arma := arma_na_mao()
+
+	# Pedrinhas e afins voam mesmo sem o cacete: arremessar não é bater.
 	if arma != "" and ItemDB.e_arremesso(arma):
+		_atacando = true
 		anim.play(_anim("idle"))
 		_arremessar(arma)
-	else:
+	elif pode_golpear():
+		_atacando = true
 		anim.play(_anim("attack"))
 		_golpear()
+	else:
+		# sem o cacete a tecla não faz nada — e Pari não trava no meio do gesto
+		return
 
 	await get_tree().create_timer(duracao_ataque).timeout
 	_atacando = false
