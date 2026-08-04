@@ -1,6 +1,15 @@
 class_name Butoriko
 extends CharacterBody2D
 
+@export_group("Sons")
+
+@export var som_rosnado: AudioStream
+@export var tempo_minimo_rosnado: float = 30.0
+@export var tempo_maximo_rosnado: float = 120.0
+@export var distancia_maxima_som: float = 800.0
+
+## Atenuação sonora (1.0 = linear, >1.0 o som cai mais rápido com a distância).
+@export var atenuacao_som: float = 1.0
 
 @export_group("Movimento")
 
@@ -115,6 +124,8 @@ var tem_ultima_posicao_de_marca := false
 var ultima_posicao_de_marca := Vector2.ZERO
 var estava_perseguindo := false
 
+var reproductor_rosnado: AudioStreamPlayer2D
+var temporizador_de_rosnado: Timer
 
 func _ready() -> void:
 	randomize()
@@ -133,6 +144,7 @@ func _ready() -> void:
 
 	_resolver_jogador()
 	_resolver_recipiente_de_marcas()
+	_configurar_audio_rosnado()
 
 	_escolher_nova_direcao()
 	_reiniciar_temporizador_de_direcao()
@@ -144,8 +156,16 @@ func _ready() -> void:
 	if ativar_perseguicao and jogador == null:
 		push_warning("CobraErrante: jogador não encontrado. Defina caminho_do_jogador ou coloque o jogador no grupo 'jogador'.")
 
+func _atacar_jogador() -> void:
+	if jogador.has_method("receber_dano"):
+		jogador.receber_dano(10)
 
 func _physics_process(_delta_tempo: float) -> void:
+	# Verifica se encostou no jogador (distância em pixels, ex: 25 pixels)
+	if jogador != null and is_instance_valid(jogador):
+		if global_position.distance_to(jogador.global_position) <= 25.0:
+			_atacar_jogador()
+			
 	# Tenta perseguir primeiro. Se conseguir perseguindo, ignora o modo aleatório neste frame.
 	if ativar_perseguicao and _tentar_perseguir_jogador():
 		return
@@ -235,6 +255,10 @@ func _ao_expirar_temporizador_de_marcas() -> void:
 func _tentar_perseguir_jogador() -> bool:
 	if not _conseguir_ver_jogador():
 		return false
+		
+	# Se não estava perseguindo no frame anterior, é o primeiro instante de detecção!
+	if not estava_perseguindo:
+		_tocar_rosnado()
 
 	# Para as mudanças aleatórias de direção enquanto estiver perseguindo.
 	temporizador_de_direcao.stop()
@@ -401,3 +425,41 @@ func _gerar_marca() -> void:
 					marcas.erase(marca)
 					marca.queue_free()
 		)
+
+func _configurar_audio_rosnado() -> void:
+	# Cria ou obtém o player de áudio 2D posicionado no próprio boss
+	reproductor_rosnado = get_node_or_null("ReproductorRosnado") as AudioStreamPlayer2D
+	if reproductor_rosnado == null:
+		reproductor_rosnado = AudioStreamPlayer2D.new()
+		reproductor_rosnado.name = "ReproductorRosnado"
+		add_child(reproductor_rosnado)
+
+	if som_rosnado != null:
+		reproductor_rosnado.stream = som_rosnado
+
+	reproductor_rosnado.max_distance = distancia_maxima_som
+	reproductor_rosnado.attenuation = atenuacao_som
+
+	# Configura o temporizador do rosnado
+	temporizador_de_rosnado = _garantir_temporizador("TemporizadorDeRosnado")
+	temporizador_de_rosnado.one_shot = true
+	temporizador_de_rosnado.timeout.connect(_ao_expirar_temporizador_de_rosnado)
+	_reiniciar_temporizador_de_rosnado()
+
+
+func _reiniciar_temporizador_de_rosnado() -> void:
+	var v_min := maxf(0.1, tempo_minimo_rosnado)
+	var v_max := maxf(v_min, tempo_maximo_rosnado)
+
+	temporizador_de_rosnado.wait_time = randf_range(v_min, v_max)
+	temporizador_de_rosnado.start()
+
+
+func _ao_expirar_temporizador_de_rosnado() -> void:
+	_tocar_rosnado()
+	_reiniciar_temporizador_de_rosnado()
+
+
+func _tocar_rosnado() -> void:
+	if reproductor_rosnado != null and reproductor_rosnado.stream != null:
+		reproductor_rosnado.play()

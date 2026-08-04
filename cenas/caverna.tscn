@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://m8tfc275j4b5" path="res://cenas/Inventario.tscn" id="4_inv"]
 [ext_resource type="PackedScene" uid="uid://citemgaj001" path="res://cenas/Item.tscn" id="5_item"]
 [ext_resource type="PackedScene" uid="uid://cc3khkx5fbm3y" path="res://cenas/PinturaRupestre.tscn" id="6_pint"]
+[ext_resource type="AudioStream" uid="uid://kpe6vgt5yryo" path="res://sons/grunhido do butoriko.mp3" id="6_ripui"]
 [ext_resource type="Script" uid="uid://tdehu0dyjl5p" path="res://scripts/Fase.gd" id="7_fase"]
 [ext_resource type="Texture2D" uid="uid://dxdx4uekjdy2e" path="res://sprites/rupestres/rupestre_1.png" id="8_rup1"]
 [ext_resource type="Texture2D" uid="uid://cu6pikv0nnnp4" path="res://sprites/rupestres/rupestre2.png" id="9_rup2"]
@@ -151,6 +152,10 @@ color = Color(0.042860627, 0.03248966, 0.018704366, 1)
 [node name="Butoriko" parent="." unique_id=1541078003 instance=ExtResource("3_4vft8")]
 position = Vector2(-1800, -2520)
 scale = Vector2(1.5, 1.5)
+som_rosnado = ExtResource("6_ripui")
+tempo_minimo_rosnado = 20.0
+tempo_maximo_rosnado = 50.0
+distancia_maxima_som = 3000.0
 velocidade = 70.0
 distancia_de_sondagem_de_colisao = 28.0
 caminho_do_jogador = NodePath("../Player")
