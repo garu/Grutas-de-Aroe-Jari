@@ -10,8 +10,12 @@ extends Node2D
 @export_multiline var texto: String = ""
 @export var titulo: String = ""
 
-## Distância em pixels para o painel aparecer
+## Distância em pixels para o painel continuar aberto
 @export var raio_leitura: float = 130.0
+
+## Painel largo, texto alinhado à esquerda e centralizado na tela.
+## Use na pintura que lista os comandos do jogo.
+@export var lista_de_comandos: bool = false
 
 ## Arte da pintura na parede
 @export var textura: Texture2D
@@ -86,9 +90,15 @@ func _montar_painel() -> void:
 	estilo.set_border_width_all(2)
 	estilo.set_content_margin_all(8)
 	_painel.add_theme_stylebox_override("panel", estilo)
-	_painel.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
-	_painel.position = Vector2(-150, -110)
-	_painel.custom_minimum_size = Vector2(300, 0)
+	# A lista de comandos é alta demais para o rodapé: vai para o meio da tela.
+	var largura: float = 360.0 if lista_de_comandos else 300.0
+	if lista_de_comandos:
+		_painel.set_anchors_preset(Control.PRESET_CENTER)
+		_painel.position = Vector2(-largura / 2.0, -90)
+	else:
+		_painel.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+		_painel.position = Vector2(-largura / 2.0, -110)
+	_painel.custom_minimum_size = Vector2(largura, 0)
 	_painel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	centro.add_child(_painel)
 
@@ -106,9 +116,12 @@ func _montar_painel() -> void:
 
 	_lbl_texto = Label.new()
 	_lbl_texto.text = texto
-	_lbl_texto.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	# Lista de teclas se lê melhor alinhada à esquerda; recado curto, centrado.
+	_lbl_texto.horizontal_alignment = (
+		HORIZONTAL_ALIGNMENT_LEFT if lista_de_comandos else HORIZONTAL_ALIGNMENT_CENTER
+	)
 	_lbl_texto.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_lbl_texto.add_theme_font_size_override("font_size", 9)
+	_lbl_texto.add_theme_font_size_override("font_size", 10 if lista_de_comandos else 9)
 	_lbl_texto.add_theme_color_override("font_color", Color(0.9, 0.87, 0.8))
 	_lbl_texto.visible = texto != ""
 	col.add_child(_lbl_texto)
@@ -156,7 +169,7 @@ func texto_da_receita() -> String:
 func _process(_delta: float) -> void:
 	var perto := _perto_do_jogador()
 	if _aviso != null:
-		_aviso.visible = perto and not _lendo
+		_aviso.visible = _no_alcance_do_e() and not _lendo
 	# afastou-se: fecha o texto sozinho
 	if _lendo and not perto:
 		_lendo = false
@@ -165,6 +178,20 @@ func _process(_delta: float) -> void:
 func _perto_do_jogador() -> bool:
 	for p in get_tree().get_nodes_in_group("player"):
 		if is_instance_valid(p) and global_position.distance_to(p.global_position) <= raio_leitura:
+			return true
+	return false
+
+## O aviso "E" só acende quando apertar E de fato funciona. A pintura pode
+## ficar aberta de mais longe (raio_leitura), mas o braço do Pari é curto.
+func _no_alcance_do_e() -> bool:
+	for p in get_tree().get_nodes_in_group("player"):
+		if not is_instance_valid(p):
+			continue
+		var alcance: float = raio_leitura
+		var declarado: Variant = p.get("alcance_interacao")
+		if declarado != null:
+			alcance = minf(raio_leitura, float(declarado))
+		if global_position.distance_to(p.global_position) <= alcance:
 			return true
 	return false
 

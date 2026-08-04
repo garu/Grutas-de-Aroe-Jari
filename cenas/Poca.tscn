@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cpocadagua001"]
+
+[ext_resource type="Script" path="res://scripts/Poca.gd" id="1_poca"]
+
+[node name="Poca" type="Node2D"]
+script = ExtResource("1_poca")

@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dxdx4uekjdy2e" path="res://sprites/rupestres/rupestre_1.png" id="8_rup1"]
 [ext_resource type="Texture2D" uid="uid://cu6pikv0nnnp4" path="res://sprites/rupestres/rupestre2.png" id="9_rup2"]
 [ext_resource type="Texture2D" uid="uid://d3122uvs2buj6" path="res://sprites/rupestres/rupestre_3.png" id="10_rup3"]
+[ext_resource type="PackedScene" uid="uid://cpocadagua001" path="res://cenas/Poca.tscn" id="12_poca"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_7io4p"]
 polygon = PackedVector2Array(-72, -72, 72, -72, 72, 72, 24, 72, 24, -24, -72, -24)
@@ -266,10 +267,17 @@ nome = "cuia"
 [node name="Tutorial" parent="." unique_id=251882512 instance=ExtResource("6_pint")]
 position = Vector2(432, 290)
 scale = Vector2(2, 2)
-texto = "A chama diminui: alimente-a com graveto
-(I abre inventário)"
+texto = "Setas ou WASD   —   andar
+E   —   pegar do chão e ler as paredes
+Espaço ou X   —   usar o item equipado
+Q   —   armar a armadilha à sua frente
+I ou Tab   —   abrir a mochila (Esc fecha)
+
+A chama é a sua vida: quando ela apagar, Pari cai.
+Alimente-a com graveto ou folhas secas pela mochila."
 titulo = "Os antigos deixaram este recado"
 raio_leitura = 170.0
+lista_de_comandos = true
 textura = ExtResource("10_rup3")
 
 [node name="Pintura1" parent="." unique_id=31400086 instance=ExtResource("6_pint")]
@@ -311,3 +319,140 @@ texto = "Aqui os antigos gravaram como fazer:"
 titulo = "Pintura rupestre"
 textura = ExtResource("9_rup2")
 receita_nome = "armadilha_espinho"
+
+[node name="chao_graveto_1" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1944, -1944)
+scale = Vector2(3, 3)
+nome = "graveto"
+
+[node name="chao_graveto_2" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2376, -1080)
+scale = Vector2(3, 3)
+nome = "graveto"
+
+[node name="chao_graveto_3" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2088, -216)
+scale = Vector2(3, 3)
+nome = "graveto"
+
+[node name="chao_graveto_4" parent="." instance=ExtResource("5_item")]
+position = Vector2(-72, -2232)
+scale = Vector2(3, 3)
+nome = "graveto"
+
+[node name="chao_graveto_5" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1800, -1368)
+scale = Vector2(3, 3)
+nome = "graveto"
+
+[node name="chao_graveto_6" parent="." instance=ExtResource("5_item")]
+position = Vector2(-504, -1080)
+scale = Vector2(3, 3)
+nome = "graveto"
+
+[node name="chao_folhas_secas_7" parent="." instance=ExtResource("5_item")]
+position = Vector2(-360, 72)
+scale = Vector2(3, 3)
+nome = "folhas_secas"
+
+[node name="chao_folhas_secas_8" parent="." instance=ExtResource("5_item")]
+position = Vector2(936, -2376)
+scale = Vector2(3, 3)
+nome = "folhas_secas"
+
+[node name="chao_folhas_secas_9" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2376, -1368)
+scale = Vector2(3, 3)
+nome = "folhas_secas"
+
+[node name="chao_folhas_secas_10" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2088, -648)
+scale = Vector2(3, 3)
+nome = "folhas_secas"
+
+[node name="chao_folhas_secas_11" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1080, -648)
+scale = Vector2(3, 3)
+nome = "folhas_secas"
+
+[node name="chao_raiz_unha_de_gato_12" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1944, -1224)
+scale = Vector2(3, 3)
+nome = "raiz_unha_de_gato"
+
+[node name="chao_raiz_unha_de_gato_13" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1656, -2376)
+scale = Vector2(3, 3)
+nome = "raiz_unha_de_gato"
+
+[node name="chao_raiz_unha_de_gato_14" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1656, -1656)
+scale = Vector2(3, 3)
+nome = "raiz_unha_de_gato"
+
+[node name="chao_pedras_15" parent="." instance=ExtResource("5_item")]
+position = Vector2(-1368, -1656)
+scale = Vector2(3, 3)
+nome = "pedras"
+
+[node name="chao_pedras_16" parent="." instance=ExtResource("5_item")]
+position = Vector2(72, -1656)
+scale = Vector2(3, 3)
+nome = "pedras"
+
+[node name="chao_pedras_17" parent="." instance=ExtResource("5_item")]
+position = Vector2(360, -2520)
+scale = Vector2(3, 3)
+nome = "pedras"
+
+[node name="chao_cipo_18" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2376, -1224)
+scale = Vector2(3, 3)
+nome = "cipo"
+
+[node name="chao_cipo_19" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2376, -936)
+scale = Vector2(3, 3)
+nome = "cipo"
+
+[node name="chao_cipo_20" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2376, -792)
+scale = Vector2(3, 3)
+nome = "cipo"
+
+[node name="chao_flor_craua_21" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2232, -1368)
+scale = Vector2(3, 3)
+nome = "flor_craua"
+
+[node name="chao_flor_craua_22" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2232, -792)
+scale = Vector2(3, 3)
+nome = "flor_craua"
+
+[node name="chao_cuia_23" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2232, -648)
+scale = Vector2(3, 3)
+nome = "cuia"
+
+[node name="chao_cuia_24" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2088, -1656)
+scale = Vector2(3, 3)
+nome = "cuia"
+
+[node name="chao_tronco_sucupira_25" parent="." instance=ExtResource("5_item")]
+position = Vector2(-2088, -1368)
+scale = Vector2(3, 3)
+nome = "tronco_sucupira"
+
+[node name="poca1" parent="." instance=ExtResource("12_poca")]
+position = Vector2(1224, 72)
+scale = Vector2(2, 2)
+
+[node name="poca2" parent="." instance=ExtResource("12_poca")]
+position = Vector2(-1656, -1080)
+scale = Vector2(2, 2)
+
+[node name="poca3" parent="." instance=ExtResource("12_poca")]
+position = Vector2(-2232, -936)
+scale = Vector2(2, 2)
