@@ -2,11 +2,22 @@
 
 [ext_resource type="Script" uid="uid://dh35g3kx5oqrq" path="res://scripts/Player.gd" id="1_script"]
 [ext_resource type="SpriteFrames" uid="uid://cpariframes01" path="res://cenas/player_frames.tres" id="2_frames"]
-[ext_resource type="Texture2D" uid="uid://drmjfexvtqonh" path="res://sprites/FX/torch_light.png" id="3_light"]
 [ext_resource type="Script" uid="uid://cp07srqiapvq7" path="res://scripts/tocha.gd" id="4_53ko3"]
 
 [sub_resource type="CircleShape2D" id="col"]
 radius = 8.0
+
+[sub_resource type="Gradient" id="Gradient_7v0vg"]
+offsets = PackedFloat32Array(0.2437673, 0.7423823)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_llt0e"]
+gradient = SubResource("Gradient_7v0vg")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
 
 [node name="Player" type="CharacterBody2D" unique_id=855842498]
 collision_layer = 2
@@ -28,7 +39,7 @@ position = Vector2(0, 8)
 color = Color(1, 0.82, 0.5, 1)
 energy = 0.5
 shadow_enabled = true
-texture = ExtResource("3_light")
+texture = SubResource("GradientTexture2D_llt0e")
 texture_scale = 2.4
 script = ExtResource("4_53ko3")
 
