@@ -108,12 +108,23 @@ func _ajustar_limites_camera() -> void:
 	camera.limit_top = int(floor(minf(canto_a.y, canto_b.y)))
 	camera.limit_right = int(ceil(maxf(canto_a.x, canto_b.x)))
 	camera.limit_bottom = int(ceil(maxf(canto_a.y, canto_b.y)))
+	_ligar_limites(true)
 
 func _camera_sem_limites() -> void:
 	camera.limit_left = -10000000
 	camera.limit_top = -10000000
 	camera.limit_right = 10000000
 	camera.limit_bottom = 10000000
+	_ligar_limites(false)
+
+## De nada adianta calcular a borda se a câmera está com os limites desligados.
+## `in` protege contra a propriedade não existir nesta versão da engine.
+func _ligar_limites(ligado: bool) -> void:
+	if "limit_enabled" in camera:
+		camera.limit_enabled = ligado
+	# com suavização de posição, parar na borda sem isto dá um solavanco
+	if "limit_smoothed" in camera:
+		camera.limit_smoothed = ligado
 
 func _achar_tilemap(no: Node) -> TileMapLayer:
 	if no == null:

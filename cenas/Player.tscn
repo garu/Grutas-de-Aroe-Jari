@@ -26,6 +26,7 @@ tocha_segundos = 1200.0
 tocha_escala_max = 1.45
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=497289104]
+position = Vector2(0, 5)
 sprite_frames = ExtResource("2_frames")
 animation = &"unarmed_walk_up"
 autoplay = "unarmed_idle_up"
@@ -47,9 +48,10 @@ texture_scale = 1.45
 script = ExtResource("4_53ko3")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1303748838]
-limit_enabled = false
-limit_left = 0
-limit_top = 0
-limit_right = 1280
-limit_bottom = 896
+limit_enabled = true
+limit_left = -2592
+limit_top = -2880
+limit_right = 1440
+limit_bottom = 432
+limit_smoothed = true
 position_smoothing_enabled = true
