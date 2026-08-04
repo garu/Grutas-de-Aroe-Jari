@@ -233,8 +233,10 @@ func _atualizar_animacao(dir: Vector2) -> void:
 			direcao = "right" if dir.x > 0.0 else "left"
 		else:
 			direcao = "down" if dir.y > 0.0 else "up"
+		anim.flip_h = (direcao == "left")
 		anim.play(_anim("walk"))
 	else:
+		anim.flip_h = (direcao == "left")
 		anim.play(_anim("idle"))
 
 # ------------------------------------------------------------------ ataque

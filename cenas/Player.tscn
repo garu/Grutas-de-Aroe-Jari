@@ -8,7 +8,7 @@
 radius = 8.0
 
 [sub_resource type="Gradient" id="Gradient_7v0vg"]
-offsets = PackedFloat32Array(0.2437673, 0.7423823)
+offsets = PackedFloat32Array(0.045454547, 0.84659094)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_llt0e"]
@@ -27,7 +27,7 @@ tocha_escala_max = 2.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=497289104]
 sprite_frames = ExtResource("2_frames")
-animation = &"unarmed_idle_up"
+animation = &"unarmed_walk_up"
 autoplay = "unarmed_idle_up"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1564856231]

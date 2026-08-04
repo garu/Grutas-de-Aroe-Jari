@@ -136,7 +136,6 @@ tile_set = SubResource("TileSet_i0qtj")
 [node name="Player" parent="." unique_id=964284121 instance=ExtResource("2_6bq1k")]
 z_index = 10
 position = Vector2(423, 401)
-scale = Vector2(2, 2)
 tocha_segundos = 600.0
 
 [node name="musica" type="AudioStreamPlayer2D" parent="Player" unique_id=341160142]
