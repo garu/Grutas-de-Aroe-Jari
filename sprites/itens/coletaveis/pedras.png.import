@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cosqxhocqk00b"
-path="res://.godot/imported/Flor_de_craua.png-ba2eda10aa02cd4e77b84ec491fd021f.ctex"
+uid="uid://nmo0ivlb5qkw"
+path="res://.godot/imported/pedras.png-e7c281097b758b63c200a5e7b66df0f4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/itens/coletaveis/Flor_de_craua.png"
-dest_files=["res://.godot/imported/Flor_de_craua.png-ba2eda10aa02cd4e77b84ec491fd021f.ctex"]
+source_file="res://sprites/itens/coletaveis/pedras.png"
+dest_files=["res://.godot/imported/pedras.png-e7c281097b758b63c200a5e7b66df0f4.ctex"]
 
 [params]
 

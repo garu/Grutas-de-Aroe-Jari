@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://duvktj4r8axe3"
-path="res://.godot/imported/unha_de_gato.png-b7ad3ea76805b8e0bade2429f42ceb3f.ctex"
+uid="uid://cuq6g7miuxsve"
+path="res://.godot/imported/cuia_agua.png-88f76e757ad307c00d4d823d2ac91c62.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/itens/coletaveis/unha_de_gato.png"
-dest_files=["res://.godot/imported/unha_de_gato.png-b7ad3ea76805b8e0bade2429f42ceb3f.ctex"]
+source_file="res://sprites/itens/coletaveis/cuia_agua.png"
+dest_files=["res://.godot/imported/cuia_agua.png-88f76e757ad307c00d4d823d2ac91c62.ctex"]
 
 [params]
 

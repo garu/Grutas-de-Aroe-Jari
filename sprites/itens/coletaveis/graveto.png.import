@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ci2bsr2203v3f"
-path="res://.godot/imported/gravetos.png-4ec1080b93458f366c28e1f857cb87c0.ctex"
+path="res://.godot/imported/graveto.png-113b285a913f2083aa520de3e06faab8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/itens/coletaveis/gravetos.png"
-dest_files=["res://.godot/imported/gravetos.png-4ec1080b93458f366c28e1f857cb87c0.ctex"]
+source_file="res://sprites/itens/coletaveis/graveto.png"
+dest_files=["res://.godot/imported/graveto.png-113b285a913f2083aa520de3e06faab8.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://nmo0ivlb5qkw"
-path="res://.godot/imported/pedrinhas.png-419696b3d3111fa3a3f07dec61238618.ctex"
+uid="uid://cosqxhocqk00b"
+path="res://.godot/imported/flor_craua.png-78364fe8727c21d46d25b48cc239b48b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/itens/coletaveis/pedrinhas.png"
-dest_files=["res://.godot/imported/pedrinhas.png-419696b3d3111fa3a3f07dec61238618.ctex"]
+source_file="res://sprites/itens/coletaveis/flor_craua.png"
+dest_files=["res://.godot/imported/flor_craua.png-78364fe8727c21d46d25b48cc239b48b.ctex"]
 
 [params]
 

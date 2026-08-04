@@ -1,10 +1,13 @@
 [gd_scene format=3 uid="uid://citemgaj001"]
 
-[ext_resource type="Script" path="res://scripts/Item.gd" id="1_item"]
+[ext_resource type="Script" uid="uid://85pya2mftvtp" path="res://scripts/Item.gd" id="1_item"]
 
-[node name="Item" type="Node2D"]
+[node name="Item" type="Node2D" unique_id=742080784]
 script = ExtResource("1_item")
 
-[node name="Marca" type="Polygon2D" parent="."]
+[node name="Marca" type="Polygon2D" parent="." unique_id=1293924801]
 color = Color(0.95, 0.8, 0.25, 1)
 polygon = PackedVector2Array(0, -6, 6, 0, 0, 6, -6, 0)
+
+[node name="Icone" type="Sprite2D" parent="." unique_id=1244498316]
+scale = Vector2(0.3, 0.3)

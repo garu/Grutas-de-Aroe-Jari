@@ -13,7 +13,7 @@ extends RefCounted
 ##   pedras · pote_vazio · pote_agua · pote_veneno
 ##   armadilha_tronco · pa · folhas_secas
 
-const PASTA_ICONES := "res://sprites/itens/"
+const PASTA_ICONES := "res://sprites/itens/coletaveis/"
 
 ## Slots de equipamento
 const SLOT_ARMA := "arma"

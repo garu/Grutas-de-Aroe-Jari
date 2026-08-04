@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://2qfnsu2cl8mu"
-path="res://.godot/imported/folha_seca.png-3c3964f493f37260930b7a2dd48a8628.ctex"
+uid="uid://duvktj4r8axe3"
+path="res://.godot/imported/raiz_unha_de_gato.png-6d6f5a278795750203402f1db72c6ad1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/itens/coletaveis/folha_seca.png"
-dest_files=["res://.godot/imported/folha_seca.png-3c3964f493f37260930b7a2dd48a8628.ctex"]
+source_file="res://sprites/itens/coletaveis/raiz_unha_de_gato.png"
+dest_files=["res://.godot/imported/raiz_unha_de_gato.png-6d6f5a278795750203402f1db72c6ad1.ctex"]
 
 [params]
 

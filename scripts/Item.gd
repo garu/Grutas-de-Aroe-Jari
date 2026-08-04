@@ -29,17 +29,19 @@ func _ready() -> void:
 
 func _pintar() -> void:
 	var marca := get_node_or_null("Marca") as Polygon2D
+	var sprite := get_node_or_null("Icone") as Sprite2D
 	var tex := ItemDB.icone(nome)
-	if tex != null:
-		# usa o ícone desenhado, se já existir
+
+	if tex != null and sprite != null:
+		sprite.texture = tex
+		sprite.visible = true
 		if marca != null:
 			marca.visible = false
-		var sp := Sprite2D.new()
-		sp.texture = tex
-		add_child(sp)
-		return
-	if marca != null:
+	elif marca != null:
+		marca.visible = true
 		marca.color = ItemDB.cor(nome)
+		if sprite != null:
+			sprite.visible = false
 
 func _montar_aviso() -> void:
 	_aviso = Node2D.new()
