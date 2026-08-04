@@ -10,7 +10,7 @@ extends RefCounted
 ##
 ## Nomes de arquivo esperados:
 ##   cipo · raiz_unha_de_gato · tronco_sucupira · flor_craua · graveto
-##   pedras · pote_vazio · pote_agua · pote_veneno
+##   pedras · cuia · cuia_agua · cuia_veneno
 ##   armadilha_tronco · pa · folhas_secas
 
 const PASTA_ICONES := "res://sprites/itens/coletaveis/"
@@ -72,14 +72,14 @@ const ITENS := {
 		"recarrega_tocha": 10.0,
 		"desc": "Acendalha leve. Pega fogo rápido, dura pouco."
 	},
-	"pote_vazio": {
+	"cuia": {
 		"rotulo": "Cuia",
 		"slot": "utilitario",
 		"categoria": "utilitario",
 		"peso": 2,
 		"desc": "Cuia de barro. Serve para carregar água ou preparar misturas."
 	},
-	"pote_agua": {
+	"cuia_agua": {
 		"rotulo": "Cuia com água",
 		"slot": "utilitario",
 		"categoria": "utilitario",
@@ -109,7 +109,7 @@ const ITENS := {
 	},
 
 	# ------------------------------------------------------- compostos
-	"pote_veneno": {
+	"cuia_veneno": {
 		"rotulo": "Cuia com veneno",
 		"slot": "arma",
 		"visual": "sword",
@@ -125,6 +125,14 @@ const ITENS := {
 		"peso": 4,
 		"defesa": 6,
 		"desc": "Tronco preso por cipós, armado para o que vier atrás de você."
+	},
+	"armadilha_espinho": {
+		"rotulo": "Armadilha de espinhos",
+		"slot": "armadilha",
+		"categoria": "composto",
+		"peso": 3,
+		"defesa": 4,
+		"desc": "cave com a pá, coloque os espinhos e cubra com folhas"
 	},
 	"pa": {
 		"rotulo": "Pá",
@@ -142,8 +150,9 @@ const ITENS := {
 const RECEITAS := {
 	"armadilha_tronco": ["tronco_sucupira", "cipo"],
 	"pa": ["pedras", "graveto", "cipo"],
-	"pote_veneno": ["pote_vazio", "flor_craua"],
-	"pote_agua": ["pote_vazio", "folhas_secas"]
+	"cuia_veneno": ["cuia_agua", "flor_craua"],
+	"cuia_agua": ["cuia", "folhas_secas"],
+	"armadilha_espinho": ["pa", "folhas_secas", "flor_craua"]
 }
 
 # ------------------------------------------------------------------ consultas

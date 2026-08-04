@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bsuwy1j2eyh7d"
-path="res://.godot/imported/pá.png-3196b43f45963566d707989469c03572.ctex"
+path="res://.godot/imported/pa.png-d26b88def1aa06d82d965c2590ac6167.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/itens/crafts/pá.png"
-dest_files=["res://.godot/imported/pá.png-3196b43f45963566d707989469c03572.ctex"]
+source_file="res://sprites/itens/coletaveis/pa.png"
+dest_files=["res://.godot/imported/pa.png-d26b88def1aa06d82d965c2590ac6167.ctex"]
 
 [params]
 
