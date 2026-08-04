@@ -1,7 +1,8 @@
-[gd_resource type="SpriteFrames" format=3 uid="uid://bh05h0484vea"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://cbutorikofrm01"]
 
 [ext_resource type="Texture2D" path="res://sprites/Butoriko/butoriko_idle.png" id="i"]
 [ext_resource type="Texture2D" uid="uid://6r5wa8aeowl" path="res://sprites/Butoriko/butoriko_walking.png" id="w"]
+[ext_resource type="Texture2D" uid="uid://d33ra25hf17al" path="res://sprites/Butoriko/butoriko_death.png" id="d"]
 
 [sub_resource type="AtlasTexture" id="i0"]
 atlas = ExtResource("i")
@@ -75,6 +76,62 @@ region = Rect2(1344, 0, 192, 192)
 atlas = ExtResource("w")
 region = Rect2(1536, 0, 192, 192)
 
+[sub_resource type="AtlasTexture" id="d0"]
+atlas = ExtResource("d")
+region = Rect2(0, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="d1"]
+atlas = ExtResource("d")
+region = Rect2(192, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="d2"]
+atlas = ExtResource("d")
+region = Rect2(384, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="d3"]
+atlas = ExtResource("d")
+region = Rect2(576, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="d4"]
+atlas = ExtResource("d")
+region = Rect2(768, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="d5"]
+atlas = ExtResource("d")
+region = Rect2(960, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="d6"]
+atlas = ExtResource("d")
+region = Rect2(1152, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="d7"]
+atlas = ExtResource("d")
+region = Rect2(1344, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="d8"]
+atlas = ExtResource("d")
+region = Rect2(1536, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="d9"]
+atlas = ExtResource("d")
+region = Rect2(1728, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="d10"]
+atlas = ExtResource("d")
+region = Rect2(1920, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="d11"]
+atlas = ExtResource("d")
+region = Rect2(2112, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="d12"]
+atlas = ExtResource("d")
+region = Rect2(2304, 0, 192, 192)
+
+[sub_resource type="AtlasTexture" id="d13"]
+atlas = ExtResource("d")
+region = Rect2(2496, 0, 192, 192)
+
 [resource]
 animations = [
 {
@@ -140,5 +197,52 @@ animations = [
 }],
 "loop": true,
 "name": &"walk",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("d0")
+}, {
+"duration": 1.0,
+"texture": SubResource("d1")
+}, {
+"duration": 1.0,
+"texture": SubResource("d2")
+}, {
+"duration": 1.0,
+"texture": SubResource("d3")
+}, {
+"duration": 1.0,
+"texture": SubResource("d4")
+}, {
+"duration": 1.0,
+"texture": SubResource("d5")
+}, {
+"duration": 1.0,
+"texture": SubResource("d6")
+}, {
+"duration": 1.0,
+"texture": SubResource("d7")
+}, {
+"duration": 1.0,
+"texture": SubResource("d8")
+}, {
+"duration": 1.0,
+"texture": SubResource("d9")
+}, {
+"duration": 1.0,
+"texture": SubResource("d10")
+}, {
+"duration": 1.0,
+"texture": SubResource("d11")
+}, {
+"duration": 1.0,
+"texture": SubResource("d12")
+}, {
+"duration": 1.0,
+"texture": SubResource("d13")
+}],
+"loop": false,
+"name": &"death",
 "speed": 10.0
 }]

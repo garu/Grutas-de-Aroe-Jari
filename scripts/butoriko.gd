@@ -16,8 +16,12 @@ signal vida_alterada(atual: int, maximo: int)
 ## Se verdadeiro, derrubá-la leva direto para a tela de vitória.
 @export var e_chefe: bool = true
 
-## Espera, em segundos, entre a queda e a tela de vitória.
-@export var tempo_ate_vitoria: float = 0.8
+## Espera, em segundos, depois de a queda terminar, antes da tela de vitória.
+## Este tempo é só o respiro do fim: a duração da própria queda já é somada
+## em cima, então não precisa contá-la aqui.
+@export var tempo_ate_vitoria: float = 2.5
+
+const ANIM_MORTE := &"death"
 
 ## Cena aberta quando o chefe cai.
 @export_file("*.tscn") var cena_de_vitoria: String = "res://cenas/Vitoria.tscn"
@@ -233,8 +237,8 @@ func _process(_delta: float) -> void:
 	if sprite == null or sprite.sprite_frames == null:
 		return
 
+	# Morta, a animação de queda segue sozinha até o fim e o último quadro fica.
 	if not viva:
-		sprite.pause()
 		return
 
 	if absf(velocity.x) > 1.0:
@@ -273,20 +277,44 @@ func morrer() -> void:
 
 	morreu.emit(self)
 
-	var t := create_tween()
-	t.tween_property(self, "modulate:a", 0.0, 0.6)
+	var queda := _tocar_queda()
 
 	if e_chefe:
-		# A troca de cena leva tudo embora; sumir da vista já basta, e assim
-		# a espera pela tela de vitória não acontece num nó já apagado.
-		t.tween_callback(hide)
-		_abrir_vitoria()
+		# O último quadro é a cobra caída: vale mais deixá-la no chão do que
+		# apagá-la. A troca de cena leva tudo embora logo em seguida.
+		_abrir_vitoria(queda)
 	else:
+		var t := create_tween()
+		t.tween_interval(queda)
+		t.tween_property(self, "modulate:a", 0.0, 0.6)
 		t.tween_callback(queue_free)
 
 
-func _abrir_vitoria() -> void:
-	await get_tree().create_timer(maxf(0.0, tempo_ate_vitoria)).timeout
+## Toca a animação de morte e devolve quanto tempo ela leva.
+func _tocar_queda() -> float:
+	if sprite == null or sprite.sprite_frames == null:
+		return 0.0
+	if not sprite.sprite_frames.has_animation(ANIM_MORTE):
+		return 0.0
+	sprite.play(ANIM_MORTE)
+	return _duracao(ANIM_MORTE)
+
+
+## Duração real da animação, somando quadro a quadro. Assim mudar a
+## velocidade ou o número de quadros na folha não desencontra a espera.
+func _duracao(nome: StringName) -> float:
+	var sf := sprite.sprite_frames
+	var fps := sf.get_animation_speed(nome)
+	if fps <= 0.0:
+		return 0.0
+	var total := 0.0
+	for i in range(sf.get_frame_count(nome)):
+		total += sf.get_frame_duration(nome, i) / fps
+	return total
+
+
+func _abrir_vitoria(espera_da_queda: float) -> void:
+	await get_tree().create_timer(espera_da_queda + maxf(0.0, tempo_ate_vitoria)).timeout
 	if cena_de_vitoria != "" and ResourceLoader.exists(cena_de_vitoria):
 		get_tree().change_scene_to_file(cena_de_vitoria)
 
