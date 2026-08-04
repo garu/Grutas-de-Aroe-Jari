@@ -128,6 +128,21 @@ physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 0
 sources/1 = SubResource("TileSetAtlasSource_s4408")
 
+[sub_resource type="RectangleShape2D" id="borda_1"]
+size = Vector2(144, 144)
+
+[sub_resource type="RectangleShape2D" id="borda_2"]
+size = Vector2(288, 144)
+
+[sub_resource type="RectangleShape2D" id="borda_3"]
+size = Vector2(432, 144)
+
+[sub_resource type="RectangleShape2D" id="borda_8"]
+size = Vector2(1152, 144)
+
+[sub_resource type="RectangleShape2D" id="borda_14"]
+size = Vector2(2016, 144)
+
 [node name="Caverna" type="Node2D" unique_id=1256630761]
 script = ExtResource("7_fase")
 
@@ -513,3 +528,181 @@ position = Vector2(360, -648)
 itens = {
 "utilitario": ["graveto", "cuia"]
 }
+
+[node name="BordasDoMapa" type="StaticBody2D" parent="."]
+
+[node name="borda0" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(432, -2952)
+shape = SubResource("borda_14")
+
+[node name="borda1" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -2808)
+shape = SubResource("borda_1")
+
+[node name="borda2" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -2664)
+shape = SubResource("borda_1")
+
+[node name="borda3" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -2520)
+shape = SubResource("borda_1")
+
+[node name="borda4" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -2376)
+shape = SubResource("borda_1")
+
+[node name="borda5" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, -2232)
+shape = SubResource("borda_1")
+
+[node name="borda6" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -2232)
+shape = SubResource("borda_1")
+
+[node name="borda7" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, -2088)
+shape = SubResource("borda_1")
+
+[node name="borda8" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -2088)
+shape = SubResource("borda_1")
+
+[node name="borda9" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, -1944)
+shape = SubResource("borda_1")
+
+[node name="borda10" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -1944)
+shape = SubResource("borda_1")
+
+[node name="borda11" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, -1800)
+shape = SubResource("borda_1")
+
+[node name="borda12" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -1800)
+shape = SubResource("borda_1")
+
+[node name="borda13" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, -1656)
+shape = SubResource("borda_1")
+
+[node name="borda14" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -1656)
+shape = SubResource("borda_1")
+
+[node name="borda15" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, -1512)
+shape = SubResource("borda_1")
+
+[node name="borda16" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -1512)
+shape = SubResource("borda_1")
+
+[node name="borda17" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, -1368)
+shape = SubResource("borda_1")
+
+[node name="borda18" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -1368)
+shape = SubResource("borda_1")
+
+[node name="borda19" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, -1224)
+shape = SubResource("borda_1")
+
+[node name="borda20" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, -1080)
+shape = SubResource("borda_1")
+
+[node name="borda21" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, -936)
+shape = SubResource("borda_1")
+
+[node name="borda22" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -936)
+shape = SubResource("borda_1")
+
+[node name="borda23" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, -792)
+shape = SubResource("borda_1")
+
+[node name="borda24" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -792)
+shape = SubResource("borda_1")
+
+[node name="borda25" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, -648)
+shape = SubResource("borda_1")
+
+[node name="borda26" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -648)
+shape = SubResource("borda_1")
+
+[node name="borda27" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, -504)
+shape = SubResource("borda_1")
+
+[node name="borda28" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -504)
+shape = SubResource("borda_1")
+
+[node name="borda29" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, -360)
+shape = SubResource("borda_1")
+
+[node name="borda30" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -360)
+shape = SubResource("borda_1")
+
+[node name="borda31" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, -216)
+shape = SubResource("borda_1")
+
+[node name="borda32" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -216)
+shape = SubResource("borda_1")
+
+[node name="borda33" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, -72)
+shape = SubResource("borda_1")
+
+[node name="borda34" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, -72)
+shape = SubResource("borda_1")
+
+[node name="borda35" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, 72)
+shape = SubResource("borda_1")
+
+[node name="borda36" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, 72)
+shape = SubResource("borda_1")
+
+[node name="borda37" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2664, 216)
+shape = SubResource("borda_1")
+
+[node name="borda38" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, 216)
+shape = SubResource("borda_1")
+
+[node name="borda39" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-2016, 360)
+shape = SubResource("borda_8")
+
+[node name="borda40" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1512, 360)
+shape = SubResource("borda_1")
+
+[node name="borda41" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(-936, 504)
+shape = SubResource("borda_3")
+
+[node name="borda42" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(432, 504)
+shape = SubResource("borda_2")
+
+[node name="borda43" type="CollisionShape2D" parent="BordasDoMapa"]
+position = Vector2(1296, 504)
+shape = SubResource("borda_2")
