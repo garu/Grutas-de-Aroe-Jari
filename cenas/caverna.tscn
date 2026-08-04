@@ -3,11 +3,10 @@
 [ext_resource type="Texture2D" uid="uid://b0dxyquuk3ym0" path="res://sprites/Environments/tilemap_caverna.png" id="1_s4408"]
 [ext_resource type="PackedScene" uid="uid://bm1uo28tuq6jl" path="res://cenas/Player.tscn" id="2_6bq1k"]
 [ext_resource type="PackedScene" uid="uid://dysf5hhfi5rfi" path="res://cenas/butoriko.tscn" id="3_4vft8"]
-[ext_resource type="PackedScene" uid="uid://benemygaj001" path="res://cenas/Enemy.tscn" id="3_enemy"]
 [ext_resource type="PackedScene" uid="uid://m8tfc275j4b5" path="res://cenas/Inventario.tscn" id="4_inv"]
 [ext_resource type="PackedScene" uid="uid://citemgaj001" path="res://cenas/Item.tscn" id="5_item"]
 [ext_resource type="PackedScene" uid="uid://cc3khkx5fbm3y" path="res://cenas/PinturaRupestre.tscn" id="6_pint"]
-[ext_resource type="Script" path="res://scripts/Fase.gd" id="7_fase"]
+[ext_resource type="Script" uid="uid://tdehu0dyjl5p" path="res://scripts/Fase.gd" id="7_fase"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_7io4p"]
 polygon = PackedVector2Array(-72, -72, 72, -72, 72, 72, 24, 72, 24, -24, -72, -24)
@@ -136,196 +135,111 @@ scale = Vector2(2, 2)
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=389298138]
 color = Color(0.042860627, 0.03248966, 0.018704366, 1)
 
-[node name="Inimigo1" parent="." unique_id=392186406 instance=ExtResource("3_enemy")]
-position = Vector2(1224, 72)
-scale = Vector2(5, 5)
-velocidade = 70.0
-raio_deteccao = 420.0
-distancia_contato = 60.0
-
-[node name="Inimigo2" parent="." unique_id=1040924788 instance=ExtResource("3_enemy")]
-position = Vector2(936, -2376)
-scale = Vector2(5, 5)
-tipo = "aranha"
-vida_maxima = 45
-dano_contato = 14
-raio_deteccao = 380.0
-distancia_contato = 60.0
-
-[node name="Inimigo3" parent="." unique_id=107115401 instance=ExtResource("3_enemy")]
-position = Vector2(-2088, -216)
-scale = Vector2(5, 5)
-tipo = "cobra"
-vida_maxima = 60
-dano_contato = 16
-velocidade = 38.0
-raio_deteccao = 340.0
-distancia_contato = 60.0
-
-[node name="Inimigo4" parent="." unique_id=16984840 instance=ExtResource("3_enemy")]
-position = Vector2(-504, -1224)
-scale = Vector2(5, 5)
-velocidade = 70.0
-raio_deteccao = 420.0
-distancia_contato = 60.0
-
-[node name="Inimigo5" parent="." unique_id=1428879124 instance=ExtResource("3_enemy")]
-position = Vector2(-216, 72)
-scale = Vector2(5, 5)
-tipo = "aranha"
-vida_maxima = 45
-dano_contato = 14
-raio_deteccao = 380.0
-distancia_contato = 60.0
-
-[node name="Inimigo6" parent="." unique_id=76532367 instance=ExtResource("3_enemy")]
-position = Vector2(-504, -2520)
-scale = Vector2(5, 5)
-tipo = "cobra"
-vida_maxima = 60
-dano_contato = 16
-velocidade = 38.0
-raio_deteccao = 340.0
-distancia_contato = 60.0
-
-[node name="Inimigo7" parent="." unique_id=1063212393 instance=ExtResource("3_enemy")]
-position = Vector2(-2376, -1368)
-scale = Vector2(5, 5)
-velocidade = 70.0
-raio_deteccao = 420.0
-distancia_contato = 60.0
-
-[node name="Inimigo8" parent="." unique_id=1082317259 instance=ExtResource("3_enemy")]
-position = Vector2(-1368, -1656)
-scale = Vector2(5, 5)
-tipo = "aranha"
-vida_maxima = 45
-dano_contato = 14
-raio_deteccao = 380.0
-distancia_contato = 60.0
-
 [node name="Butoriko" parent="." unique_id=1541078003 instance=ExtResource("3_4vft8")]
 position = Vector2(-1800, -2520)
 scale = Vector2(1.5, 1.5)
 velocidade = 70.0
-raio_de_deteccao = 520.0
 distancia_de_sondagem_de_colisao = 28.0
 caminho_do_jogador = NodePath("../Player")
+raio_de_deteccao = 520.0
 
 [node name="Inventario" parent="." unique_id=878552224 instance=ExtResource("4_inv")]
 
-[node name="Item1" parent="." unique_id=283201234 instance=ExtResource("5_item")]
+[node name="cipo1" parent="." unique_id=283201234 instance=ExtResource("5_item")]
 position = Vector2(-1224, -1080)
 scale = Vector2(3, 3)
-categoria = "utilitario"
-nome = "cipo"
 
-[node name="Item2" parent="." unique_id=48631566 instance=ExtResource("5_item")]
+[node name="cipo2" parent="." unique_id=48631566 instance=ExtResource("5_item")]
 position = Vector2(1224, -1512)
 scale = Vector2(3, 3)
-categoria = "utilitario"
-nome = "cipo"
 
-[node name="Item3" parent="." unique_id=793986527 instance=ExtResource("5_item")]
+[node name="cipo3" parent="." unique_id=793986527 instance=ExtResource("5_item")]
 position = Vector2(-72, -2664)
 scale = Vector2(3, 3)
-categoria = "utilitario"
-nome = "cipo"
 
-[node name="Item4" parent="." unique_id=751524791 instance=ExtResource("5_item")]
+[node name="graveto1" parent="." unique_id=751524791 instance=ExtResource("5_item")]
 position = Vector2(-1800, -2520)
 scale = Vector2(3, 3)
-categoria = "utilitario"
 nome = "graveto"
 
-[node name="Item5" parent="." unique_id=1943799164 instance=ExtResource("5_item")]
+[node name="graveto2" parent="." unique_id=1943799164 instance=ExtResource("5_item")]
 position = Vector2(-72, -72)
 scale = Vector2(3, 3)
-categoria = "utilitario"
 nome = "graveto"
 
-[node name="Item6" parent="." unique_id=561593571 instance=ExtResource("5_item")]
+[node name="graveto3" parent="." unique_id=561593571 instance=ExtResource("5_item")]
 position = Vector2(-2376, -648)
 scale = Vector2(3, 3)
-categoria = "utilitario"
 nome = "graveto"
 
-[node name="Item7" parent="." unique_id=217165177 instance=ExtResource("5_item")]
+[node name="folhas1" parent="." unique_id=217165177 instance=ExtResource("5_item")]
 position = Vector2(216, -1080)
 scale = Vector2(3, 3)
-categoria = "utilitario"
 nome = "folhas_secas"
 
-[node name="Item8" parent="." unique_id=802159404 instance=ExtResource("5_item")]
+[node name="folhas2" parent="." unique_id=802159404 instance=ExtResource("5_item")]
 position = Vector2(-792, -2088)
 scale = Vector2(3, 3)
-categoria = "utilitario"
 nome = "folhas_secas"
 
-[node name="Item9" parent="." unique_id=1177455471 instance=ExtResource("5_item")]
+[node name="pedras1" parent="." unique_id=1177455471 instance=ExtResource("5_item")]
 position = Vector2(-2088, -1512)
 scale = Vector2(3, 3)
 categoria = "arma"
 nome = "pedras"
 
-[node name="Item10" parent="." unique_id=1500603258 instance=ExtResource("5_item")]
+[node name="pedras2" parent="." unique_id=1500603258 instance=ExtResource("5_item")]
 position = Vector2(648, -2232)
 scale = Vector2(3, 3)
 categoria = "arma"
 nome = "pedras"
 
-[node name="Item11" parent="." unique_id=461824772 instance=ExtResource("5_item")]
+[node name="pedras3" parent="." unique_id=461824772 instance=ExtResource("5_item")]
 position = Vector2(-1656, -216)
 scale = Vector2(3, 3)
 categoria = "arma"
 nome = "pedras"
 
-[node name="Item12" parent="." unique_id=1077159755 instance=ExtResource("5_item")]
+[node name="raiz1" parent="." unique_id=1077159755 instance=ExtResource("5_item")]
 position = Vector2(-72, -1800)
 scale = Vector2(3, 3)
-categoria = "utilitario"
 nome = "raiz_unha_de_gato"
 
-[node name="Item13" parent="." unique_id=1635599329 instance=ExtResource("5_item")]
+[node name="raiz2" parent="." unique_id=1635599329 instance=ExtResource("5_item")]
 position = Vector2(-648, -648)
 scale = Vector2(3, 3)
-categoria = "utilitario"
 nome = "raiz_unha_de_gato"
 
-[node name="Item14" parent="." unique_id=1101457993 instance=ExtResource("5_item")]
+[node name="flor_espinhenta1" parent="." unique_id=1101457993 instance=ExtResource("5_item")]
 position = Vector2(-648, -72)
 scale = Vector2(3, 3)
-categoria = "utilitario"
 nome = "flor_craua"
 
-[node name="Item15" parent="." unique_id=129415478 instance=ExtResource("5_item")]
+[node name="flor_espinhenta2" parent="." unique_id=129415478 instance=ExtResource("5_item")]
 position = Vector2(-1512, -1512)
 scale = Vector2(3, 3)
-categoria = "utilitario"
 nome = "flor_craua"
 
-[node name="Item16" parent="." unique_id=1272244664 instance=ExtResource("5_item")]
+[node name="tronco1" parent="." unique_id=1272244664 instance=ExtResource("5_item")]
 position = Vector2(-1944, -936)
 scale = Vector2(3, 3)
 categoria = "arma"
 nome = "tronco_sucupira"
 
-[node name="Item17" parent="." unique_id=507867000 instance=ExtResource("5_item")]
+[node name="tronco2" parent="." unique_id=507867000 instance=ExtResource("5_item")]
 position = Vector2(-1080, -2520)
 scale = Vector2(3, 3)
 categoria = "arma"
 nome = "tronco_sucupira"
 
-[node name="Item18" parent="." unique_id=1525339212 instance=ExtResource("5_item")]
+[node name="pote1" parent="." unique_id=1525339212 instance=ExtResource("5_item")]
 position = Vector2(360, -648)
 scale = Vector2(3, 3)
-categoria = "utilitario"
 nome = "pote_vazio"
 
-[node name="Item19" parent="." unique_id=242441351 instance=ExtResource("5_item")]
+[node name="pote2" parent="." unique_id=242441351 instance=ExtResource("5_item")]
 position = Vector2(-1368, -648)
 scale = Vector2(3, 3)
-categoria = "utilitario"
 nome = "pote_vazio"
 
 [node name="Pintura2" parent="." unique_id=579212718 instance=ExtResource("5_item")]
@@ -345,12 +259,8 @@ receita_nome = "pote_agua"
 [node name="Tutorial" parent="." unique_id=251882512 instance=ExtResource("6_pint")]
 position = Vector2(-72, 72)
 scale = Vector2(3, 3)
-texto = "Setas ou A S D W para caminhar
-ESPAÇO ou X para golpear
-I abre a mochila
-C junta o que você aprendeu
-Encoste para recolher
-A chama diminui: alimente-a com graveto"
+texto = "A chama diminui: alimente-a com graveto
+(I abre inventário)"
 titulo = "Os antigos deixaram este recado"
 raio_leitura = 220.0
 
