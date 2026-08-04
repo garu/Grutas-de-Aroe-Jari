@@ -7,7 +7,6 @@ script = ExtResource("1_armadilha")
 
 [node name="Marca" type="Polygon2D" parent="."]
 color = Color(0.72, 0.55, 0.3, 1)
-polygon = PackedVector2Array(-10, -4, 0, -9, 10, -4, 10, 4, 0, 9, -10, 4)
+polygon = PackedVector2Array(-26, -10, 0, -22, 26, -10, 26, 10, 0, 22, -26, 10)
 
 [node name="Icone" type="Sprite2D" parent="."]
-scale = Vector2(0.35, 0.35)

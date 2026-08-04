@@ -19,6 +19,7 @@ signal gastou
 @export var dano: int = 0
 
 ## Raio, em pixels, em que a Butoriko é considerada "em cima" da armadilha.
+## O PNG da armadilha tem ~58x45, então este raio cobre a peça inteira.
 @export var raio: float = 46.0
 
 ## Espera, em segundos, antes de a armadilha poder ferir de novo.
@@ -27,8 +28,8 @@ signal gastou
 ## Quantos acionamentos até se desfazer. Use 0 para ela nunca acabar.
 @export var usos_maximos: int = 0
 
-## Escala do ícone desenhado no chão.
-@export var escala_icone: float = 0.35
+## Escala do ícone desenhado no chão. 1.0 = tamanho original do PNG.
+@export var escala_icone: float = 1.0
 
 ## Grupo dos alvos que pisam nela.
 @export var grupo_alvo: String = "butoriko"

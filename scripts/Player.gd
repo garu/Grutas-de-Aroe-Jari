@@ -22,7 +22,9 @@ signal armadilha_armada(nome: String)
 
 # ------------------------------------------------------------------ combate
 @export var alcance_ataque: float = 34.0
-@export var duracao_ataque: float = 0.35
+## A folha de golpe do índio tem 9 quadros a 16 fps: ~0,56s. Menos que isso e
+## a animação é cortada no meio do movimento.
+@export var duracao_ataque: float = 0.56
 @export var invulnerabilidade: float = 0.8
 
 ## Arremesso (pedrinhas)
@@ -35,7 +37,9 @@ signal armadilha_armada(nome: String)
 # ------------------------------------------------------------------ armadilhas
 ## Armadilha armada com Q, no chão, à frente do Pari
 @export var cena_armadilha: PackedScene
-@export var distancia_armadilha: float = 34.0
+## Precisa ser maior que a metade da largura do PNG (~29px), senão a
+## armadilha nasce por baixo dos pés do Pari.
+@export var distancia_armadilha: float = 52.0
 
 ## Modo de teste (God): velocidade fixa, sem dano, atravessa rocha
 @export var velocidade_god: float = 420.0
@@ -143,11 +147,6 @@ func _anim(acao: String) -> String:
 	var alternativa: String = "unarmed_%s_%s" % [acao, direcao]
 	if anim.sprite_frames.has_animation(alternativa):
 		return alternativa
-	# sem folha de soco desarmado: usa o "hurt" como esboço do golpe
-	if acao == "attack":
-		var esboco: String = "unarmed_hurt_" + direcao
-		if anim.sprite_frames.has_animation(esboco):
-			return esboco
 	return "unarmed_idle_" + direcao
 
 # ------------------------------------------------------------------ modo God

@@ -303,3 +303,11 @@ texto = "Aqui os antigos gravaram como fazer:"
 titulo = "Pintura rupestre"
 textura = ExtResource("8_rup1")
 receita_nome = "cuia_agua"
+
+[node name="Pintura7" parent="." unique_id=1084635259 instance=ExtResource("6_pint")]
+position = Vector2(-648, -2520)
+scale = Vector2(2, 2)
+texto = "Aqui os antigos gravaram como fazer:"
+titulo = "Pintura rupestre"
+textura = ExtResource("9_rup2")
+receita_nome = "armadilha_espinho"

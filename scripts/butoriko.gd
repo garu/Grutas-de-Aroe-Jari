@@ -140,6 +140,9 @@ var jogador: Node2D
 var vida: int
 var viva := true
 
+## A folha desenha a cobra virada para a esquerda; ao ir para a direita, espelha.
+@onready var sprite: AnimatedSprite2D = get_node_or_null("AnimatedSprite2D")
+
 var recipiente_de_marcas: Node2D
 var marcas: Array[Node] = []
 var temporizador_de_direcao: Timer
@@ -213,11 +216,35 @@ func receber_dano(quantidade: int) -> void:
 
 
 func _piscar_de_dor() -> void:
-	var corpo := get_node_or_null("Sprite2D") as CanvasItem
+	var corpo: CanvasItem = sprite
+	if corpo == null:
+		corpo = get_node_or_null("Sprite2D") as CanvasItem
 	if corpo == null:
 		return
 	corpo.modulate = Color(1, 0.35, 0.35)
 	create_tween().tween_property(corpo, "modulate", Color.WHITE, 0.25)
+
+
+# ------------------------------------------------------------------ animação
+
+## Troca entre parada e rastejando conforme ela está andando de verdade,
+## e espelha o desenho quando ela vai para a direita.
+func _process(_delta: float) -> void:
+	if sprite == null or sprite.sprite_frames == null:
+		return
+
+	if not viva:
+		sprite.pause()
+		return
+
+	if absf(velocity.x) > 1.0:
+		sprite.flip_h = velocity.x > 0.0
+
+	var desejada := "walk" if velocity.length() > 1.0 else "idle"
+	if not sprite.sprite_frames.has_animation(desejada):
+		return
+	if sprite.animation != desejada or not sprite.is_playing():
+		sprite.play(desejada)
 
 
 func morrer() -> void:
