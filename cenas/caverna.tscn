@@ -131,6 +131,7 @@ tile_set = SubResource("TileSet_i0qtj")
 z_index = 10
 position = Vector2(423, 401)
 scale = Vector2(2, 2)
+tocha_segundos = 600.0
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=389298138]
 color = Color(0.042860627, 0.03248966, 0.018704366, 1)
