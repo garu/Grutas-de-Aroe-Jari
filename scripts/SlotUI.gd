@@ -63,15 +63,15 @@ func _redesenhar() -> void:
 	add_child(_icone)
 
 static func _fazer_icone(nome: String, lado: int) -> Control:
-	var tex := ItemDB.icone(nome)
-	if tex != null:
-		var tr := TextureRect.new()
-		tr.texture = tex
-		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		tr.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		return tr
+	var icone := ItemDB.icone(nome)
+	if icone != null:
+		var tex := TextureRect.new()
+		tex.texture = icone
+		tex.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tex.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		tex.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		tex.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		return tex
 	# marca provisória enquanto não há arte
 	var base := Control.new()
 	base.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
