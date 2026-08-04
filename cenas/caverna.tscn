@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://cu6pikv0nnnp4" path="res://sprites/rupestres/rupestre2.png" id="9_rup2"]
 [ext_resource type="Texture2D" uid="uid://d3122uvs2buj6" path="res://sprites/rupestres/rupestre_3.png" id="10_rup3"]
 [ext_resource type="PackedScene" uid="uid://cpocadagua001" path="res://cenas/Poca.tscn" id="12_poca"]
+[ext_resource type="PackedScene" uid="uid://wk48eex385j5" path="res://cenas/Esqueleto.tscn" id="13_esq"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_7io4p"]
 polygon = PackedVector2Array(-72, -72, 72, -72, 72, 72, 24, 72, 24, -24, -72, -24)
@@ -506,3 +507,9 @@ scale = Vector2(1.5, 1.5)
 [node name="poca6" parent="." instance=ExtResource("12_poca")]
 position = Vector2(72, -1656)
 scale = Vector2(1.5, 1.5)
+
+[node name="EsqueletoAntigo" parent="." instance=ExtResource("13_esq")]
+position = Vector2(360, -648)
+itens = {
+"utilitario": ["graveto", "cuia"]
+}
