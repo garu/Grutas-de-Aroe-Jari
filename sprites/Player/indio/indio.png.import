@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bkum4msmp2r73"
-path="res://.godot/imported/cuia_veneno.png-09b60942e75458dddd8d2d17939f2f68.ctex"
+uid="uid://edsiyv36ukaq"
+path="res://.godot/imported/indio.png-c1b4f954733bda49d58859fedec87e4c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/itens/coletaveis/cuia_veneno.png"
-dest_files=["res://.godot/imported/cuia_veneno.png-09b60942e75458dddd8d2d17939f2f68.ctex"]
+source_file="res://sprites/Player/indio/indio.png"
+dest_files=["res://.godot/imported/indio.png-c1b4f954733bda49d58859fedec87e4c.ctex"]
 
 [params]
 

@@ -52,6 +52,7 @@ var _mascara_original: int = 1
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var tocha: PointLight2D = $TorchLight
 @onready var camera: Camera2D = $Camera2D
+@onready var som_passos: AudioStreamPlayer2D = $passos
 
 func _ready() -> void:
 	vida = vida_maxima
@@ -204,6 +205,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity = dir.normalized() * velocidade_atual()
 	move_and_slide()
+	_atualizar_som_passos()
 
 	if not _atacando:
 		_atualizar_animacao(dir)
@@ -213,6 +215,17 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_physical_key_pressed(KEY_E):
 		_interagir()
+
+func _atualizar_som_passos() -> void:
+	# Verifica se o personagem está se movendo (velocidade maior que zero)
+	if velocity.length() > 0.0:
+		# Se estiver andando e o som AINDA não estiver tocando, inicia o som
+		if not som_passos.playing:
+			som_passos.play()
+	else:
+		# Se parou de andar e o som ESTÁ tocando, interrompe imediatamente
+		if som_passos.playing:
+			som_passos.stop()
 
 func _atualizar_animacao(dir: Vector2) -> void:
 	if dir != Vector2.ZERO:

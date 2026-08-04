@@ -5,6 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://7hy30pfha881" path="res://sons/music/Cave_BG_music.ogg" id="2_7io4p"]
 [ext_resource type="PackedScene" uid="uid://dysf5hhfi5rfi" path="res://cenas/butoriko.tscn" id="3_4vft8"]
 [ext_resource type="PackedScene" uid="uid://m8tfc275j4b5" path="res://cenas/Inventario.tscn" id="4_inv"]
+[ext_resource type="AudioStream" uid="uid://6x8yg3dqrus6" path="res://sons/caminhando.ogg" id="5_2ipbv"]
 [ext_resource type="PackedScene" uid="uid://citemgaj001" path="res://cenas/Item.tscn" id="5_item"]
 [ext_resource type="PackedScene" uid="uid://cc3khkx5fbm3y" path="res://cenas/PinturaRupestre.tscn" id="6_pint"]
 [ext_resource type="AudioStream" uid="uid://kpe6vgt5yryo" path="res://sons/grunhido do butoriko.mp3" id="6_ripui"]
@@ -138,13 +139,16 @@ position = Vector2(423, 401)
 scale = Vector2(2, 2)
 tocha_segundos = 600.0
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Player" unique_id=341160142]
+[node name="musica" type="AudioStreamPlayer2D" parent="Player" unique_id=341160142]
 position = Vector2(-211.5, -200.5)
 scale = Vector2(0.5, 0.5)
 stream = ExtResource("2_7io4p")
 volume_db = 10.0
 autoplay = true
 parameters/looping = true
+
+[node name="passos" type="AudioStreamPlayer2D" parent="Player" unique_id=225317881]
+stream = ExtResource("5_2ipbv")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=389298138]
 color = Color(0.042860627, 0.03248966, 0.018704366, 1)
