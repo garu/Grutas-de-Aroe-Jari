@@ -6,3 +6,13 @@
 build/
 *.exe
 *.pck
+
+# Artefatos de compilacao LaTeX (pasta artigo/)
+artigo/*.aux
+artigo/*.log
+artigo/*.out
+artigo/*.blg
+artigo/*.bbl
+artigo/*.fls
+artigo/*.fdb_latexmk
+artigo/*.synctex.gz

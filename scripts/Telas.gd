@@ -57,6 +57,17 @@ func _ready() -> void:
 		lbl.add_theme_color_override("font_color", Color(0.95, 0.92, 0.85))
 		caixa.add_child(lbl)
 
+	# Declaração não-diegética: quem joga precisa saber de quem é a história
+	if tipo == Tipo.ABERTURA or tipo == Tipo.VITORIA:
+		var credito := Label.new()
+		credito.text = "História da tradição do povo Boé (Bororo). A adaptação para jogo é nossa."
+		credito.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		credito.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		credito.custom_minimum_size = Vector2(300, 0)
+		credito.add_theme_font_size_override("font_size", 9)
+		credito.add_theme_color_override("font_color", Color(0.66, 0.63, 0.57))
+		caixa.add_child(credito)
+
 	if mensagem != "":
 		var sub := Label.new()
 		sub.text = mensagem
@@ -71,6 +82,7 @@ func _ready() -> void:
 		Tipo.ABERTURA:
 			primeiro = _botao("Jogar", _jogar)
 			caixa.add_child(primeiro)
+			caixa.add_child(_botao("Sobre", _sobre))
 		Tipo.DERROTA:
 			primeiro = _botao("Recomeçar", _recomecar)
 			caixa.add_child(primeiro)
@@ -78,6 +90,7 @@ func _ready() -> void:
 		Tipo.VITORIA:
 			primeiro = _botao("Compartilhar", _compartilhar)
 			caixa.add_child(primeiro)
+			caixa.add_child(_botao("Sobre", _sobre))
 			caixa.add_child(_botao("Menu principal", _sair))
 
 	# deixa o teclado funcionar também (Enter/Espaço no botão em foco)
@@ -107,6 +120,9 @@ func _jogar() -> void:
 func _recomecar() -> void:
 	# volta ao último ponto de saída, com os itens que sobraram
 	_trocar_cena(cena_jogo)
+
+func _sobre() -> void:
+	_trocar_cena("res://cenas/Sobre.tscn")
 
 func _sair() -> void:
 	_trocar_cena("res://cenas/TelaInicial.tscn")
