@@ -19,13 +19,23 @@ extends CanvasLayer
 
 const LINHAS := 4
 const SLOTS_CRAFT := 3
+const _DUR_ABERTURA := 0.22
 
 signal item_usado(nome: String)
 
 var aberto: bool = false
 
+## quadros da animação de abrir a moldura (res://sprites/UI/inventario_frame_0*.png)
+var _quadros: Array[Texture2D] = []
+
+var _conteudo: Control              # container dos slots (revelado após abrir)
+var _audio: AudioStreamPlayer
+var _som_abrir: AudioStream
+var _som_fechar: AudioStream
+
 var _raiz: Control
 var _painel: Control
+var _moldura_sb: StyleBoxTexture   # stylebox da moldura (troca de textura na animação)
 var _lbl_info: Label
 var _lbl_desc: Label
 var _lbl_rodape: Label
@@ -35,7 +45,7 @@ var _slots_equip: Dictionary = {}     # slot_equip -> SlotUI
 var _slots_craft: Array[SlotUI] = []
 var _slot_resultado: SlotUI
 var _bancada: Array[String] = []      # itens postos na bancada
-var _btn_criar: Button
+var _btn_criar: BaseButton
 var _lbl_craft: Label
 var _slot_lixeira: SlotUI
 var _btn_god: Button
@@ -54,7 +64,9 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	for i in range(SLOTS_CRAFT):
 		_bancada.append("")
+	_preparar_moldura()
 	_construir()
+	_preparar_audio()
 	_raiz.visible = false
 	if get_node_or_null("/root/GameState") != null:
 		GameState.inventory_changed.connect(_atualizar_tudo)
@@ -78,22 +90,23 @@ func _construir() -> void:
 	_raiz.add_child(centro)
 	centro.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
+	# letreiro do título FORA do painel, em cima e centralizado
+	var envelope := VBoxContainer.new()
+	envelope.add_theme_constant_override("separation", 2)
+	centro.add_child(envelope)
+
+	var titulo := _cabecalho("Letreiros1", "MOCHILA DE PARI", 12, Color(1, 0.85, 0.5))
+	if titulo is Label:
+		(titulo as Label).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	envelope.add_child(titulo)
+
 	_painel = _criar_painel()
-	centro.add_child(_painel)
+	envelope.add_child(_painel)
 
 	var col := VBoxContainer.new()
 	col.add_theme_constant_override("separation", 5)
 	_painel.add_child(col)
-	if _painel is NinePatchRect:
-		col.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		col.offset_left = margem_painel
-		col.offset_top = margem_painel
-		col.offset_right = -margem_painel
-		col.offset_bottom = -margem_painel
-
-	var titulo := _label("MOCHILA DE PARI", 12, Color(1, 0.85, 0.5))
-	titulo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	col.add_child(titulo)
+	_conteudo = col
 
 	# ------------------------------- três colunas: equipar | carga | mistura
 	var linha := HBoxContainer.new()
@@ -126,7 +139,7 @@ func _construir() -> void:
 func _montar_equipamento() -> Control:
 	var caixa := VBoxContainer.new()
 	caixa.add_theme_constant_override("separation", 2)
-	caixa.add_child(_label("EQUIPADO", 9, Color(0.85, 0.7, 0.45)))
+	caixa.add_child(_cabecalho("Letreiros2", "EQUIPADO", 9, Color(0.85, 0.7, 0.45)))
 
 	for nome_slot in ItemDB.SLOTS:
 		var linha := HBoxContainer.new()
@@ -153,7 +166,7 @@ func _montar_equipamento() -> Control:
 func _montar_mochila() -> Control:
 	var caixa := VBoxContainer.new()
 	caixa.add_theme_constant_override("separation", 2)
-	caixa.add_child(_label("CARGA", 9, Color(0.85, 0.7, 0.45)))
+	caixa.add_child(_cabecalho("Letreiros3", "CARGA", 9, Color(0.85, 0.7, 0.45)))
 
 	var grade := GridContainer.new()
 	grade.columns = colunas
@@ -176,7 +189,7 @@ func _montar_mochila() -> Control:
 func _montar_bancada() -> Control:
 	var caixa := VBoxContainer.new()
 	caixa.add_theme_constant_override("separation", 2)
-	caixa.add_child(_label("MISTURA", 9, Color(0.85, 0.7, 0.45)))
+	caixa.add_child(_cabecalho("Letreiros4", "MISTURA", 9, Color(0.85, 0.7, 0.45)))
 
 	var linha := HBoxContainer.new()
 	linha.add_theme_constant_override("separation", 3)
@@ -206,9 +219,7 @@ func _montar_bancada() -> Control:
 	_slot_resultado.item_clicado.connect(_on_slot_clicado)
 	linha2.add_child(_slot_resultado)
 
-	_btn_criar = Button.new()
-	_btn_criar.text = "JUNTAR"
-	_btn_criar.custom_minimum_size = Vector2(70, 26)
+	_btn_criar = _criar_botao_juntar()
 	_btn_criar.process_mode = Node.PROCESS_MODE_ALWAYS
 	_btn_criar.focus_mode = Control.FOCUS_NONE
 	_btn_criar.pressed.connect(_criar)
@@ -321,6 +332,8 @@ func _resultado_teorico() -> String:
 	return ""
 
 func _estilo_botao(cor_fundo: Color, cor_borda: Color) -> void:
+	if _btn_criar is TextureButton:
+		return   # botão com textura própria: não sobrepõe estilo
 	var e := StyleBoxFlat.new()
 	e.bg_color = cor_fundo
 	e.border_color = cor_borda
@@ -402,16 +415,33 @@ func _montar_criativo() -> Control:
 	return caixa
 
 func _criar_painel() -> Control:
-	if textura_painel != null:
-		var np := NinePatchRect.new()
-		np.texture = textura_painel
-		np.patch_margin_left = margem_painel
-		np.patch_margin_right = margem_painel
-		np.patch_margin_top = margem_painel
-		np.patch_margin_bottom = margem_painel
-		np.custom_minimum_size = Vector2(400, 200)
-		return np
+	# moldura (frame 3): PNG separado em sprites/UI, senão recorta a folha Inventario.png
+	if textura_painel == null and ResourceLoader.exists("res://sprites/UI/inventario_frame_03.png"):
+		textura_painel = load("res://sprites/UI/inventario_frame_03.png")
+	if textura_painel == null:
+		textura_painel = InventarioTexturas.frame(3)
 	var pc := PanelContainer.new()
+	pc.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	if textura_painel != null:
+		# moldura 9-patch com ~24px de borda; a trama do meio é repetida (tile).
+		# StyleBoxTexture num PanelContainer -> o painel CRESCE com o conteúdo.
+		var borda := 24
+		var sb := StyleBoxTexture.new()
+		sb.texture = textura_painel
+		sb.texture_margin_left = borda
+		sb.texture_margin_right = borda
+		sb.texture_margin_top = borda
+		sb.texture_margin_bottom = borda
+		sb.content_margin_left = borda
+		sb.content_margin_right = borda
+		sb.content_margin_top = borda
+		sb.content_margin_bottom = borda
+		sb.axis_stretch_horizontal = StyleBoxTexture.AXIS_STRETCH_MODE_TILE_FIT
+		sb.axis_stretch_vertical = StyleBoxTexture.AXIS_STRETCH_MODE_TILE_FIT
+		_moldura_sb = sb
+		pc.add_theme_stylebox_override("panel", sb)
+		pc.custom_minimum_size = Vector2(400, 0)   # largura mínima; altura cresce
+		return pc
 	var e := StyleBoxFlat.new()
 	e.bg_color = Color(0.08, 0.065, 0.055, 0.97)
 	e.border_color = Color(0.55, 0.42, 0.25)
@@ -428,6 +458,47 @@ func _label(texto: String, tamanho: int, cor: Color) -> Label:
 	l.add_theme_color_override("font_color", cor)
 	return l
 
+## Cabeçalho de seção: usa a faixa de arte (letreiro) se existir; senão, texto.
+func _cabecalho(arquivo: String, texto: String, tamanho: int, cor: Color) -> Control:
+	var caminho := "res://sprites/UI/%s.png" % arquivo
+	if ResourceLoader.exists(caminho):
+		var tr := TextureRect.new()
+		tr.texture = load(caminho)
+		tr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		tr.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+		tr.custom_minimum_size = (tr.texture as Texture2D).get_size()
+		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		return tr
+	return _label(texto, tamanho, cor)
+
+## Botão "Juntar" com textura de 3 estados (normal/hover/pressionado).
+func _criar_botao_juntar() -> BaseButton:
+	var caminho := "res://sprites/UI/btn_juntar.png"
+	if ResourceLoader.exists(caminho):
+		var tex := load(caminho) as Texture2D
+		var lc := int(tex.get_width() / 3.0)   # largura de cada estado
+		var h := tex.get_height()
+		var tb := TextureButton.new()
+		tb.texture_normal = _regiao_atlas(tex, 0, lc, h)
+		tb.texture_hover = _regiao_atlas(tex, lc, lc, h)
+		tb.texture_pressed = _regiao_atlas(tex, lc * 2, lc, h)
+		tb.texture_disabled = _regiao_atlas(tex, lc * 2, lc, h)
+		tb.ignore_texture_size = true
+		tb.stretch_mode = TextureButton.STRETCH_KEEP_CENTERED
+		tb.custom_minimum_size = Vector2(lc, h)
+		tb.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		return tb
+	var b := Button.new()
+	b.text = "JUNTAR"
+	b.custom_minimum_size = Vector2(70, 26)
+	return b
+
+func _regiao_atlas(tex: Texture2D, x: int, w: int, h: int) -> AtlasTexture:
+	var at := AtlasTexture.new()
+	at.atlas = tex
+	at.region = Rect2(x, 0, w, h)
+	return at
+
 # ------------------------------------------------------------------ abrir/fechar
 func alternar() -> void:
 	if aberto:
@@ -440,7 +511,13 @@ func abrir() -> void:
 		return
 	aberto = true
 	_atualizar_tudo()
+	if _conteudo != null:
+		_conteudo.modulate.a = 0.0   # slots surgem só quando a moldura assenta
 	_raiz.visible = true
+	if _audio != null and _som_abrir != null:
+		_audio.stream = _som_abrir
+		_audio.play()
+	_animar_abertura(true)
 	if abrir_pausa_o_jogo:
 		get_tree().paused = true
 
@@ -460,7 +537,12 @@ func fechar() -> void:
 	# o que sobrou na bancada volta para a mochila
 	_devolver_bancada()
 	aberto = false
-	_raiz.visible = false
+	if _conteudo != null:
+		_conteudo.modulate.a = 0.0
+	if _audio != null and _som_fechar != null:
+		_audio.stream = _som_fechar
+		_audio.play()
+	_animar_abertura(false)   # esconde _raiz ao terminar a animação
 	if abrir_pausa_o_jogo:
 		get_tree().paused = false
 
@@ -797,3 +879,62 @@ func _input(evento: InputEvent) -> void:
 	if tecla == KEY_ESCAPE:
 		fechar()
 		get_viewport().set_input_as_handled()
+
+
+# ------------------------------------------------------------------ animação de abrir/fechar
+func _preparar_moldura() -> void:
+	for i in range(1, 4):
+		var caminho := "res://sprites/UI/inventario_frame_%02d.png" % i
+		if ResourceLoader.exists(caminho):
+			_quadros.append(load(caminho))
+	# sem PNGs separados? recorta a folha única Inventario.png nos 3 quadros
+	if _quadros.is_empty():
+		_quadros = InventarioTexturas.quadros()
+
+func _preparar_audio() -> void:
+	_audio = AudioStreamPlayer.new()
+	_audio.process_mode = Node.PROCESS_MODE_ALWAYS   # toca mesmo com o jogo pausado
+	_audio.volume_db = -4.0
+	add_child(_audio)
+	_som_abrir = SonsInventario.abrir()
+	_som_fechar = SonsInventario.fechar()
+
+## Anima a moldura crescendo (abrindo) ou encolhendo (fechando).
+## Se os 3 quadros existirem e a moldura for NinePatchRect, troca a arte
+## conforme cresce (efeito de desdobrar); senão faz só um "pop".
+func _animar_abertura(abrindo: bool) -> void:
+	if _painel == null:
+		if not abrindo:
+			_raiz.visible = false
+		return
+	await get_tree().process_frame        # deixa o CenterContainer dimensionar
+	_painel.pivot_offset = _painel.size * 0.5
+	var usa_quadros: bool = _moldura_sb != null and _quadros.size() >= 1
+	var t := create_tween().set_parallel(true)
+	t.set_trans(Tween.TRANS_BACK)
+	if abrindo:
+		t.set_ease(Tween.EASE_OUT)
+		if usa_quadros:
+			_moldura_sb.texture = _quadros[0]
+			var faixa := _DUR_ABERTURA / float(_quadros.size())
+			for i in range(1, _quadros.size()):
+				var idx := i
+				t.tween_callback(func() -> void: _moldura_sb.texture = _quadros[idx]).set_delay(faixa * idx)
+		_painel.scale = Vector2(0.55, 0.55)
+		_painel.modulate.a = 0.0
+		t.tween_property(_painel, "scale", Vector2.ONE, _DUR_ABERTURA)
+		t.tween_property(_painel, "modulate:a", 1.0, _DUR_ABERTURA * 0.8)
+		await t.finished
+		if _conteudo != null:
+			create_tween().tween_property(_conteudo, "modulate:a", 1.0, 0.12)
+	else:
+		t.set_ease(Tween.EASE_IN)
+		if usa_quadros:
+			var faixa := (_DUR_ABERTURA * 0.8) / float(_quadros.size())
+			for i in range(_quadros.size()):
+				var idx := _quadros.size() - 1 - i
+				t.tween_callback(func() -> void: _moldura_sb.texture = _quadros[idx]).set_delay(faixa * i)
+		t.tween_property(_painel, "scale", Vector2(0.55, 0.55), _DUR_ABERTURA * 0.8)
+		t.tween_property(_painel, "modulate:a", 0.0, _DUR_ABERTURA * 0.8)
+		await t.finished
+		_raiz.visible = false

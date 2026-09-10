@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpk2bfpalyklf"
-path="res://.godot/imported/planta_gruta.png-61b35ab601ff776efea4117cd73cb906.ctex"
+uid="uid://b1m5d088sixml"
+path="res://.godot/imported/Inventario.png-0a554c4c75b41270286bc9d8a115c7e6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://artigo/figuras/planta_gruta.png"
-dest_files=["res://.godot/imported/planta_gruta.png-61b35ab601ff776efea4117cd73cb906.ctex"]
+source_file="res://sprites/UI/Inventario.png"
+dest_files=["res://.godot/imported/Inventario.png-0a554c4c75b41270286bc9d8a115c7e6.ctex"]
 
 [params]
 

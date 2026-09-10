@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cm26e4w3g3sn7"
-path="res://.godot/imported/commits.png-20ef927628fc8b6eaecb1dbd99a8aed2.ctex"
+uid="uid://brmoev20wtsb2"
+path="res://.godot/imported/Inventario2.png-51a330d950f9ddfc57be56d7f143b080.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://artigo/_apagar/commits.png"
-dest_files=["res://.godot/imported/commits.png-20ef927628fc8b6eaecb1dbd99a8aed2.ctex"]
+source_file="res://sprites/UI/Inventario2.png"
+dest_files=["res://.godot/imported/Inventario2.png-51a330d950f9ddfc57be56d7f143b080.ctex"]
 
 [params]
 
