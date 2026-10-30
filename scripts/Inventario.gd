@@ -20,6 +20,8 @@ extends CanvasLayer
 const LINHAS := 4
 const SLOTS_CRAFT := 3
 const _DUR_ABERTURA := 0.22
+## cor única e legível para os textos do inventário (a moldura tem fundo claro)
+const COR_TEXTO := Color(0.16, 0.11, 0.05)
 
 signal item_usado(nome: String)
 
@@ -35,6 +37,7 @@ var _som_fechar: AudioStream
 
 var _raiz: Control
 var _painel: Control
+var _envelope: Control              # título + painel (escalado p/ caber na tela)
 var _moldura_sb: StyleBoxTexture   # stylebox da moldura (troca de textura na animação)
 var _lbl_info: Label
 var _lbl_desc: Label
@@ -68,6 +71,7 @@ func _ready() -> void:
 	_construir()
 	_preparar_audio()
 	_raiz.visible = false
+	get_viewport().size_changed.connect(_ajustar_escala)
 	if get_node_or_null("/root/GameState") != null:
 		GameState.inventory_changed.connect(_atualizar_tudo)
 		GameState.equip_changed.connect(_atualizar_tudo)
@@ -91,17 +95,17 @@ func _construir() -> void:
 	centro.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 	# letreiro do título FORA do painel, em cima e centralizado
-	var envelope := VBoxContainer.new()
-	envelope.add_theme_constant_override("separation", 2)
-	centro.add_child(envelope)
+	_envelope = VBoxContainer.new()
+	_envelope.add_theme_constant_override("separation", 2)
+	centro.add_child(_envelope)
 
 	var titulo := _cabecalho("Letreiros1", "MOCHILA DE PARI", 12, Color(1, 0.85, 0.5))
 	if titulo is Label:
 		(titulo as Label).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	envelope.add_child(titulo)
+	_envelope.add_child(titulo)
 
 	_painel = _criar_painel()
-	envelope.add_child(_painel)
+	_envelope.add_child(_painel)
 
 	var col := VBoxContainer.new()
 	col.add_theme_constant_override("separation", 5)
@@ -206,7 +210,10 @@ func _montar_bancada() -> Control:
 		linha.add_child(s)
 		_slots_craft.append(s)
 
-	var seta := _label("↓", 12, Color(0.7, 0.6, 0.45))
+	var seta := Label.new()   # seta em fonte padrão (a fonte pixel não tem ↓)
+	seta.text = "↓"
+	seta.add_theme_font_size_override("font_size", 12)
+	seta.add_theme_color_override("font_color", Color(0.7, 0.6, 0.45))
 	seta.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	caixa.add_child(seta)
 
@@ -233,6 +240,7 @@ func _montar_bancada() -> Control:
 
 	var limpar := Button.new()
 	limpar.text = "Limpar"
+	FontePixel.aplicar_fonte(limpar, 8)
 	limpar.custom_minimum_size = Vector2(70, 20)
 	limpar.process_mode = Node.PROCESS_MODE_ALWAYS
 	limpar.focus_mode = Control.FOCUS_NONE
@@ -251,7 +259,10 @@ func _montar_lixeira() -> Control:
 	_slot_lixeira.item_clicado.connect(_on_slot_clicado)
 	caixa.add_child(_slot_lixeira)
 
-	var lixo := _label("🗑", 14, Color(0.85, 0.5, 0.45))
+	var lixo := Label.new()   # emoji em fonte padrão (a fonte pixel não tem)
+	lixo.text = "🗑"
+	lixo.add_theme_font_size_override("font_size", 14)
+	lixo.add_theme_color_override("font_color", Color(0.85, 0.5, 0.45))
 	lixo.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	caixa.add_child(lixo)
 
@@ -265,7 +276,7 @@ func _botao_teste(texto: String, alvo: Callable) -> Button:
 	var b := Button.new()
 	b.text = texto
 	b.custom_minimum_size = Vector2(0, 22)
-	b.add_theme_font_size_override("font_size", 8)
+	FontePixel.aplicar_fonte(b, 8)
 	b.process_mode = Node.PROCESS_MODE_ALWAYS
 	b.focus_mode = Control.FOCUS_NONE
 	b.pressed.connect(alvo)
@@ -357,7 +368,7 @@ func _montar_criativo() -> Control:
 	caixa.add_child(sep)
 
 	caixa.add_child(_label(
-		"TESTES (F10) — arraste daqui: estoque infinito · solte aqui para descartar",
+		"TESTES F10: arraste daqui estoque infinito.  solte aqui para descartar",
 		8, Color(0.55, 0.78, 0.95)
 	))
 
@@ -367,6 +378,7 @@ func _montar_criativo() -> Control:
 	caixa.add_child(barra)
 
 	_btn_god = Button.new()
+	FontePixel.aplicar_fonte(_btn_god, 9)
 	_btn_god.custom_minimum_size = Vector2(150, 22)
 	_btn_god.process_mode = Node.PROCESS_MODE_ALWAYS
 	_btn_god.focus_mode = Control.FOCUS_NONE
@@ -432,10 +444,10 @@ func _criar_painel() -> Control:
 		sb.texture_margin_right = borda
 		sb.texture_margin_top = borda
 		sb.texture_margin_bottom = borda
-		sb.content_margin_left = borda
-		sb.content_margin_right = borda
-		sb.content_margin_top = borda
-		sb.content_margin_bottom = borda
+		sb.content_margin_left = 16
+		sb.content_margin_right = 16
+		sb.content_margin_top = 16
+		sb.content_margin_bottom = 16
 		sb.axis_stretch_horizontal = StyleBoxTexture.AXIS_STRETCH_MODE_TILE_FIT
 		sb.axis_stretch_vertical = StyleBoxTexture.AXIS_STRETCH_MODE_TILE_FIT
 		_moldura_sb = sb
@@ -451,12 +463,9 @@ func _criar_painel() -> Control:
 	pc.add_theme_stylebox_override("panel", e)
 	return pc
 
-func _label(texto: String, tamanho: int, cor: Color) -> Label:
-	var l := Label.new()
-	l.text = texto
-	l.add_theme_font_size_override("font_size", tamanho)
-	l.add_theme_color_override("font_color", cor)
-	return l
+func _label(texto: String, tamanho: int, _cor: Color) -> Label:
+	# fonte pixel art + cor única legível (fundo claro da moldura)
+	return FontePixel.rotulo(texto, COR_TEXTO, tamanho)
 
 ## Cabeçalho de seção: usa a faixa de arte (letreiro) se existir; senão, texto.
 func _cabecalho(arquivo: String, texto: String, tamanho: int, cor: Color) -> Control:
@@ -518,6 +527,7 @@ func abrir() -> void:
 		_audio.stream = _som_abrir
 		_audio.play()
 	_animar_abertura(true)
+	_ajustar_escala()
 	if abrir_pausa_o_jogo:
 		get_tree().paused = true
 
@@ -530,6 +540,7 @@ func alternar_criativo() -> void:
 	if modo_criativo:
 		_lbl_info.text = "Modo de testes ligado"
 	_atualizar_rodape()
+	_ajustar_escala()
 
 func fechar() -> void:
 	if not aberto:
@@ -545,6 +556,20 @@ func fechar() -> void:
 	_animar_abertura(false)   # esconde _raiz ao terminar a animação
 	if abrir_pausa_o_jogo:
 		get_tree().paused = false
+
+## Encolhe o conjunto (título + painel) para caber na tela, se necessário.
+func _ajustar_escala() -> void:
+	if _envelope == null or _raiz == null:
+		return
+	await get_tree().process_frame
+	var vp: Vector2 = _raiz.size
+	var tam: Vector2 = _envelope.size
+	if tam.x <= 0.0 or tam.y <= 0.0 or vp.x <= 0.0:
+		return
+	var margem := 12.0
+	var f: float = minf(1.0, minf((vp.x - margem) / tam.x, (vp.y - margem) / tam.y))
+	_envelope.pivot_offset = tam * 0.5
+	_envelope.scale = Vector2(f, f)
 
 func _devolver_bancada() -> void:
 	if get_node_or_null("/root/GameState") == null:
@@ -592,8 +617,8 @@ func _atualizar_resultado() -> void:
 		# dá certo: verde
 		_estilo_botao(Color(0.16, 0.36, 0.18), Color(0.45, 0.85, 0.45))
 		_btn_criar.add_theme_color_override("font_color", Color(0.85, 1, 0.85))
-		_lbl_craft.add_theme_color_override("font_color", Color(0.55, 0.9, 0.55))
-		_lbl_craft.text = "✓ dá certo"
+		_lbl_craft.add_theme_color_override("font_color", Color(0.13, 0.42, 0.12))
+		_lbl_craft.text = "dá certo!"
 		_lbl_info.text = "Pode virar: %s" % ItemDB.rotulo(saida)
 		_lbl_desc.text = ItemDB.descricao(saida)
 		return
@@ -602,50 +627,50 @@ func _atualizar_resultado() -> void:
 	_btn_criar.add_theme_color_override("font_color", Color(0.55, 0.52, 0.48))
 
 	if na_bancada == 0:
-		_lbl_craft.add_theme_color_override("font_color", Color(0.66, 0.63, 0.58))
+		_lbl_craft.add_theme_color_override("font_color", COR_TEXTO)
 		_lbl_craft.text = "arraste itens\naqui"
 		_lbl_info.text = ""
 		_lbl_desc.text = _texto_receitas()
 	elif teorico != "":
 		# combinação certa, mas ele ainda não viu a pintura
-		_lbl_craft.add_theme_color_override("font_color", Color(0.95, 0.8, 0.35))
+		_lbl_craft.add_theme_color_override("font_color", Color(0.55, 0.4, 0.05))
 		_lbl_craft.text = "? receita\ndesconhecida"
 		_lbl_info.text = "Esta mistura existe, mas Pari ainda não a aprendeu"
 		_lbl_desc.text = "Procure a pintura rupestre que ensina esta combinação."
 	else:
-		_lbl_craft.add_theme_color_override("font_color", Color(0.85, 0.45, 0.4))
-		_lbl_craft.text = "✕ não vira\nnada"
+		_lbl_craft.add_theme_color_override("font_color", Color(0.55, 0.15, 0.1))
+		_lbl_craft.text = "não vira\nnada"
 		_lbl_info.text = ""
 		_lbl_desc.text = _texto_receitas()
 
 func _texto_receitas() -> String:
 	if GameState.receitas.is_empty():
-		return "Pari ainda não aprendeu nenhuma mistura — as pinturas nas paredes ensinam."
+		return "Pari ainda não aprendeu nenhuma mistura. As pinturas nas paredes ensinam."
 	var partes: Array[String] = []
 	for composto in GameState.receitas.keys():
 		var nomes: Array[String] = []
 		for n in GameState.receitas[composto]:
 			nomes.append(ItemDB.rotulo(n))
-		partes.append("%s = %s" % [ItemDB.rotulo(composto), " + ".join(nomes)])
-	return "Sabe fazer:  " + "   ·   ".join(partes)
+		partes.append("%s: %s" % [ItemDB.rotulo(composto), " e ".join(nomes)])
+	return "Sabe fazer:  " + ",   ".join(partes)
 
 func _atualizar_rodape() -> void:
 	if get_node_or_null("/root/GameState") == null:
 		return
 	var partes: Array[String] = []
-	partes.append("carga %d/%d" % [GameState.mochila.size(), GameState.CAPACIDADE])
+	partes.append("carga %d de %d" % [GameState.mochila.size(), GameState.CAPACIDADE])
 	partes.append("peso %d" % GameState.peso_total())
-	partes.append("atq +%d" % GameState.bonus_ataque())
-	partes.append("def +%d" % GameState.bonus_defesa())
+	partes.append("atq %d" % GameState.bonus_ataque())
+	partes.append("def %d" % GameState.bonus_defesa())
 	var jogador := _achar_player()
 	if jogador != null and jogador.has_method("velocidade_atual"):
 		partes.append("vel %d" % int(jogador.velocidade_atual()))
 	partes.append("%d receitas" % GameState.receitas.size())
-	var ajuda := "     [arraste · direito equipa/usa · fora do quadro = largar · I fecha · F10 testes]"
+	var ajuda := "     arraste itens.  direito equipa ou usa.  fora do quadro larga no chão.  I fecha.  F10 testes"
 	if GameState.modo_god:
-		partes.push_front("★ GOD")
+		partes.push_front("GOD")
 	if modo_criativo:
-		ajuda = "     [MODO TESTES: clique ou arraste do painel azul · F10 desliga]"
+		ajuda = "     MODO TESTES: clique ou arraste do painel azul.  F10 desliga"
 	_lbl_rodape.text = "   ".join(partes) + ajuda
 
 func _mostrar_item(nome: String) -> void:
@@ -655,14 +680,14 @@ func _mostrar_item(nome: String) -> void:
 		return
 	var extra := ""
 	if ItemDB.ataque(nome) > 0:
-		extra += "  +%d atq" % ItemDB.ataque(nome)
+		extra += "  atq %d" % ItemDB.ataque(nome)
 	if ItemDB.defesa(nome) > 0:
-		extra += "  +%d def" % ItemDB.defesa(nome)
+		extra += "  def %d" % ItemDB.defesa(nome)
 	if ItemDB.cura(nome) > 0:
 		extra += "  cura %d" % ItemDB.cura(nome)
 	if ItemDB.recarrega_tocha(nome) > 0.0:
-		extra += "  +%ds de chama" % int(ItemDB.recarrega_tocha(nome))
-	_lbl_info.text = "%s  (peso %d)%s" % [ItemDB.rotulo(nome), ItemDB.peso(nome), extra]
+		extra += "  %ds de chama" % int(ItemDB.recarrega_tocha(nome))
+	_lbl_info.text = "%s  peso %d%s" % [ItemDB.rotulo(nome), ItemDB.peso(nome), extra]
 	_lbl_desc.text = ItemDB.descricao(nome)
 
 # ------------------------------------------------------------------ arrastar
@@ -728,7 +753,7 @@ func _on_slot_clicado(slot: SlotUI) -> void:
 	# no painel de testes, um clique já manda o item para a mochila
 	if slot.tipo == SlotUI.Tipo.CRIATIVO and slot.item != "":
 		if GameState.adicionar_item(slot.item):
-			_lbl_info.text = "+ %s" % ItemDB.rotulo(slot.item)
+			_lbl_info.text = "peguei %s" % ItemDB.rotulo(slot.item)
 		else:
 			_lbl_info.text = "Mochila cheia"
 		_atualizar_tudo()
@@ -802,7 +827,8 @@ func _process(_delta: float) -> void:
 	if _estava_arrastando and not arrastando_agora:
 		# o arraste terminou: ninguém aceitou e o mouse estava fora do quadro?
 		if not get_viewport().gui_is_drag_successful() and _arrastando != null:
-			if not _painel.get_global_rect().has_point(_raiz.get_global_mouse_position()):
+			var local: Vector2 = _painel.get_global_transform().affine_inverse() * _raiz.get_global_mouse_position()
+			if not Rect2(Vector2.ZERO, _painel.size).has_point(local):
 				_largar_no_chao(_arrastando)
 		_arrastando = null
 	_estava_arrastando = arrastando_agora
@@ -848,7 +874,7 @@ func _usar(slot: SlotUI) -> void:
 		item_usado.emit(nome)
 		_lbl_info.text = "Usou: %s" % ItemDB.rotulo(nome)
 	else:
-		_lbl_info.text = "%s não se usa sozinho — misture ou equipe" % ItemDB.rotulo(nome)
+		_lbl_info.text = "%s não se usa sozinho. misture ou equipe" % ItemDB.rotulo(nome)
 
 
 func _achar_player() -> Node:
